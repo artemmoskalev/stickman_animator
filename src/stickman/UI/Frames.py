@@ -7,8 +7,8 @@ Created on Apr 12, 2015
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.Qt import QWidget
-from stickman.components.MainComponents import Canvas, ControlPanel
-from stickman.components.Tools import ToolSet
+from stickman.UI.Elements import Canvas, ControlPanel
+from stickman.UI.General import ToolSet
 
 class MainWindow(QWidget):
     
@@ -17,10 +17,11 @@ class MainWindow(QWidget):
         self.initGUI()
     
     def initGUI(self):
+        self.setMinimumSize(1200, 800)
         self.resize(1200, 800)
         self.centerScreen()
         self.setWindowTitle('Stickman Animator v1.0')
-        self.setWindowIcon(QIcon('stickman.png'))
+        self.setWindowIcon(QIcon('resources/stickman.png'))
         
         self.tools = ToolSet(self) 
         self.control_panel = ControlPanel(self, self.tools)
