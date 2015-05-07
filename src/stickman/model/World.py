@@ -29,7 +29,6 @@ class Stickman():
     def initBody(self):
         self.head = Head(self)
         self.words = Words(self)
-        self.words.setText("Hello!", Words.RIGHT)
         self.spine = Spine(self)
         self.joints = list()
         
@@ -79,6 +78,13 @@ class Stickman():
         self.head.expression.setExpression(Expression.SAD)
     def setConfused(self):
         self.head.expression.setExpression(Expression.CONFUSED)
+        
+    def sayLeft(self, text):
+        self.words.setText(text, Words.LEFT)
+    def sayRight(self, text):
+        self.words.setText(text, Words.RIGHT)
+    def sayRemove(self):
+        self.words.setText("", Words.NONE)
         
     def draw(self, painter):
         self.head.draw(painter)
@@ -296,6 +302,7 @@ class Joint():
         new_angle = self.angle + by_degree_rad
         self.x = self.attachment.x - math.sin(new_angle)*self.length
         self.y = self.attachment.y + math.cos(new_angle)*self.length 
+        self.angle = new_angle
         
         if self.next != None:
             self.next.rotateBy(by_degree_rad)
