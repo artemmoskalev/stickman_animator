@@ -4,7 +4,7 @@ Created on Apr 21, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QWidget, QPushButton, QFrame, QTimer
+from PyQt5.Qt import QWidget, QPushButton, QFrame, QTimer, QIcon, QSize
 from PyQt5.QtGui import QPainter
 
 from stickman.model.World import getWorld, World
@@ -131,7 +131,7 @@ class StickmanList(QWidget):
     
     def __init__(self, parent):
         super().__init__(parent)
-        self.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT*12)
+        self.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT*12 + 20)
         self.initUI()        
                 
     def initUI(self):
@@ -156,17 +156,71 @@ class StickmanList(QWidget):
                        
         getWorld().addStickmanListener(self.onStickmanListener)
         
+        scroll_button_style = """
+                                 .QPushButton {
+                                      font-weight: bold;
+                                      font-size: 20px;
+                                      background-color:#D3D3D3;
+                                  }
+                                  .QPushButton:pressed {
+                                      background-color:#B4B4B4;
+                                  }       
+                               """
+        
+        self.scroll_up_button = QPushButton("", self)
+        self.scroll_up_button.setIcon(QIcon("resources/up.png"))
+        self.scroll_up_button.setIconSize(QSize(50, 25))
+        self.scroll_up_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)        
+        self.scroll_up_button.move(0, StickmanList.BUTTON_HEIGHT*11 + 20)
+        self.scroll_up_button.setStyleSheet(scroll_button_style)
+        self.scroll_up_button.clicked.connect(self.scrollListUp)
+        self.scroll_up_button.hide()
+            
+        self.scroll_down_button = QPushButton("", self)
+        self.scroll_down_button.setIcon(QIcon("resources/down.png"))
+        self.scroll_down_button.setIconSize(QSize(50, 25))
+        self.scroll_down_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)
+        self.scroll_down_button.move(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT*11 + 20)
+        self.scroll_down_button.setStyleSheet(scroll_button_style)
+        self.scroll_down_button.clicked.connect(self.scrollListDown)
+        self.scroll_down_button.hide()
+        
+        self.start_index = 0
+        
     """ fixes button positions on the stickmen list after button addition or removal. activates/deactivates buttons depending on which stickman is active """            
-    def rearrangeButtons(self):        
+    def rearrangeButtons(self):    
         i = 0
         for button in self.buttons:
-            button.move(0, i*45)
-            if getWorld().isActive(button.text()):
-                button.setStyleSheet(self.button_style_active)
+            if i < self.start_index:
+                button.hide()
+            elif i > (self.start_index + 9):
+                button.hide()
             else:
-                button.setStyleSheet(self.button_style_passive)
+                button.show()
+                button.move(0, (i-self.start_index)*45)
+                if getWorld().isActive(button.text()):
+                    button.setStyleSheet(self.button_style_active)
+                else:
+                    button.setStyleSheet(self.button_style_passive)
             i = i+1 
-        
+            
+        if len(self.buttons) > 10:
+            self.scroll_up_button.show()
+            self.scroll_down_button.show()
+        else:
+            self.scroll_up_button.hide()
+            self.scroll_down_button.hide()
+    
+    def scrollListUp(self):
+        if self.start_index > 0:
+            self.start_index = self.start_index - 1
+            self.rearrangeButtons()
+                       
+    def scrollListDown(self):
+        if self.start_index < len(self.buttons)-10:
+            self.start_index = self.start_index + 1
+            self.rearrangeButtons()
+                
     """ listener method which create on-screen buttons with stickman names or remove them. It redraws buttons if active state changes. Called from the World class """
     def onStickmanListener(self, name, operation):
         if operation == World.ADD_EVENT:
@@ -174,13 +228,16 @@ class StickmanList(QWidget):
             button.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
             button.clicked.connect(self.onMousePressed)
             button.show()
-            self.buttons.insert(0, button)        
+            self.buttons.insert(0, button)    
+            self.start_index = 0    
             self.rearrangeButtons()
         elif operation == World.REMOVE_EVENT:
             for button in self.buttons:
                 if button.text() == name:
                     self.buttons.remove(button)
                     button.setParent(None)
+                    if self.start_index > 0:
+                        self.start_index = self.start_index - 1
                     self.rearrangeButtons()
         else:
             self.rearrangeButtons()

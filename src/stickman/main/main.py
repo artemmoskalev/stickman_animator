@@ -15,5 +15,17 @@ if __name__ == '__main__':
     
     w = MainWindow()    
     getWorld().createStickman("artemka", 500, 100)
+    getWorld().createStickman("artemka1", 500, 100)
+    getWorld().createStickman("artemka2", 500, 100)
+    getWorld().createStickman("artemka3", 500, 100)
+    getWorld().createStickman("artemka4", 500, 100)
+    getWorld().createStickman("artemka5", 500, 100)
+    getWorld().createStickman("artemka6", 500, 100)
+    getWorld().createStickman("artemka7", 500, 100)
+    getWorld().createStickman("artemka8", 500, 100)
+    getWorld().createStickman("artemka9", 500, 100)
+    getWorld().createStickman("artemka11", 500, 100)
+    getWorld().createStickman("ivan", 500, 100)
+    getWorld().createStickman("Bors", 500, 100)
     
     sys.exit(app.exec_())

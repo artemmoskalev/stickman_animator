@@ -4,7 +4,7 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPen, QRectF, QPixmap, QFont
+from PyQt5.Qt import QPen, QRectF, QPixmap, QFont, QFontMetrics
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QLine
 import math
@@ -192,8 +192,9 @@ class Expression():
 
 class Words():
         
-    WORDS_WIDTH = 150
-    WORDS_HEIGHT = 150
+    WORDS_WIDTH = 300
+    WORDS_HEIGHT = 80
+    TEXT_PADDING = 15
     
     NONE = 0
     LEFT = 1
@@ -211,24 +212,44 @@ class Words():
         self.side = side
             
     def draw(self, painter):
+        font = QFont(QFont("Times", 12, QFont.Bold))    
+        self.formatText(font)
+        
         if self.side == Words.RIGHT:
-            painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y - Words.WORDS_HEIGHT, 
+            painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y + Head.HEAD_RADIUS/4, 
                                Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.right_side)
+            
             painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-            painter.setFont(QFont("Times", 8, QFont.Bold))
-            painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + 15, self.body.y - Words.WORDS_HEIGHT + 18, 
-                                    Words.WORDS_WIDTH - 30, Words.WORDS_HEIGHT - 20), 
+            painter.setFont(QFont("Times", 16, QFont.Bold))            
+            painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + Words.TEXT_PADDING*4, self.body.y + Words.TEXT_PADDING*1.7, 
+                                    Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
                              Qt.AlignCenter | Qt.TextWordWrap, self.text) 
             
         elif self.side == Words.LEFT:
-            painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2-Words.WORDS_WIDTH, self.body.y - Words.WORDS_HEIGHT, 
-                               Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.left_side)
+            painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH, self.body.y + Head.HEAD_RADIUS/4, 
+                               Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.left_side)                     
+                        
             painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-            painter.setFont(QFont("Times", 8, QFont.Bold))
-            painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2-Words.WORDS_WIDTH + 15, self.body.y - Words.WORDS_HEIGHT + 22, 
-                                    Words.WORDS_WIDTH - 30, Words.WORDS_HEIGHT - 20), 
-                             Qt.AlignCenter | Qt.TextWordWrap, self.text) 
-
+            painter.setFont(font)
+            painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH + Words.TEXT_PADDING, self.body.y + Words.TEXT_PADDING*1.7, 
+                                    Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
+                             Qt.AlignCenter | Qt.TextWrapAnywhere, self.text) 
+        
+    def formatText(self, font):
+        metrics = QFontMetrics(font)
+        width = metrics.width(self.text)
+        
+        need_to_modify = False
+        
+        while(width > 448):
+            need_to_modify = True
+            self.text = self.text[0:-1]
+            width = metrics.width(self.text)
+        
+        if need_to_modify:
+            self.text = self.text[0:-3]
+            self.text = self.text + "..."
+           
 class Spine():
     
     NECK_LENGTH = 40
