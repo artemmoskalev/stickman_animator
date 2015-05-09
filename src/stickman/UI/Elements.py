@@ -156,6 +156,8 @@ class StickmanList(QWidget):
                        
         getWorld().addStickmanListener(self.onStickmanListener)
         
+        """ These are the buttons to control list of names scrolling. start_index is the index which points to the 
+            first entry in the button list which is currently shown at the top of the visual list. """
         scroll_button_style = """
                                  .QPushButton {
                                       font-weight: bold;
@@ -187,7 +189,9 @@ class StickmanList(QWidget):
         
         self.start_index = 0
         
-    """ fixes button positions on the stickmen list after button addition or removal. activates/deactivates buttons depending on which stickman is active """            
+    """ fixes button positions on the stickmen list after button addition or removal. 
+        activates/deactivates buttons depending on which stickman is active.
+        In case there are morre than 10 buttons, shows scrolling buttons. Controls which buttons are hidden and which are shown. """            
     def rearrangeButtons(self):    
         i = 0
         for button in self.buttons:

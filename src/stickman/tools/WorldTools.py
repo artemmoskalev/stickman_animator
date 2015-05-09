@@ -4,7 +4,7 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QRect
+from PyQt5.Qt import QPushButton, QFrame, QRect, QFileDialog, QImage
 from stickman.tools.Components import InputLine
 from stickman.model.World import getWorld
 
@@ -76,12 +76,14 @@ class StickmanTools(QFrame):
         self.change_background.resize(StickmanTools.TOOLS_WIDTH/4, StickmanTools.TOOLS_HEIGHT)
         self.change_background.move(302, StickmanTools.FRAME_WIDTH*2)        
         self.change_background.setStyleSheet(button_stylesheet)
-       
+        self.change_background.clicked.connect(self.findBackground)
+        
         self.remove_background = QPushButton('Clear Background', self)
         self.remove_background.resize(StickmanTools.TOOLS_WIDTH/4, StickmanTools.TOOLS_HEIGHT)
         self.remove_background.move(452, StickmanTools.FRAME_WIDTH*2)        
         self.remove_background.setStyleSheet(button_stylesheet)       
-    
+        self.remove_background.clicked.connect(self.clearBackground)
+        
     """ Methods which show and hide input lines and buttons. ALso methods for resizing the panel and its frame """
     def showCreateDialog(self):
         self.resizeForInput()
@@ -123,6 +125,14 @@ class StickmanTools(QFrame):
         self.resize(StickmanTools.INPUT_WIDTH + 250 + 4, StickmanTools.TOOLS_HEIGHT + 4)
         self.setFrameRect(QRect(0, 0, StickmanTools.INPUT_WIDTH + 4, StickmanTools.TOOLS_HEIGHT + 4))   
     
+    """ listener for the file dialog method to open the file for the background"""
+    def findBackground(self):
+        file = QFileDialog.getOpenFileName(self, "Open Image", ".", "Image Files (*.png *.jpg)")
+        if file[0] != "":
+            getWorld().setBackground(file[0])
+    def clearBackground(self):
+        getWorld().clearBackground("#FFFFFF")
+           
     """ Listeners to take actions when ok button was pressed and input text has been read """
     def readCreateName(self):
         if self.create_stickman_input.getText() == "":

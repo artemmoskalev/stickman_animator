@@ -4,7 +4,7 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPen, QRectF, QPixmap, QFont, QFontMetrics
+from PyQt5.Qt import QPen, QRectF, QPixmap, QFont, QFontMetrics, QImage
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QLine
 import math
@@ -368,13 +368,22 @@ class World():
     def __init__(self):
         self.stickmen = list() #active stickman is always at the end of the list
         self.listeners = list()
+        self.background = None
         
-    """ The draw method first draws the stickmen that arenot active, and then the active stickman.
+    """ The draw method first draws the stickmen that are not active, and then the active stickman.
         This technique is required to preserve layering of stickmen. """
     def draw(self, painter):
+        if self.background != None:            
+            painter.drawImage(QRectF(0, 0, 1100, 600), self.background, QRectF(0, 0, self.background.width(), self.background.height()))
         for stickman in self.stickmen:
             stickman.draw(painter)
-                    
+    
+    def setBackground(self, background_path):
+        self.background = QImage(background_path)
+    def clearBackground(self, color):
+        self.background = None    
+    
+    """ Methods necessary to manipulate stickmen in the world"""        
     def getStickman(self, name):
         for stickman in self.stickmen:
             if stickman.name == name:
