@@ -27,7 +27,7 @@ class MainWindow(QWidget):
         self.setWindowIcon(QIcon('resources/stickman.png'))
         
         self.tools = ToolSet(self) 
-        self.canvas = Canvas(self)  
+        self.canvas = Canvas(self, self.tools)  
         self.control_panel = ControlPanel(self, self.tools, self.canvas)                             
         
         self.centerContents()
@@ -153,7 +153,7 @@ class ToolSet():
         
     def showAnimationTools(self):
         self.hide()
-        self.animation_tools.show()   
+        self.animation_tools.show() 
         
     def hide(self):
         self.world_tools.hide()

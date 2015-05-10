@@ -133,5 +133,5 @@ class StickmanToolsPanel(QFrame):
                 search.setConfused()
     
     def makePhoto(self):
-        self.parent().canvas.createNewFrame()
+        self.parent().canvas.framemenu.createNewFrame()
     
