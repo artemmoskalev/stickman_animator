@@ -4,7 +4,7 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QRect, QFileDialog, QImage
+from PyQt5.Qt import QPushButton, QFrame, QRect, QFileDialog
 from stickman.tools.Components import InputLine
 from stickman.model.World import getWorld
 
@@ -16,7 +16,7 @@ from stickman.model.World import getWorld
     ---------------------------------------
 
 """
-class StickmanTools(QFrame):
+class WorldToolsPanel(QFrame):
     
     FRAME_WIDTH = 1
     TOOLS_WIDTH = 600
@@ -30,10 +30,10 @@ class StickmanTools(QFrame):
         
     def initUI(self):        
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setLineWidth(StickmanTools.FRAME_WIDTH)
+        self.setLineWidth(WorldToolsPanel.FRAME_WIDTH)
         
-        self.resize(StickmanTools.TOOLS_WIDTH + 4, StickmanTools.TOOLS_HEIGHT + 4)
-        self.setFrameRect(QRect(0, 0, StickmanTools.TOOLS_WIDTH + 4, StickmanTools.TOOLS_HEIGHT + 4))        
+        self.resize(WorldToolsPanel.TOOLS_WIDTH + 4, WorldToolsPanel.TOOLS_HEIGHT + 4)
+        self.setFrameRect(QRect(0, 0, WorldToolsPanel.TOOLS_WIDTH + 4, WorldToolsPanel.TOOLS_HEIGHT + 4))        
         
         button_stylesheet = """
                                 .QPushButton {
@@ -47,8 +47,8 @@ class StickmanTools(QFrame):
                             """
                         
         self.create_stickman = QPushButton('Create Stickman', self)
-        self.create_stickman.resize(StickmanTools.TOOLS_WIDTH/4, StickmanTools.TOOLS_HEIGHT)
-        self.create_stickman.move(2, StickmanTools.FRAME_WIDTH*2)        
+        self.create_stickman.resize(WorldToolsPanel.TOOLS_WIDTH/4, WorldToolsPanel.TOOLS_HEIGHT)
+        self.create_stickman.move(2, WorldToolsPanel.FRAME_WIDTH*2)        
         self.create_stickman.setStyleSheet(button_stylesheet)
         self.create_stickman.clicked.connect(self.showCreateDialog)
         
@@ -56,12 +56,12 @@ class StickmanTools(QFrame):
         self.create_stickman_input.setLabelText("Enter New StickName: ")
         self.create_stickman_input.addOkListener(self.readCreateName)
         self.create_stickman_input.addCancelListener(self.hideCreateDialog)
-        self.create_stickman_input.move(StickmanTools.FRAME_WIDTH*2, StickmanTools.FRAME_WIDTH*2)
+        self.create_stickman_input.move(WorldToolsPanel.FRAME_WIDTH*2, WorldToolsPanel.FRAME_WIDTH*2)
         self.create_stickman_input.hide()
         
         self.delete_stickman = QPushButton('Delete Stickman', self)
-        self.delete_stickman.resize(StickmanTools.TOOLS_WIDTH/4, StickmanTools.TOOLS_HEIGHT)
-        self.delete_stickman.move(152, StickmanTools.FRAME_WIDTH*2)        
+        self.delete_stickman.resize(WorldToolsPanel.TOOLS_WIDTH/4, WorldToolsPanel.TOOLS_HEIGHT)
+        self.delete_stickman.move(152, WorldToolsPanel.FRAME_WIDTH*2)        
         self.delete_stickman.setStyleSheet(button_stylesheet)
         self.delete_stickman.clicked.connect(self.showDeleteDialog)
         
@@ -69,18 +69,18 @@ class StickmanTools(QFrame):
         self.delete_stickman_input.setLabelText("Enter Name to Delete: ")
         self.delete_stickman_input.addOkListener(self.readDeleteName)
         self.delete_stickman_input.addCancelListener(self.hideDeleteDialog)
-        self.delete_stickman_input.move(StickmanTools.FRAME_WIDTH*2, StickmanTools.FRAME_WIDTH*2)
+        self.delete_stickman_input.move(WorldToolsPanel.FRAME_WIDTH*2, WorldToolsPanel.FRAME_WIDTH*2)
         self.delete_stickman_input.hide()
         
         self.change_background = QPushButton('Set Background', self)
-        self.change_background.resize(StickmanTools.TOOLS_WIDTH/4, StickmanTools.TOOLS_HEIGHT)
-        self.change_background.move(302, StickmanTools.FRAME_WIDTH*2)        
+        self.change_background.resize(WorldToolsPanel.TOOLS_WIDTH/4, WorldToolsPanel.TOOLS_HEIGHT)
+        self.change_background.move(302, WorldToolsPanel.FRAME_WIDTH*2)        
         self.change_background.setStyleSheet(button_stylesheet)
         self.change_background.clicked.connect(self.findBackground)
         
         self.remove_background = QPushButton('Clear Background', self)
-        self.remove_background.resize(StickmanTools.TOOLS_WIDTH/4, StickmanTools.TOOLS_HEIGHT)
-        self.remove_background.move(452, StickmanTools.FRAME_WIDTH*2)        
+        self.remove_background.resize(WorldToolsPanel.TOOLS_WIDTH/4, WorldToolsPanel.TOOLS_HEIGHT)
+        self.remove_background.move(452, WorldToolsPanel.FRAME_WIDTH*2)        
         self.remove_background.setStyleSheet(button_stylesheet)       
         self.remove_background.clicked.connect(self.clearBackground)
         
@@ -119,11 +119,11 @@ class StickmanTools(QFrame):
         self.remove_background.show()
     
     def resizeForButtons(self):
-        self.resize(StickmanTools.TOOLS_WIDTH + 4, StickmanTools.TOOLS_HEIGHT + 4)
-        self.setFrameRect(QRect(0, 0, StickmanTools.TOOLS_WIDTH + 4, StickmanTools.TOOLS_HEIGHT + 4))  
+        self.resize(WorldToolsPanel.TOOLS_WIDTH + 4, WorldToolsPanel.TOOLS_HEIGHT + 4)
+        self.setFrameRect(QRect(0, 0, WorldToolsPanel.TOOLS_WIDTH + 4, WorldToolsPanel.TOOLS_HEIGHT + 4))  
     def resizeForInput(self):    
-        self.resize(StickmanTools.INPUT_WIDTH + 250 + 4, StickmanTools.TOOLS_HEIGHT + 4)
-        self.setFrameRect(QRect(0, 0, StickmanTools.INPUT_WIDTH + 4, StickmanTools.TOOLS_HEIGHT + 4))   
+        self.resize(WorldToolsPanel.INPUT_WIDTH + 250 + 4, WorldToolsPanel.TOOLS_HEIGHT + 4)
+        self.setFrameRect(QRect(0, 0, WorldToolsPanel.INPUT_WIDTH + 4, WorldToolsPanel.TOOLS_HEIGHT + 4))   
     
     """ listener for the file dialog method to open the file for the background"""
     def findBackground(self):

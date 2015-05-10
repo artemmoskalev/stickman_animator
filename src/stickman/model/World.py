@@ -454,6 +454,7 @@ class World():
     
 world = World()
 
+""" Function through which the WOrld instance is supposed to be retrieved in other parts of the program """
 def getWorld():
     return world
 

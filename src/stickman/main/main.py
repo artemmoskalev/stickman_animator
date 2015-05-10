@@ -6,7 +6,7 @@ Created on Apr 11, 2015
 import sys
 
 from PyQt5.QtWidgets import QApplication
-from stickman.UI.Frames import MainWindow
+from stickman.UI.MainComponents import MainWindow
 
 from stickman.model.World import getWorld
 

@@ -1,33 +1,32 @@
 '''
-Created on Apr 26, 2015
+Created on Apr 25, 2015
 
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize, QLineEdit, QRect
-from stickman.model.World import getWorld
+from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize, QRect
 
 """
     ---------------------------------------
 
-    ClASS RESPONSIBLE ANIMATION OF STICKMEN
+    ClASS RESPONSIBLE FOR SAVING AND LOADING ANIMATIONS
     
     ---------------------------------------
 
-""" 
-class AnimationTools(QFrame):
+"""       
+class AnimationToolsPanel(QFrame):
     
     def __init__(self, parent):
         super().__init__(parent)
         self.initUI()
         
     def initUI(self):
-        self.resize(700, 49)
+        self.resize(1100, 49)
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setFrameRect(QRect(0, 0, 184, 49))
+        self.setFrameRect(QRect(0, 0, 304, 34))
         self.setLineWidth(1)
         
-        component_stylesheet = """
+        button_stylesheet = """
                                 .QPushButton {
                                     font-weight: bold;
                                     font-size: 13px;
@@ -36,90 +35,48 @@ class AnimationTools(QFrame):
                                 .QPushButton:pressed {
                                     background-color:#CCCCCC;
                                 }
-                                .QLineEdit {
-                                    font-weight: bold;
-                                    font-size: 24px;
-                                }  
                             """
                         
-        self.smile_button = QPushButton('', self)
-        self.smile_button.setIcon(QIcon("resources/smile.png"))
-        self.smile_button.setIconSize(QSize(35, 35))
-        self.smile_button.resize(60, 45)
-        self.smile_button.move(2, 2)        
-        self.smile_button.setStyleSheet(component_stylesheet)
-        self.smile_button.clicked.connect(self.changeExpression)
-        self.smile_button.show()        
+        self.save_animation = QPushButton('Save Animation', self)
+        self.save_animation.resize(150, 30)
+        self.save_animation.move(2, 2)        
+        self.save_animation.setStyleSheet(button_stylesheet)
+       
+        self.load_animation = QPushButton('Load Animation', self)
+        self.load_animation.resize(150, 30)
+        self.load_animation.move(152, 2)        
+        self.load_animation.setStyleSheet(button_stylesheet)
+        
+        self.time_button = QPushButton('', self)
+        self.time_button.setIcon(QIcon("resources/time.png"))
+        self.time_button.setIconSize(QSize(35, 35))
+        self.time_button.resize(60, 45)
+        self.time_button.move(918, 2)        
+        self.time_button.setStyleSheet(button_stylesheet)
+        #self.time_button.clicked.connect(self.changeExpression)
+        self.time_button.show()        
 
-        self.sad_button = QPushButton('', self)
-        self.sad_button.setIcon(QIcon("resources/sad.png"))
-        self.sad_button.setIconSize(QSize(35, 35))
-        self.sad_button.resize(60, 45)
-        self.sad_button.move(62, 2)        
-        self.sad_button.setStyleSheet(component_stylesheet)
-        self.sad_button.clicked.connect(self.changeExpression)
-        self.sad_button.show() 
+        self.copy_button = QPushButton('', self)
+        self.copy_button.setIcon(QIcon("resources/copy.png"))
+        self.copy_button.setIconSize(QSize(35, 35))
+        self.copy_button.resize(60, 45)
+        self.copy_button.move(978, 2)        
+        self.copy_button.setStyleSheet(button_stylesheet)
+        self.copy_button.clicked.connect(self.copyFrameListener)
+        self.copy_button.show() 
         
-        self.confused_button = QPushButton('', self)
-        self.confused_button.setIcon(QIcon("resources/confused.png"))
-        self.confused_button.setIconSize(QSize(35, 35))
-        self.confused_button.resize(60, 45)
-        self.confused_button.move(122, 2)        
-        self.confused_button.setStyleSheet(component_stylesheet)
-        self.confused_button.clicked.connect(self.changeExpression)
-        self.confused_button.show() 
+        self.delete_button = QPushButton('', self)
+        self.delete_button.setIcon(QIcon("resources/delete.png"))
+        self.delete_button.setIconSize(QSize(35, 35))
+        self.delete_button.resize(60, 45)
+        self.delete_button.move(1038, 2)        
+        self.delete_button.setStyleSheet(button_stylesheet)
+        self.delete_button.clicked.connect(self.deleteListener)
+        self.delete_button.show() 
         
-        self.say_text = QLineEdit(self)
-        self.say_text.setStyleSheet(component_stylesheet)
-        self.say_text.resize(300, 45)
-        self.say_text.move(215, 2)
-        
-        self.say_left = QPushButton('', self)
-        self.say_left.setIcon(QIcon("resources/say_left.png"))
-        self.say_left.setIconSize(QSize(35, 35))
-        self.say_left.resize(60, 45)
-        self.say_left.move(520, 2)        
-        self.say_left.setStyleSheet(component_stylesheet)
-        self.say_left.clicked.connect(self.sayLeft)
-        
-        self.say_right = QPushButton('', self)
-        self.say_right.setIcon(QIcon("resources/say_right.png"))
-        self.say_right.setIconSize(QSize(35, 35))
-        self.say_right.resize(60, 45)
-        self.say_right.move(580, 2)   
-        self.say_right.setStyleSheet(component_stylesheet)
-        self.say_right.clicked.connect(self.sayRight)
-        
-        self.say_exit = QPushButton('', self)
-        self.say_exit.setIcon(QIcon("resources/exit.png"))
-        self.say_exit.setIconSize(QSize(35, 35))
-        self.say_exit.resize(60, 45)
-        self.say_exit.move(640, 2)   
-        self.say_exit.setStyleSheet(component_stylesheet)
-        self.say_exit.clicked.connect(self.sayClear)
-        
-    def sayLeft(self):
-        search = getWorld().getActive()
-        if search != None:
-            search.sayLeft(self.say_text.text())
-        self.say_text.setText("")
-    def sayRight(self):
-        search = getWorld().getActive()
-        if search != None:
-            search.sayRight(self.say_text.text())
-        self.say_text.setText("")
-    def sayClear(self):
-        search = getWorld().getActive()
-        if search != None:
-            search.sayRemove()
-        self.say_text.setText("")
+    def deleteListener(self):
+        self.parent().canvas.deleteFrames()
+    def copyFrameListener(self):
+        self.parent().canvas.copyFrame()
     
-    def changeExpression(self):
-        search = getWorld().getActive()
-        if search != None:
-            if self.sender() == self.smile_button:
-                search.setHappy()
-            elif self.sender() == self.sad_button:
-                search.setSad()
-            else:
-                search.setConfused()
+    
