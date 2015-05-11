@@ -51,7 +51,6 @@ class AnimationToolsPanel(QFrame):
         
         self.time_input = TimeInputLine(self)
         self.time_input.move(698, 2)
-        self.time_input.setFrameName("Frame 100")
         self.time_input.hide()
         
         self.time_button = QPushButton('', self)
@@ -61,7 +60,7 @@ class AnimationToolsPanel(QFrame):
         self.time_button.move(918, 2)        
         self.time_button.setStyleSheet(button_stylesheet)
         self.time_button.clicked.connect(self.timeFrameListener)
-        self.time_button.hide()        
+        self.time_button.show()        
 
         self.copy_button = QPushButton('', self)
         self.copy_button.setIcon(QIcon("resources/copy.png"))
@@ -70,7 +69,7 @@ class AnimationToolsPanel(QFrame):
         self.copy_button.move(978, 2)        
         self.copy_button.setStyleSheet(button_stylesheet)
         self.copy_button.clicked.connect(self.copyFrameListener)
-        self.copy_button.hide() 
+        self.copy_button.show() 
         
         self.delete_button = QPushButton('', self)
         self.delete_button.setIcon(QIcon("resources/delete.png"))
@@ -79,37 +78,30 @@ class AnimationToolsPanel(QFrame):
         self.delete_button.move(1038, 2)        
         self.delete_button.setStyleSheet(button_stylesheet)
         self.delete_button.clicked.connect(self.deleteListener)
-        self.delete_button.hide() 
+        self.delete_button.show() 
     
-    #shown when >= 1 frames are chosen
-    def showDeleteButton(self):
+    """ Methods to show/hide the input time and frame-control buttons """
+    def showButtonBlock(self):
         self.delete_button.show()
-        self.time_input.hide()
-    def hideDeleteButton(self):
-        self.delete_button.hide()
-    #shown iff 1 frame chosen
-    def showCopyTimeButtons(self):
         self.time_button.show()
-        self.copy_button.show()   
+        self.copy_button.show()
         self.time_input.hide()
-    def hideCopyTimeButtons(self):
+    def showInputTime(self):
+        self.delete_button.hide()
         self.time_button.hide()
-        self.copy_button.hide()
+        self.copy_button.hide()  
+        self.time_input.label.setText(self.parent().canvas.framemenu.getActiveFrame().text().split(":")[0] + ":")
+        self.time_input.show()
     
     """ Listeners for delete, copy and time buttons """
     def deleteListener(self):
-        response = QMessageBox.question(self, 'Frame Remove Message', "Are you sure you want to delete these frames?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
-        if response == QMessageBox.Yes:
-            self.parent().canvas.framemenu.deleteFrames()       
+        self.parent().canvas.framemenu.deleteFrame(self)
     def copyFrameListener(self):
         self.parent().canvas.framemenu.copyFrame()
-    def timeFrameListener(self):
-        self.hideDeleteButton()
-        self.hideCopyTimeButtons()
-        self.time_input.show()        
-        actives = self.parent().canvas.framemenu.getActiveFrames()
-        if len(actives) == 1:
-            self.time_input.setFrameName(actives[0].text())
+    def timeFrameListener(self):    
+        active_frame = self.parent().canvas.framemenu.getActiveFrame()
+        if not active_frame == None:
+            self.showInputTime()
 
 """
     -------------------------------
@@ -146,9 +138,7 @@ class TimeInputLine(QFrame):
                                 }
                             """
         
-        self.frame_name = ""
-        
-        self.label = QLabel(self.frame_name, self)
+        self.label = QLabel("", self)
         self.label.resize(174, 43)
         self.label.move(2, 2)
         self.label.setStyleSheet(component_stylesheet)
@@ -182,18 +172,14 @@ class TimeInputLine(QFrame):
         self.cancel.setStyleSheet(component_stylesheet) 
         self.cancel.clicked.connect(self.onCancelListener)
         self.cancel.show()
-        
-    def setFrameName(self, frameName):
-        self.frame_name = frameName
-        self.label.setText(frameName.split(":")[0] + ":")    
-        
+    
     """ button listeners """
     def onCancelListener(self):
-        self.parent().showDeleteButton()
-        self.parent().showCopyTimeButtons()
+        self.parent().showButtonBlock()
     
     def onAcceptListener(self):
         time = self.spinbox.value()
-        self.parent().parent().canvas.framemenu.changeFrameTime(self.frame_name, time)
+        self.parent().parent().canvas.framemenu.changeFrameTime(time)
+        self.parent().showButtonBlock()
     
     

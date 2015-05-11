@@ -206,7 +206,7 @@ class Words():
         self.side = Words.NONE
         self.left_side = QPixmap("resources/speak_left.png")
         self.right_side = QPixmap("resources/speak_right.png")
-    
+          
     def setText(self, text, side):
         self.text = text
         self.side = side
@@ -215,25 +215,29 @@ class Words():
         font = QFont(QFont("Times", 12, QFont.Bold))    
         self.formatText(font)
         
-        if self.side == Words.RIGHT:
-            painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y + Head.HEAD_RADIUS/4, 
-                               Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.right_side)
-            
-            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-            painter.setFont(QFont("Times", 16, QFont.Bold))            
-            painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + Words.TEXT_PADDING*4, self.body.y + Words.TEXT_PADDING*1.7, 
-                                    Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
-                             Qt.AlignCenter | Qt.TextWordWrap, self.text) 
-            
-        elif self.side == Words.LEFT:
-            painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH, self.body.y + Head.HEAD_RADIUS/4, 
-                               Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.left_side)                     
-                        
-            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-            painter.setFont(font)
-            painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH + Words.TEXT_PADDING, self.body.y + Words.TEXT_PADDING*1.7, 
-                                    Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
-                             Qt.AlignCenter | Qt.TextWrapAnywhere, self.text) 
+        try:
+            if self.side == Words.RIGHT:
+                painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y + Head.HEAD_RADIUS/4, 
+                                   Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.right_side)
+                
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+                painter.setFont(QFont("Times", 16, QFont.Bold))            
+                painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + Words.TEXT_PADDING*4, self.body.y + Words.TEXT_PADDING*1.7, 
+                                        Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
+                                 Qt.AlignCenter | Qt.TextWordWrap, self.text) 
+                
+            elif self.side == Words.LEFT:
+                painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH, self.body.y + Head.HEAD_RADIUS/4, 
+                                   Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.left_side)                     
+                            
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+                painter.setFont(font)
+                painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH + Words.TEXT_PADDING, self.body.y + Words.TEXT_PADDING*1.7, 
+                                        Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
+                                 Qt.AlignCenter | Qt.TextWrapAnywhere, self.text) 
+        except RuntimeError:
+            self.left_side = QPixmap("resources/speak_left.png")
+            self.right_side = QPixmap("resources/speak_right.png")
         
     def formatText(self, font):
         metrics = QFontMetrics(font)

@@ -154,6 +154,7 @@ class ToolSet():
     def showAnimationTools(self):
         self.hide()
         self.animation_tools.show() 
+        self.animation_tools.showButtonBlock()
         
     def hide(self):
         self.world_tools.hide()

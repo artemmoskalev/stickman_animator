@@ -4,7 +4,7 @@ Created on Apr 21, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QApplication, QWidget, QPushButton, QFrame, QTimer, QIcon, QSize
+from PyQt5.Qt import QMessageBox, QWidget, QPushButton, QFrame, QTimer, QIcon, QSize
 from PyQt5.QtGui import QPainter
 from PyQt5.QtCore import Qt
 
@@ -227,7 +227,6 @@ class FrameList(QWidget):
                 
     def initUI(self):
         self.buttons = FrameMap()
-        self.active = list()
         
         self.button_style_passive = """
                           .QPushButton {
@@ -285,43 +284,42 @@ class FrameList(QWidget):
         button.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
         button.clicked.connect(self.onMousePressed)
         button.show()
-        self.buttons[button] = Frame(getWorld().stickmen, getWorld().background)
+        self.buttons[button] = Frame(1.0, getWorld().stickmen, getWorld().background)
         if len(self.buttons) > 10:
             self.start_index = len(self.buttons) - 10
-        self.active[:] = []
-        self.active.append(button)
         self.rearrangeButtons()
     
-    def deleteFrames(self):
-        for button in self.active.copy():
-            self.active.remove(button)
-            del self.buttons[button]
-            button.setParent(None)
-            if self.start_index > 0:
-                self.start_index = self.start_index-1
+    def deleteFrame(self, caller):
+        if not self.buttons.active == None:
+            response = QMessageBox.question(caller, 'Frame Remove Message', "Are you sure you want to delete this frame?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if response == QMessageBox.Yes:
+                self.buttons.active.setParent(None)
+                del self.buttons[self.buttons.active]
+                if self.start_index > 0:
+                    self.start_index = self.start_index-1
         self.rearrangeButtons()
     
     def copyFrame(self):
-        if len(self.active) == 1:            
+        if not self.buttons.active == None:            
             button = QPushButton("", self)
             button.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
             button.clicked.connect(self.onMousePressed)
             button.show()
             
-            index = self.buttons.index(self.active[0])
-            self.buttons.insertAt(index, button, Frame())
+            index = self.buttons.index(self.buttons.active)            
+            self.buttons.insertAt(index+1, button, 
+                                  Frame(self.buttons[self.buttons.active].time, self.buttons[self.buttons.active].stickmen, self.buttons[self.buttons.active].background))
             if len(self.buttons) > 10:
                 self.start_index = self.start_index + 1
             self.rearrangeButtons()
     
-    def changeFrameTime(self, name, time):
-        for button in self.buttons.keys():
-            if button.text() == name:
-                self.buttons[button].time = time
-                self.rearrangeButtons()
+    def changeFrameTime(self, time):
+        if not self.buttons.active == None:
+            self.buttons[self.buttons.active].time = time
+            self.rearrangeButtons()
                 
-    def getActiveFrames(self):
-        return self.active.copy()
+    def getActiveFrame(self):
+        return self.buttons.active
     
     """ fixes button positions on the stickmen list after button addition or removal. 
         activates/deactivates buttons depending on which stickman is active.
@@ -338,7 +336,7 @@ class FrameList(QWidget):
             else:
                 button.show()
                 button.move(0, (i-self.start_index)*45)
-                if button in self.active:
+                if button == self.buttons.active:
                     button.setStyleSheet(self.button_style_active)
                 else:
                     button.setStyleSheet(self.button_style_passive)
@@ -350,18 +348,10 @@ class FrameList(QWidget):
         else:
             self.scroll_up_button.hide()
             self.scroll_down_button.hide()
-        #part which show or hides animation tools time and copy buttons
-        #if more or less than 1 buttons is chosen
-        if len(self.active) == 1:
-            self.parent().tools.animation_tools.showCopyTimeButtons()
-            self.parent().tools.animation_tools.showDeleteButton()
-        elif len(self.active) > 1:
-            self.parent().tools.animation_tools.hideCopyTimeButtons()
-            self.parent().tools.animation_tools.showDeleteButton()
-        else:       
-            self.parent().tools.animation_tools.hideCopyTimeButtons()
-            self.parent().tools.animation_tools.hideDeleteButton()
             
+        self.parent().tools.animation_tools.showButtonBlock()
+                
+        
     def scrollListUp(self):
         if self.start_index > 0:
             self.start_index = self.start_index - 1
@@ -374,19 +364,15 @@ class FrameList(QWidget):
     
     """ listener method used to switch between currently present frames """
     def onMousePressed(self):
-        modifiers = QApplication.keyboardModifiers()
-        if modifiers == Qt.ControlModifier:
-            if self.sender() not in self.active:
-                self.active.append(self.sender())
-            else:
-                self.active.remove(self.sender())                
+        if self.sender() == self.buttons.active:
+            self.buttons.active = None            
+            getWorld().stickmen = copy.deepcopy(getWorld().stickmen)
+            getWorld().background = copy.deepcopy(getWorld().background)            
         else:
-            self.active[:] = []
-            self.active.append(self.sender())
             open_frame = self.buttons[self.sender()]
             getWorld().stickmen = open_frame.stickmen
             getWorld().background = open_frame.background
-            
+            self.buttons.active = self.sender()        
         self.rearrangeButtons()
 
 """
@@ -398,12 +384,15 @@ class FrameMap():
     
     def __init__(self):
         self.buttons = list()
+        self.active = None
         self.frames = list()
     
     def __delitem__(self, key):
         index = self.buttons.index(key)
         self.buttons.remove(key)
         del self.frames[index]
+        if self.active == key:
+            self.active = None
         
     def __getitem__(self, key):
         return self.frames[self.buttons.index(key)]
@@ -424,6 +413,15 @@ class FrameMap():
     def insertAt(self, index, key, value):
         self.buttons.insert(index, key)
         self.frames.insert(index, value)
+    
+    def setActive(self, key):
+        self.active = key
+        
+    def isActive(self, key):
+        if self.active == key:
+            return True
+        else:
+            return False
         
 """
     ---------------------------
@@ -432,12 +430,9 @@ class FrameMap():
 """
 class Frame():
     
-    def __init__(self, stickmen, background):
-        self.time = 1
-        self.stickmen = copy.deepcopy(stickmen)
-        self.background = background
-    
-    def setTime(self, time):
+    def __init__(self, time, stickmen, background):
         self.time = time
-        
+        self.stickmen = copy.deepcopy(stickmen)
+        self.background = copy.deepcopy(background)
+    
         
