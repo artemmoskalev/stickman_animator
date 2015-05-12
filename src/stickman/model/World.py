@@ -7,7 +7,12 @@ Created on Apr 26, 2015
 from PyQt5.Qt import QPen, QRectF, QPixmap, QFont, QFontMetrics, QImage
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QLine
+
+from stickman.tools.Components import Frame
 import math
+import copy
+
+from stickman.UI.AssetManager import assets
 
 class Stickman():
     
@@ -204,9 +209,7 @@ class Words():
         self.body = body
         self.text = ""
         self.side = Words.NONE
-        self.left_side = QPixmap("resources/speak_left.png")
-        self.right_side = QPixmap("resources/speak_right.png")
-          
+        
     def setText(self, text, side):
         self.text = text
         self.side = side
@@ -215,30 +218,26 @@ class Words():
         font = QFont(QFont("Times", 12, QFont.Bold))    
         self.formatText(font)
         
-        try:
-            if self.side == Words.RIGHT:
-                painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y + Head.HEAD_RADIUS/4, 
-                                   Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.right_side)
+        if self.side == Words.RIGHT:
+            painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y + Head.HEAD_RADIUS/4, 
+                                Words.WORDS_WIDTH, Words.WORDS_HEIGHT, assets.speak_right)
                 
-                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-                painter.setFont(QFont("Times", 16, QFont.Bold))            
-                painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + Words.TEXT_PADDING*4, self.body.y + Words.TEXT_PADDING*1.7, 
-                                        Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
-                                 Qt.AlignCenter | Qt.TextWordWrap, self.text) 
+            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+            painter.setFont(QFont("Times", 16, QFont.Bold))            
+            painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + Words.TEXT_PADDING*4, self.body.y + Words.TEXT_PADDING*1.7, 
+                                    Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
+                             Qt.AlignCenter | Qt.TextWordWrap, self.text) 
                 
-            elif self.side == Words.LEFT:
-                painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH, self.body.y + Head.HEAD_RADIUS/4, 
-                                   Words.WORDS_WIDTH, Words.WORDS_HEIGHT, self.left_side)                     
+        elif self.side == Words.LEFT:
+            painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH, self.body.y + Head.HEAD_RADIUS/4, 
+                                Words.WORDS_WIDTH, Words.WORDS_HEIGHT, assets.speak_left)                     
                             
-                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-                painter.setFont(font)
-                painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH + Words.TEXT_PADDING, self.body.y + Words.TEXT_PADDING*1.7, 
-                                        Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
-                                 Qt.AlignCenter | Qt.TextWrapAnywhere, self.text) 
-        except RuntimeError:
-            self.left_side = QPixmap("resources/speak_left.png")
-            self.right_side = QPixmap("resources/speak_right.png")
-        
+            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+            painter.setFont(font)
+            painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH + Words.TEXT_PADDING, self.body.y + Words.TEXT_PADDING*1.7, 
+                                    Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
+                             Qt.AlignCenter | Qt.TextWrapAnywhere, self.text) 
+                
     def formatText(self, font):
         metrics = QFontMetrics(font)
         width = metrics.width(self.text)
@@ -367,7 +366,7 @@ class World():
     
     ADD_EVENT = 1
     REMOVE_EVENT = 2
-    ACTIVE_EVENT = 3    
+    ACTIVE_EVENT = 3
     
     def __init__(self):
         self.stickmen = list() #active stickman is always at the end of the list
@@ -407,7 +406,17 @@ class World():
                 for listener in self.listeners:
                     listener(name, World.REMOVE_EVENT)
     
-    """ Methods necessary to set predefined stickmen to the World from the frames"""
+    """ Methods necessary to create frames and set predefined stickmen to the World from the frames """
+    def getFrame(self):
+        frame = Frame(1)
+        frame.stickmen = copy.deepcopy(self.stickmen)
+        return frame
+    def setWorldFrom(self, frame):        
+        self.setStickmen(frame.stickmen)
+    def copyWorld(self):
+        self.setStickmen(copy.deepcopy(self.stickmen))
+    
+    #methods used internally
     def setStickmen(self, new_stickmen):
         self.clearAll()
         for new_stickman in new_stickmen:
@@ -420,6 +429,7 @@ class World():
             for listener in self.listeners:
                 listener(stickman.name, World.REMOVE_EVENT)
     
+    """ Utility methods """
     def exists(self, name):
         if self.getStickman(name) == None:
             return False
@@ -450,8 +460,8 @@ class World():
             return False
     
     """ methods for adding listeners to avoid circular imports """
-    def addStickmanListener(self, stickmanListener):
-        self.listeners.append(stickmanListener)
+    def addListener(self, listener):
+        self.listeners.append(listener)
     
     """called from the canvas, when a click is detected """
     def mousePressed(self, x, y):

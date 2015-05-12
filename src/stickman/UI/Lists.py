@@ -1,76 +1,15 @@
 '''
-Created on Apr 21, 2015
+Created on May 13, 2015
 
 @author: Artem
 '''
 
-from PyQt5.Qt import QMessageBox, QWidget, QPushButton, QFrame, QTimer, QIcon, QSize
-from PyQt5.QtGui import QPainter
+from PyQt5.Qt import QMessageBox, QWidget, QPushButton, QIcon, QSize
 
-import copy
+from stickman.tools.Components import FrameMap
 from stickman.model.World import getWorld, World
-   
-"""
-    ---------------------------------------
 
-    CLASS RESPONSIBLE FOR DELEGATING THE DRAWING THE STICKMEN AND SOME CONTROLS
-    
-    ---------------------------------------
-
-"""            
-class Canvas(QFrame):
-    
-    MENU_POSITION_X = 850
-    MENU_POSITION_Y = 20
-    
-    def __init__(self, parent, tools):
-        super().__init__(parent)
-        self.tools = tools
-        self.initUI()
-        
-        self.timer = QTimer(self)       
-        self.timer.timeout.connect(self.update)
-        self.timer.start(25)
-        
-        self.stickmenu = StickmanList(self)       
-        self.stickmenu.move(Canvas.MENU_POSITION_X, Canvas.MENU_POSITION_Y)
-        
-        self.framemenu = FrameList(self)       
-        self.framemenu.move(Canvas.MENU_POSITION_X, Canvas.MENU_POSITION_Y)
-        self.framemenu.hide()
-                
-    def initUI(self):
-        self.resize(1100, 600)
-        self.setFrameStyle(QFrame.StyledPanel)
-        self.setLineWidth(1)
-        self.setStyleSheet("background-color:#FFFFFF;")    
-    
-    def showStickmenu(self):
-        self.stickmenu.show()
-        self.framemenu.hide()
-        
-    def showFramemenu(self):
-        self.stickmenu.hide()
-        self.framemenu.show()
-    
-    """ Draw and listener methods """
-    def paintEvent(self, event):
-        painter = QPainter()
-        painter.begin(self)       
-        
-        getWorld().draw(painter)            
-        
-        painter.end()      
-    
-    def mousePressEvent(self, event):
-        getWorld().mousePressed(event.x(), event.y())   
-        
-    def mouseReleaseEvent(self, event):
-        getWorld().mouseReleased(event.x(), event.y())    
-    
-    def mouseMoveEvent(self, event):
-        getWorld().mouseMoved(event.x(), event.y())  
-
+from stickman.UI.AssetManager import assets
 
 """
     ---------------------------------------
@@ -110,7 +49,7 @@ class StickmanList(QWidget):
                           }
                       """
                        
-        getWorld().addStickmanListener(self.onStickmanListener)
+        getWorld().addListener(self.onStickmanListener)
         
         """ These are the buttons to control list of names scrolling. start_index is the index which points to the 
             first entry in the button list which is currently shown at the top of the visual list. """
@@ -126,7 +65,7 @@ class StickmanList(QWidget):
                                """
         
         self.scroll_up_button = QPushButton("", self)
-        self.scroll_up_button.setIcon(QIcon("resources/up.png"))
+        self.scroll_up_button.setIcon(assets.up)
         self.scroll_up_button.setIconSize(QSize(50, 25))
         self.scroll_up_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)        
         self.scroll_up_button.move(0, StickmanList.BUTTON_HEIGHT*11 + 20)
@@ -135,7 +74,7 @@ class StickmanList(QWidget):
         self.scroll_up_button.hide()
             
         self.scroll_down_button = QPushButton("", self)
-        self.scroll_down_button.setIcon(QIcon("resources/down.png"))
+        self.scroll_down_button.setIcon(assets.down)
         self.scroll_down_button.setIconSize(QSize(50, 25))
         self.scroll_down_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)
         self.scroll_down_button.move(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT*11 + 20)
@@ -199,7 +138,7 @@ class StickmanList(QWidget):
                     if self.start_index > 0:
                         self.start_index = self.start_index - 1
                     self.rearrangeButtons()
-        else:
+        elif operation == World.ACTIVE_EVENT:
             self.rearrangeButtons()
     
     """ listener method used to switch active states of stickmen """
@@ -243,7 +182,7 @@ class FrameList(QWidget):
                               border: 2px solid black;
                           }
                       """
-             
+        
         """ These are the buttons to control list of names scrolling. start_index is the index which points to the 
             first entry in the button list which is currently shown at the top of the visual list. """
         scroll_button_style = """
@@ -258,7 +197,7 @@ class FrameList(QWidget):
                                """
         
         self.scroll_up_button = QPushButton("", self)
-        self.scroll_up_button.setIcon(QIcon("resources/up.png"))
+        self.scroll_up_button.setIcon(assets.up)
         self.scroll_up_button.setIconSize(QSize(50, 25))
         self.scroll_up_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)        
         self.scroll_up_button.move(0, StickmanList.BUTTON_HEIGHT*11 + 20)
@@ -267,7 +206,7 @@ class FrameList(QWidget):
         self.scroll_up_button.hide()
             
         self.scroll_down_button = QPushButton("", self)
-        self.scroll_down_button.setIcon(QIcon("resources/down.png"))
+        self.scroll_down_button.setIcon(assets.down)
         self.scroll_down_button.setIconSize(QSize(50, 25))
         self.scroll_down_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)
         self.scroll_down_button.move(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT*11 + 20)
@@ -277,13 +216,13 @@ class FrameList(QWidget):
         
         self.start_index = 0
     
-    """ Methods for changing the frames on the FrameList. Called from the Canvas class"""
-    def createNewFrame(self):
+    """ Methods for changing the frames on the FrameList """
+    def addNewFrame(self, frame):
         button = QPushButton("", self)
         button.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
         button.clicked.connect(self.onMousePressed)
         button.show()
-        self.buttons[button] = Frame(1.0, getWorld().stickmen, getWorld().background)
+        self.buttons[button] = frame
         if len(self.buttons) > 10:
             self.start_index = len(self.buttons) - 10
         self.rearrangeButtons()
@@ -305,9 +244,10 @@ class FrameList(QWidget):
             button.clicked.connect(self.onMousePressed)
             button.show()
             
-            index = self.buttons.index(self.buttons.active)            
-            self.buttons.insertAt(index+1, button, 
-                                  Frame(self.buttons[self.buttons.active].time, self.buttons[self.buttons.active].stickmen, self.buttons[self.buttons.active].background))
+            index = self.buttons.index(self.buttons.active)  
+            copy_frame = getWorld().getFrame()
+            copy_frame.time = self.buttons[self.buttons.active].time
+            self.buttons.insertAt(index+1, button, copy_frame)
             if len(self.buttons) > 10:
                 self.start_index = self.start_index + 1
             self.rearrangeButtons()
@@ -369,70 +309,11 @@ class FrameList(QWidget):
         #sets the world to a copy of the current contents, preserving frame from future changes
         if self.sender() == self.buttons.active:
             self.buttons.active = None   
-            getWorld().setStickmen(copy.deepcopy(getWorld().stickmen))     
+            getWorld().copyWorld()     
         #sets the world to the current frame contents          
         else:
             open_frame = self.buttons[self.sender()]
-            getWorld().setStickmen(open_frame.stickmen)
+            getWorld().setWorldFrom(open_frame)
             self.buttons.active = self.sender()        
         self.rearrangeButtons()
-
-"""
-    ---------------------------
-    CLASS FOR STORING MAPPINGS BETWEEN BUTTONS AND FRAMES. SIMPLIFIED VERSION OF DICT
-    ---------------------------
-"""
-class FrameMap():
-    
-    def __init__(self):
-        self.buttons = list()
-        self.active = None
-        self.frames = list()
-    
-    def __delitem__(self, key):
-        index = self.buttons.index(key)
-        self.buttons.remove(key)
-        del self.frames[index]
-        if self.active == key:
-            self.active = None
-        
-    def __getitem__(self, key):
-        return self.frames[self.buttons.index(key)]
-        
-    def __setitem__(self, key, value):
-        self.buttons.append(key)
-        self.frames.append(value)
-    
-    def __len__(self):
-        return len(self.buttons)
-    
-    def keys(self):
-        return self.buttons
-    
-    def index(self, key):
-        return self.buttons.index(key)
-    
-    def insertAt(self, index, key, value):
-        self.buttons.insert(index, key)
-        self.frames.insert(index, value)
-    
-    def setActive(self, key):
-        self.active = key
-        
-    def isActive(self, key):
-        if self.active == key:
-            return True
-        else:
-            return False
-        
-"""
-    ---------------------------
-    CLASS RESPONSIBLE FOR STORING FRAME DATA
-    ---------------------------
-"""
-class Frame():
-    
-    def __init__(self, time, stickmen, background):
-        self.time = time
-        self.stickmen = copy.deepcopy(stickmen)    
-        
+                    

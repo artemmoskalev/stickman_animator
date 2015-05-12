@@ -4,8 +4,10 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QLabel, QLineEdit, QWidget, QTimer
+from PyQt5.Qt import QPushButton, QLabel, QLineEdit, QWidget, QTimer, QIcon, QFrame, QDoubleSpinBox, QSize
 from PyQt5.QtCore import Qt
+
+from stickman.UI.AssetManager import assets
 
 """
     ---------------------------------------
@@ -94,6 +96,140 @@ class InputLine(QWidget):
         
     def setErrorText(self, text):
         self.error.setText(text)
+
+"""
+    ---------------------------
+    CLASS FOR STORING MAPPINGS BETWEEN BUTTONS AND FRAMES. SIMPLIFIED VERSION OF DICT
+    ---------------------------
+"""
+class FrameMap():
+    
+    def __init__(self):
+        self.buttons = list()
+        self.active = None
+        self.frames = list()
+    
+    def __delitem__(self, key):
+        index = self.buttons.index(key)
+        self.buttons.remove(key)
+        del self.frames[index]
+        if self.active == key:
+            self.active = None
+        
+    def __getitem__(self, key):
+        return self.frames[self.buttons.index(key)]
+        
+    def __setitem__(self, key, value):
+        self.buttons.append(key)
+        self.frames.append(value)
+    
+    def __len__(self):
+        return len(self.buttons)
+    
+    def keys(self):
+        return self.buttons
+    
+    def index(self, key):
+        return self.buttons.index(key)
+    
+    def insertAt(self, index, key, value):
+        self.buttons.insert(index, key)
+        self.frames.insert(index, value)
+    
+    def setActive(self, key):
+        self.active = key
+        
+    def isActive(self, key):
+        if self.active == key:
+            return True
+        else:
+            return False     
+        
+"""
+    ---------------------------
+    CLASS RESPONSIBLE FOR STORING FRAME DATA
+    ---------------------------
+"""
+class Frame():
+    
+    def __init__(self, time):
+        self.time = time
+        self.stickmen = list()
+        
+"""
+    -------------------------------
+        CLASS WHICH REPRESENTS THE INPUT LINE FOR TIME CHANGING FOR FRAMES
+    -------------------------------
+"""
+class TimeInputLine(QFrame):
+    
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.initUI()       
+    
+    def initUI(self):
+        self.resize(400, 47)
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setLineWidth(1)
+        
+        component_stylesheet = """
+                                .QPushButton {
+                                    font-weight: bold;
+                                    font-size: 13px;
+                                    background-color:#E0E0E0;
+                                }
+                                .QPushButton:pressed {
+                                    background-color:#CCCCCC;
+                                }
+                                .QDoubleSpinBox {
+                                    font-weight: bold;
+                                    font-size: 23px;
+                                }
+                                .QLabel {
+                                    font-weight: bold;
+                                    font-size: 23px;
+                                }
+                            """
+        
+        self.label = QLabel("", self)
+        self.label.resize(174, 43)
+        self.label.move(2, 2)
+        self.label.setStyleSheet(component_stylesheet)
+        self.label.setAlignment(Qt.AlignCenter)
+        self.label.show()       
+        
+        self.spinbox = QDoubleSpinBox(self)
+        self.spinbox.setRange(0.1, 10)
+        self.spinbox.setValue(0.5)
+        self.spinbox.setSingleStep(0.5)
+        self.spinbox.setDecimals(1)
+        self.spinbox.resize(100, 43)
+        self.spinbox.move(176, 2)
+        self.spinbox.setStyleSheet(component_stylesheet)
+        self.spinbox.show()
+        
+        self.enter = QPushButton("", self)
+        self.enter.setIcon(assets.enter)
+        self.enter.setIconSize(QSize(35, 35))
+        self.enter.resize(60, 43)
+        self.enter.move(278, 2)  
+        self.enter.setStyleSheet(component_stylesheet)
+        self.enter.show()
+        
+        self.cancel = QPushButton("", self)
+        self.cancel.setIcon(assets.exit)
+        self.cancel.setIconSize(QSize(35, 35))
+        self.cancel.resize(60, 43)
+        self.cancel.move(338, 2)     
+        self.cancel.setStyleSheet(component_stylesheet) 
+        self.cancel.show()
+    
+    """ listeners which control what happens on accept and on cancel button presses """
+    def addAcceptListener(self, onAcceptListener):
+        self.enter.clicked.connect(onAcceptListener)
+    def addCancelListener(self, onCancelListener):
+        self.cancel.clicked.connect(onCancelListener)   
+    
 
 """
     ---------------------------------------

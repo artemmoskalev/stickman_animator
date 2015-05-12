@@ -5,12 +5,16 @@ Created on Apr 12, 2015
 '''
 
 from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.Qt import QWidget, QPushButton, QFrame, QIcon
+from PyQt5.Qt import QWidget, QPushButton, QFrame, QTimer
+from PyQt5.QtGui import QPainter
 
-from stickman.UI.Drawable import Canvas
+from stickman.model.World import getWorld, World
+from stickman.UI.Lists import StickmanList, FrameList
 from stickman.tools.WorldTools import WorldToolsPanel
 from stickman.tools.StickmanTools import StickmanToolsPanel
 from stickman.tools.AnimationTools import AnimationToolsPanel
+
+from stickman.UI.AssetManager import assets
 
 class MainWindow(QWidget):
     
@@ -19,16 +23,16 @@ class MainWindow(QWidget):
         self.initGUI()
     
     def initGUI(self):
-        self.setMinimumSize(1200, 800)
-        self.resize(1200, 800)
+        self.setMinimumSize(World.WIDTH + 100, World.HEIGHT + 200)
+        self.resize(World.WIDTH + 100, World.HEIGHT + 200)
         self.centerScreen()
         self.setWindowTitle('Stickman Animator v1.0')
         
-        self.setWindowIcon(QIcon("resources/stickman.png"))
+        self.setWindowIcon(assets.stickman)
         
+        self.canvas = Canvas(self)  
         self.tools = ToolSet(self) 
-        self.canvas = Canvas(self, self.tools)  
-        self.control_panel = ControlPanel(self, self.tools, self.canvas)                             
+        self.control_panel = ControlPanel(self, self.tools)                       
         
         self.centerContents()
         
@@ -58,10 +62,9 @@ class MainWindow(QWidget):
 """          
 class ControlPanel(QFrame):
     
-    def __init__(self, parent, tools, canvas):
+    def __init__(self, parent, tools):
         super().__init__(parent)
         self.tools = tools
-        self.canvas = canvas
         self.initUI()
         
     def initUI(self):
@@ -111,15 +114,54 @@ class ControlPanel(QFrame):
                 child.update()
                 if self.sender().text() == "World Tools":
                     self.tools.showWorldTools()
-                    self.canvas.showStickmenu()
                 elif self.sender().text() == "Stickman Tools":
                     self.tools.showStickmanTools()
-                    self.canvas.showStickmenu()
                 else:
                     self.tools.showAnimationTools()
-                    self.canvas.showFramemenu()
                        
-                       
+"""
+    ---------------------------------------
+
+    CLASS RESPONSIBLE FOR DELEGATING THE DRAWING THE STICKMEN AND SOME CONTROLS
+    
+    ---------------------------------------
+
+"""            
+class Canvas(QFrame):   
+    
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.initUI()
+        
+        self.timer = QTimer(self)       
+        self.timer.timeout.connect(self.update)
+        self.timer.start(25)       
+                
+    def initUI(self):
+        self.resize(World.WIDTH, World.HEIGHT)
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setLineWidth(1)
+        self.setStyleSheet("background-color:#FFFFFF;")     
+    
+    """ Draw and listener methods which are dispatched to the World """
+    def paintEvent(self, event):
+        painter = QPainter()
+        painter.begin(self)       
+        
+        getWorld().draw(painter)            
+        
+        painter.end()      
+    
+    def mousePressEvent(self, event):
+        getWorld().mousePressed(event.x(), event.y())   
+        
+    def mouseReleaseEvent(self, event):
+        getWorld().mouseReleased(event.x(), event.y())    
+    
+    def mouseMoveEvent(self, event):
+        getWorld().mouseMoved(event.x(), event.y())  
+
+                   
 """
     ---------------------------------------
 
@@ -130,12 +172,23 @@ class ControlPanel(QFrame):
 """
 class ToolSet():
     
+    MENU_POSITION_X = 900
+    MENU_POSITION_Y = 120
+    
     def __init__(self, parent):
         self.world_tools = WorldToolsPanel(parent)
-        self.stickman_tools = StickmanToolsPanel(parent)
-        self.animation_tools = AnimationToolsPanel(parent)
+        self.stickman_tools = StickmanToolsPanel(parent, self)
+        self.animation_tools = AnimationToolsPanel(parent, self)
         self.hide()
         
+        self.stickmenu = StickmanList(parent)       
+        self.stickmenu.move(ToolSet.MENU_POSITION_X, ToolSet.MENU_POSITION_Y)
+        
+        self.framemenu = FrameList(parent)       
+        self.framemenu.move(ToolSet.MENU_POSITION_X, ToolSet.MENU_POSITION_Y)
+        self.framemenu.hide()
+        
+    """ methods for function panel buttons """   
     def move(self, x, y):
         self.world_tools.move(x, y)
         self.stickman_tools.move(x, y)
@@ -146,18 +199,31 @@ class ToolSet():
         self.world_tools.hideCreateDialog()
         self.world_tools.hideDeleteDialog()
         self.world_tools.show()
+        self.showStickmenu()
         
     def showStickmanTools(self):
         self.hide()
         self.stickman_tools.show()
+        self.showStickmenu()
         
     def showAnimationTools(self):
         self.hide()
         self.animation_tools.show() 
         self.animation_tools.showButtonBlock()
+        self.showFramemenu()   
         
+    #internal method. Used only from this class
     def hide(self):
         self.world_tools.hide()
         self.stickman_tools.hide()
-        self.animation_tools.hide()
+        self.animation_tools.hide()   
+    
+    """ methods for on-canvas lists """
+    def showStickmenu(self):
+        self.stickmenu.show()
+        self.framemenu.hide()
         
+    def showFramemenu(self):
+        self.stickmenu.hide()
+        self.framemenu.show()      
+    

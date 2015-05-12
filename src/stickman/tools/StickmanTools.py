@@ -7,6 +7,8 @@ Created on Apr 26, 2015
 from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize, QLineEdit, QRect
 from stickman.model.World import getWorld
 
+from stickman.UI.AssetManager import assets
+
 """
     ---------------------------------------
 
@@ -17,8 +19,9 @@ from stickman.model.World import getWorld
 """ 
 class StickmanToolsPanel(QFrame):
     
-    def __init__(self, parent):
+    def __init__(self, parent, tools):
         super().__init__(parent)
+        self.tools = tools
         self.initUI()
         
     def initUI(self):
@@ -43,7 +46,7 @@ class StickmanToolsPanel(QFrame):
                             """
                         
         self.smile_button = QPushButton('', self)
-        self.smile_button.setIcon(QIcon("resources/smile.png"))
+        self.smile_button.setIcon(assets.smile)
         self.smile_button.setIconSize(QSize(35, 35))
         self.smile_button.resize(60, 45)
         self.smile_button.move(2, 2)        
@@ -52,7 +55,7 @@ class StickmanToolsPanel(QFrame):
         self.smile_button.show()        
 
         self.sad_button = QPushButton('', self)
-        self.sad_button.setIcon(QIcon("resources/sad.png"))
+        self.sad_button.setIcon(assets.sad)
         self.sad_button.setIconSize(QSize(35, 35))
         self.sad_button.resize(60, 45)
         self.sad_button.move(62, 2)        
@@ -61,7 +64,7 @@ class StickmanToolsPanel(QFrame):
         self.sad_button.show() 
         
         self.confused_button = QPushButton('', self)
-        self.confused_button.setIcon(QIcon("resources/confused.png"))
+        self.confused_button.setIcon(assets.confused)
         self.confused_button.setIconSize(QSize(35, 35))
         self.confused_button.resize(60, 45)
         self.confused_button.move(122, 2)        
@@ -75,7 +78,7 @@ class StickmanToolsPanel(QFrame):
         self.say_text.move(215, 2)
         
         self.say_left = QPushButton('', self)
-        self.say_left.setIcon(QIcon("resources/say_left.png"))
+        self.say_left.setIcon(assets.say_left)
         self.say_left.setIconSize(QSize(35, 35))
         self.say_left.resize(60, 45)
         self.say_left.move(520, 2)        
@@ -83,7 +86,7 @@ class StickmanToolsPanel(QFrame):
         self.say_left.clicked.connect(self.sayLeft)
         
         self.say_right = QPushButton('', self)
-        self.say_right.setIcon(QIcon("resources/say_right.png"))
+        self.say_right.setIcon(assets.say_right)
         self.say_right.setIconSize(QSize(35, 35))
         self.say_right.resize(60, 45)
         self.say_right.move(580, 2)   
@@ -91,7 +94,7 @@ class StickmanToolsPanel(QFrame):
         self.say_right.clicked.connect(self.sayRight)
         
         self.say_exit = QPushButton('', self)
-        self.say_exit.setIcon(QIcon("resources/exit.png"))
+        self.say_exit.setIcon(assets.exit)
         self.say_exit.setIconSize(QSize(35, 35))
         self.say_exit.resize(60, 45)
         self.say_exit.move(640, 2)   
@@ -99,7 +102,7 @@ class StickmanToolsPanel(QFrame):
         self.say_exit.clicked.connect(self.sayClear)
         
         self.photo = QPushButton('', self)
-        self.photo.setIcon(QIcon("resources/camera.png"))
+        self.photo.setIcon(assets.camera)
         self.photo.setIconSize(QSize(35, 35))
         self.photo.resize(240, 45)
         self.photo.move(858, 2)
@@ -133,5 +136,5 @@ class StickmanToolsPanel(QFrame):
                 search.setConfused()
     
     def makePhoto(self):
-        self.parent().canvas.framemenu.createNewFrame()
+        self.tools.framemenu.addNewFrame(getWorld().getFrame())
     
