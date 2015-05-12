@@ -5,8 +5,7 @@ Created on Apr 12, 2015
 '''
 
 from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.QtGui import QIcon
-from PyQt5.Qt import QWidget, QPushButton, QFrame
+from PyQt5.Qt import QWidget, QPushButton, QFrame, QIcon
 
 from stickman.UI.Drawable import Canvas
 from stickman.tools.WorldTools import WorldToolsPanel
@@ -24,7 +23,8 @@ class MainWindow(QWidget):
         self.resize(1200, 800)
         self.centerScreen()
         self.setWindowTitle('Stickman Animator v1.0')
-        self.setWindowIcon(QIcon('resources/stickman.png'))
+        
+        self.setWindowIcon(QIcon("resources/stickman.png"))
         
         self.tools = ToolSet(self) 
         self.canvas = Canvas(self, self.tools)  

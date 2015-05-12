@@ -406,7 +406,20 @@ class World():
                 self.stickmen.remove(stickman)
                 for listener in self.listeners:
                     listener(name, World.REMOVE_EVENT)
-                    
+    
+    """ Methods necessary to set predefined stickmen to the World from the frames"""
+    def setStickmen(self, new_stickmen):
+        self.clearAll()
+        for new_stickman in new_stickmen:
+            self.stickmen.append(new_stickman)
+            for listener in self.listeners:
+                listener(new_stickman.name, World.ADD_EVENT)
+    def clearAll(self):
+        for stickman in self.stickmen.copy():
+            self.stickmen.remove(stickman)
+            for listener in self.listeners:
+                listener(stickman.name, World.REMOVE_EVENT)
+    
     def exists(self, name):
         if self.getStickman(name) == None:
             return False
@@ -414,7 +427,10 @@ class World():
             return True
     
     def getActive(self):
-        return self.stickmen[len(self.stickmen)-1]
+        if len(self.stickmen) > 0:
+            return self.stickmen[len(self.stickmen)-1]
+        else:
+            return None
     
     """ method called when one of stickmen needs to become active """
     def setActive(self, name):

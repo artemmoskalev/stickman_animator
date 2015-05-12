@@ -6,11 +6,11 @@ Created on Apr 11, 2015
 import sys
 
 from PyQt5.QtWidgets import QApplication
-from stickman.UI.MainComponents import MainWindow
 
 from stickman.model.World import getWorld
+from stickman.UI.MainComponents import MainWindow
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     app = QApplication(sys.argv)
     
     w = MainWindow()    

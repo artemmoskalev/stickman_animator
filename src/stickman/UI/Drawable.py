@@ -6,7 +6,6 @@ Created on Apr 21, 2015
 
 from PyQt5.Qt import QMessageBox, QWidget, QPushButton, QFrame, QTimer, QIcon, QSize
 from PyQt5.QtGui import QPainter
-from PyQt5.QtCore import Qt
 
 import copy
 from stickman.model.World import getWorld, World
@@ -202,7 +201,7 @@ class StickmanList(QWidget):
                     self.rearrangeButtons()
         else:
             self.rearrangeButtons()
-        
+    
     """ listener method used to switch active states of stickmen """
     def onMousePressed(self):
         getWorld().setActive(self.sender().text())
@@ -327,7 +326,10 @@ class FrameList(QWidget):
     def rearrangeButtons(self):    
         i = 0
         for button in self.buttons.keys():
-            button.setText("Frame " + str(i+1) + " : " + str("%0.1f" % (self.buttons[button].time)) + "s") #makes up for removed frames, restoring the naming order
+            if i == 0:
+                button.setText("Frame " + str(i+1) + " : " + "0.0s")
+            else:
+                button.setText("Frame " + str(i+1) + " : " + str("%0.1f" % (self.buttons[button].time)) + "s") #makes up for removed frames, restoring the naming order
                
             if i < self.start_index:
                 button.hide()
@@ -364,14 +366,14 @@ class FrameList(QWidget):
     
     """ listener method used to switch between currently present frames """
     def onMousePressed(self):
+        #sets the world to a copy of the current contents, preserving frame from future changes
         if self.sender() == self.buttons.active:
-            self.buttons.active = None            
-            getWorld().stickmen = copy.deepcopy(getWorld().stickmen)
-            getWorld().background = copy.deepcopy(getWorld().background)            
+            self.buttons.active = None   
+            getWorld().setStickmen(copy.deepcopy(getWorld().stickmen))     
+        #sets the world to the current frame contents          
         else:
             open_frame = self.buttons[self.sender()]
-            getWorld().stickmen = open_frame.stickmen
-            getWorld().background = open_frame.background
+            getWorld().setStickmen(open_frame.stickmen)
             self.buttons.active = self.sender()        
         self.rearrangeButtons()
 
@@ -432,7 +434,5 @@ class Frame():
     
     def __init__(self, time, stickmen, background):
         self.time = time
-        self.stickmen = copy.deepcopy(stickmen)
-        self.background = copy.deepcopy(background)
-    
+        self.stickmen = copy.deepcopy(stickmen)    
         

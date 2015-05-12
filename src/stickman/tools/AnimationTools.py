@@ -4,9 +4,9 @@ Created on Apr 25, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize, QRect, QMessageBox, QDoubleSpinBox,\
-    QLabel
+from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize, QDoubleSpinBox, QLabel
 from PyQt5.QtCore import Qt
+from stickman.tools.Components import Clock
 
 """
     ---------------------------------------
@@ -24,9 +24,9 @@ class AnimationToolsPanel(QFrame):
         
     def initUI(self):
         self.resize(1100, 49)
-        self.setFrameStyle(QFrame.StyledPanel)
-        self.setFrameRect(QRect(0, 0, 304, 34))
-        self.setLineWidth(1)
+        #self.setFrameStyle(QFrame.StyledPanel)
+        #self.setFrameRect(QRect(0, 0, 304, 34))
+        #self.setLineWidth(1)
         
         button_stylesheet = """
                                 .QPushButton {
@@ -38,7 +38,7 @@ class AnimationToolsPanel(QFrame):
                                     background-color:#CCCCCC;
                                 }
                             """
-                        
+        """                
         self.save_animation = QPushButton('Save Animation', self)
         self.save_animation.resize(150, 30)
         self.save_animation.move(2, 2)        
@@ -48,10 +48,15 @@ class AnimationToolsPanel(QFrame):
         self.load_animation.resize(150, 30)
         self.load_animation.move(152, 2)        
         self.load_animation.setStyleSheet(button_stylesheet)
+        """
+                 
+        self.player = AnimationPlayer(self)
+        self.player.move(0, 2)
+        self.player.show()
         
         self.time_input = TimeInputLine(self)
         self.time_input.move(698, 2)
-        self.time_input.hide()
+        self.time_input.hide()       
         
         self.time_button = QPushButton('', self)
         self.time_button.setIcon(QIcon("resources/time.png"))
@@ -101,8 +106,8 @@ class AnimationToolsPanel(QFrame):
     def timeFrameListener(self):    
         active_frame = self.parent().canvas.framemenu.getActiveFrame()
         if not active_frame == None:
-            self.showInputTime()
-
+            self.showInputTime()  
+            
 """
     -------------------------------
         CLASS WHICH REPRESENTS THE INPUT LINE FOR TIME CHANGING FOR FRAMES
@@ -182,4 +187,83 @@ class TimeInputLine(QFrame):
         self.parent().parent().canvas.framemenu.changeFrameTime(time)
         self.parent().showButtonBlock()
     
+"""
+    -------------------------------
+        CLASS WHICH PLAYS THE ANIMATION AND COMBINES FRAMES INTO ONE FILM
+    -------------------------------
+"""
+class AnimationPlayer(QFrame):
     
+    STOPPED = 0
+    PLAYING = 1
+    PAUSED = 2 
+    
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.initUI()  
+    
+    def initUI(self):
+        self.resize(260, 45)
+        self.playing = AnimationPlayer.STOPPED
+        
+        button_stylesheet = """
+                                .QPushButton {
+                                    font-weight: bold;
+                                    font-size: 13px;
+                                    background-color:#E0E0E0;
+                                }
+                                .QPushButton:pressed {
+                                    background-color:#CCCCCC;
+                                }
+                            """
+        
+        self.play_button = QPushButton('', self)
+        self.play_button.setIcon(QIcon("resources/play.png"))
+        self.play_button.setIconSize(QSize(35, 35))
+        self.play_button.resize(60, 45)
+        self.play_button.move(0, 0)        
+        self.play_button.setStyleSheet(button_stylesheet)
+        self.play_button.clicked.connect(self.onPlay)
+        self.play_button.show()        
+        
+        self.clock = Clock(self)
+        self.clock.move(60, 0)
+        self.clock.hide()
+        
+        self.stop_button = QPushButton('', self)
+        self.stop_button.setIcon(QIcon("resources/stop.png"))
+        self.stop_button.setIconSize(QSize(35, 35))
+        self.stop_button.resize(60, 45)
+        self.stop_button.move(200, 0)        
+        self.stop_button.setStyleSheet(button_stylesheet)
+        self.stop_button.clicked.connect(self.onStop)
+        self.stop_button.hide() 
+    
+    def onPlay(self):
+        if not self.playing == AnimationPlayer.PLAYING: #starting
+            self.play_button.setIcon(QIcon("resources/pause.png")) 
+            self.playing = AnimationPlayer.PLAYING
+            self.clock.startClock()
+        else:                                       #pausing
+            self.play_button.setIcon(QIcon("resources/play.png")) 
+            self.playing = AnimationPlayer.PAUSED 
+            self.clock.stopClock()
+        self.clock.show()
+        self.stop_button.show()
+                               
+    def onStop(self):
+        if not self.playing == AnimationPlayer.STOPPED:
+            self.play_button.setIcon(QIcon("resources/play.png")) 
+            self.playing = AnimationPlayer.STOPPED  
+            self.clock.hide()
+            self.clock.reset()
+            self.stop_button.hide()  
+    
+    def play(self):
+        pass            
+    def stop(self):
+        pass
+    def pause(self):
+        pass
+    def playFrom(self, frame):
+        pass

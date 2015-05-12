@@ -112,9 +112,9 @@ class Clock(QWidget):
     def initUI(self):
         clock_stylesheet = """
                                 .QLabel {
-                                    padding-top: 4px;
+                                    padding-top: 10px;
                                     font-weight: bold;
-                                    font-size: 20px;
+                                    font-size: 25px;
                                     color:#ff5e5e;
                                 }
                             """  
@@ -122,7 +122,7 @@ class Clock(QWidget):
         self.accumulator = 0
         
         self.time = QLabel("0:00.0", self)
-        self.time.resize(140, 30)
+        self.time.resize(140, 45)
         self.time.setStyleSheet(clock_stylesheet)
         self.time.setAlignment(Qt.AlignHCenter)
         
@@ -131,12 +131,14 @@ class Clock(QWidget):
     
     def startClock(self):
         self.timer.start(100)
-        print("clock started!")
         
     def stopClock(self):
         self.timer.stop()
-        print("clock stopped!")
-           
+    
+    def reset(self):
+        self.accumulator = 0
+        self.time.setText("0:00.0")
+    
     def updateTime(self):
         self.accumulator = self.accumulator + 1
         self.time.setText(str(int(self.accumulator%6000/600)) +":"+str(int(self.accumulator%600/100))+str(int(self.accumulator%100/10))+"."+str(self.accumulator%10))
