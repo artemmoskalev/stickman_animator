@@ -10,7 +10,7 @@ from stickman.tools.Components import Clock, TimeInputLine
 from stickman.model.World import getWorld
 from stickman.UI.AssetManager import assets
 
-import copy
+import math
 
 """
     ---------------------------------------
@@ -178,9 +178,10 @@ class AnimationPlayer(QFrame):
         self.old_frame = None
         self.current_frame = None  
         self.next_frame = None       
-        self.steps = 0
-        self.step_counter = 0
-                
+        self.steps = 0          #number of intermediate steps between two frames
+        self.step_counter = 0   #number of steps already taken for the interpolation
+    
+    """ called when the play button is pressed """      
     def onPlay(self):
         if not self.playing == AnimationPlayer.PLAYING: #starting
             self.play_button.setIcon(assets.pause) 
@@ -192,76 +193,87 @@ class AnimationPlayer(QFrame):
             self.clock.stopClock()
         self.clock.show()
         self.stop_button.show()
-                               
+    
+    """ called when the stop button is pressed or the animation is over """                          
     def onStop(self):
         if not self.playing == AnimationPlayer.STOPPED:
             self.play_button.setIcon(assets.play) 
             self.playing = AnimationPlayer.STOPPED  
             self.clock.hide()
+            self.clock.stopClock()
             self.clock.reset()
             self.stop_button.hide()  
     
-    """ this method loads two frames between which it is required to interpolate """
+    def play(self):
+        if self.parent().tools.framemenu.getActiveFrame() == None:
+            self.next_frame = self.parent().tools.framemenu.getFirstFrame()
+        else:
+            self.next_frame = self.parent().tools.framemenu.getActiveFrame()[1]
+        if self.next_frame != None:
+            self.reloadFrames()
+            
+    """ this method loads two frames between which it is required to interpolate.
+        It loads frames from the FrameList until there are no more pairs of frames """
     def reloadFrames(self):
         self.clock.stopClock()
         
         self.old_frame = self.next_frame        
         self.current_frame = self.old_frame.copy()
-        getWorld().setWorldFrom(self.current_frame)
-        
+        getWorld().setWorldFrom(self.current_frame)        
         self.next_frame = self.parent().tools.framemenu.getNextFrame(self.old_frame)
+        
         if self.next_frame != None:            
             self.steps = (self.next_frame.time*1000)/25
             self.step_counter = 0
             self.clock.startClock()
         else:
-            print("Animation Over!")
-            self.clock.stopClock()
+            self.onStop()
     
+    """ Methods used to perform the interpolation job as they are """
     def updateAnimation(self):
         if self.step_counter < self.steps:
-            self.step_counter = self.step_counter + 1
-            
-            step_ratio = self.step_counter/self.steps
-            
+            self.step_counter = self.step_counter + 1            
+            step_ratio = self.step_counter/self.steps            
+            # interpolate all stickmen one by one
             for stickman in self.old_frame.stickmen:                
-                new_stickman = self.next_frame.getStickman(stickman.name)
-                
+                new_stickman = self.next_frame.getStickman(stickman.name)                
+                # need to check the new stickman, because it can be removed in the next frame
                 if new_stickman != None:
-                    x_difference = new_stickman.x - stickman.x
-                    y_difference = new_stickman.y - stickman.y
-                    current_x = x_difference*step_ratio
-                    current_y = y_difference*step_ratio
-                    
-                    modified_stickman = self.current_frame.getStickman(stickman.name)
-                    modified_stickman.x = stickman.x + current_x
-                    modified_stickman.y = stickman.y + current_y
-                    
-                    i = 0
-                    while i < len(stickman.joints):
-                        old_joint = stickman.joints[i]
-                        new_joint = new_stickman.joints[i]                       
-                        
-                        if (old_joint.angle != None and new_joint.angle != None):
-                            degree_difference = new_joint.angle - old_joint.angle
-                            current_degree = degree_difference*step_ratio
-                            
-                            degree_by = old_joint.angle + current_degree - modified_stickman.joints[i].angle                        
-                            modified_stickman.joints[i].rotateBy(degree_by)
-                        i = i + 1                        
-                    
+                    self.interpolatePosition(stickman, new_stickman, step_ratio)
+                    self.interpolateJoints(stickman, new_stickman, step_ratio)        
         else:
-            self.reloadFrames()
+            self.reloadFrames()    # called when two frames have interpolated enough to swap the last approximation for the real next frame
     
-    def play(self):
-        self.next_frame = self.parent().tools.framemenu.getFirstFrame()
-        if self.next_frame != None:
-            self.reloadFrames()            
-        
-    def stop(self):
-        self.animation_timer.stop()
-        
-    def pause(self):
-        pass
-    def playFrom(self, frame):
-        pass
+    """ Interpolates between the positions of stickman body """
+    def interpolatePosition(self, old_stickman, new_stickman, ratio):
+        x_difference = new_stickman.x - old_stickman.x
+        y_difference = new_stickman.y - old_stickman.y
+        current_x = x_difference*ratio
+        current_y = y_difference*ratio
+                    
+        modified_stickman = self.current_frame.getStickman(old_stickman.name)
+        modified_stickman.x = old_stickman.x + current_x
+        modified_stickman.y = old_stickman.y + current_y
+    
+    """ Interpolates between the positions of stickman joints """
+    def interpolateJoints(self, old_stickman, new_stickman, ratio):
+        i = 0
+        while i < len(old_stickman.joints):
+            old_joint = old_stickman.joints[i]
+            new_joint = new_stickman.joints[i]                       
+                        
+            if (old_joint.attachment != None and new_joint.attachment != None):
+                # degree difference and its alternatives are used to calculate the shortes path in rotation between two points of stickman
+                degree_difference = new_joint.angle - old_joint.angle
+                degree_difference_alternative = (2*math.pi - old_joint.angle + new_joint.angle)
+                if abs(degree_difference) <= abs(degree_difference_alternative):
+                    current_degree_change = degree_difference*ratio
+                else:
+                    current_degree_change = degree_difference_alternative*ratio
+                
+                modified_stickman = self.current_frame.getStickman(old_stickman.name)
+                degree_by = old_joint.angle + current_degree_change - modified_stickman.joints[i].angle                        
+                modified_stickman.joints[i].rotateBy(degree_by)                
+            i = i + 1  
+    
+    
