@@ -4,7 +4,7 @@ Created on Apr 25, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QSize
+from PyQt5.Qt import QPushButton, QFrame, QSize, QRect
 
 from stickman.tools.Components import Clock, TimeInputLine
 from stickman.model.World import getWorld
@@ -29,6 +29,9 @@ class AnimationToolsPanel(QFrame):
         
     def initUI(self):
         self.resize(1100, 49)
+        self.setFrameStyle(QFrame.StyledPanel)
+        self.setLineWidth(1)
+        self.setFrameRect(QRect(290, 0, 404, 49))
                
         button_stylesheet = """
                                 .QPushButton {
@@ -40,24 +43,23 @@ class AnimationToolsPanel(QFrame):
                                     background-color:#CCCCCC;
                                 }
                             """
-        """                
+                       
         self.save_animation = QPushButton('Save Animation', self)
-        self.save_animation.resize(150, 30)
-        self.save_animation.move(2, 2)        
+        self.save_animation.resize(200, 45)
+        self.save_animation.move(292, 2)        
         self.save_animation.setStyleSheet(button_stylesheet)
        
         self.load_animation = QPushButton('Load Animation', self)
-        self.load_animation.resize(150, 30)
-        self.load_animation.move(152, 2)        
+        self.load_animation.resize(200, 45)
+        self.load_animation.move(492, 2)        
         self.load_animation.setStyleSheet(button_stylesheet)
-        """
-                 
+          
         self.player = AnimationPlayer(self)
         self.player.move(0, 2)
         self.player.show()
         
         self.time_input = TimeInputLine(self)
-        self.time_input.move(698, 2)
+        self.time_input.move(698, 1)
         self.time_input.addAcceptListener(self.onAcceptListener)
         self.time_input.addCancelListener(self.onCancelListener)
         self.time_input.hide()       
@@ -185,10 +187,14 @@ class AnimationPlayer(QFrame):
     def onPlay(self):
         self.clock.show()
         self.stop_button.show()
-        if not self.playing == AnimationPlayer.PLAYING: #starting
+        if self.playing == AnimationPlayer.STOPPED: #starting
             self.play_button.setIcon(assets.pause) 
             self.playing = AnimationPlayer.PLAYING                        
             self.play()
+        elif self.playing == AnimationPlayer.PAUSED:
+            self.play_button.setIcon(assets.pause) 
+            self.playing = AnimationPlayer.PLAYING                        
+            self.clock.startClock()
         else:                                       #pausing
             self.play_button.setIcon(assets.play) 
             self.playing = AnimationPlayer.PAUSED 
@@ -231,6 +237,7 @@ class AnimationPlayer(QFrame):
     
     """ Methods used to perform the interpolation job as they are """
     def updateAnimation(self):
+        print(str(self.step_counter))
         if self.step_counter < self.steps:
             self.step_counter = self.step_counter + 1            
             step_ratio = self.step_counter/self.steps            
