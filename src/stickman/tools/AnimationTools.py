@@ -183,6 +183,8 @@ class AnimationPlayer(QFrame):
     
     """ called when the play button is pressed """      
     def onPlay(self):
+        self.clock.show()
+        self.stop_button.show()
         if not self.playing == AnimationPlayer.PLAYING: #starting
             self.play_button.setIcon(assets.pause) 
             self.playing = AnimationPlayer.PLAYING                        
@@ -190,18 +192,16 @@ class AnimationPlayer(QFrame):
         else:                                       #pausing
             self.play_button.setIcon(assets.play) 
             self.playing = AnimationPlayer.PAUSED 
-            self.clock.stopClock()
-        self.clock.show()
-        self.stop_button.show()
+            self.clock.stopClock()        
     
     """ called when the stop button is pressed or the animation is over """                          
     def onStop(self):
         if not self.playing == AnimationPlayer.STOPPED:
             self.play_button.setIcon(assets.play) 
-            self.playing = AnimationPlayer.STOPPED  
-            self.clock.hide()
+            self.playing = AnimationPlayer.STOPPED              
             self.clock.stopClock()
             self.clock.reset()
+            self.clock.hide()
             self.stop_button.hide()  
     
     def play(self):
