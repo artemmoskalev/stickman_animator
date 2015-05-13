@@ -4,7 +4,7 @@ Created on May 13, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QMessageBox, QWidget, QPushButton, QIcon, QSize
+from PyQt5.Qt import QMessageBox, QWidget, QPushButton, QSize
 
 from stickman.tools.Components import FrameMap
 from stickman.model.World import getWorld, World
@@ -256,10 +256,22 @@ class FrameList(QWidget):
         if not self.buttons.active == None:
             self.buttons[self.buttons.active].time = time
             self.rearrangeButtons()
-                
-    def getActiveFrame(self):
-        return self.buttons.active
     
+    """ Convenience methods for frame retrieval used by the animation player and some buttons """            
+    def getActiveFrame(self):
+        if not self.buttons.active == None:
+            return (self.buttons.active, self.buttons[self.buttons.active])
+        else:
+            return None    
+    def getFirstFrame(self):
+        first_button = self.buttons.first()
+        if not first_button == None:
+            return self.buttons[first_button]
+        else:
+            return None    
+    def getNextFrame(self, frame):
+        return self.buttons.nextValue(frame)
+        
     """ fixes button positions on the stickmen list after button addition or removal. 
         activates/deactivates buttons depending on which stickman is active.
         In case there are more than 10 buttons, shows scrolling buttons. Controls which buttons are hidden and which are shown. """            

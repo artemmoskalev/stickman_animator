@@ -4,10 +4,11 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QLabel, QLineEdit, QWidget, QTimer, QIcon, QFrame, QDoubleSpinBox, QSize
+from PyQt5.Qt import QPushButton, QLabel, QLineEdit, QWidget, QTimer, QFrame, QDoubleSpinBox, QSize
 from PyQt5.QtCore import Qt
 
 from stickman.UI.AssetManager import assets
+import copy
 
 """
     ---------------------------------------
@@ -126,6 +127,12 @@ class FrameMap():
     def __len__(self):
         return len(self.buttons)
     
+    def first(self):
+        if len(self.buttons) > 0:
+            return self.buttons[0]
+        else: 
+            return None
+        
     def keys(self):
         return self.buttons
     
@@ -144,7 +151,14 @@ class FrameMap():
             return True
         else:
             return False     
-        
+    
+    def nextValue(self, value):
+        index = self.frames.index(value)
+        if not index + 1 > len(self.frames)-1:
+            return self.frames[index+1]
+        else:
+            return None
+    
 """
     ---------------------------
     CLASS RESPONSIBLE FOR STORING FRAME DATA
@@ -155,6 +169,17 @@ class Frame():
     def __init__(self, time):
         self.time = time
         self.stickmen = list()
+        
+    def copy(self):
+        copy_frame = Frame(self.time)
+        copy_frame.stickmen = copy.deepcopy(self.stickmen)
+        return copy_frame
+    
+    def getStickman(self, name):
+        for stickman in self.stickmen:
+            if stickman.name == name:
+                return stickman
+        return None
         
 """
     -------------------------------
@@ -264,9 +289,10 @@ class Clock(QWidget):
         
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.updateTime)        
-    
+        self.timer.task = None
+        
     def startClock(self):
-        self.timer.start(100)
+        self.timer.start(25)
         
     def stopClock(self):
         self.timer.stop()
@@ -276,6 +302,8 @@ class Clock(QWidget):
         self.time.setText("0:00.0")
     
     def updateTime(self):
-        self.accumulator = self.accumulator + 1
-        self.time.setText(str(int(self.accumulator%6000/600)) +":"+str(int(self.accumulator%600/100))+str(int(self.accumulator%100/10))+"."+str(self.accumulator%10))
+        self.accumulator = self.accumulator + 0.25
+        self.time.setText(str(int(self.accumulator%6000/600)) +":"+str(int(self.accumulator%600/100))+str(int(self.accumulator%100/10))+"."+str(int(self.accumulator)%10))
+        if self.task != None:
+            self.task()
                

@@ -4,7 +4,7 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPen, QRectF, QPixmap, QFont, QFontMetrics, QImage
+from PyQt5.Qt import QPen, QRectF, QFont, QFontMetrics, QImage
 from PyQt5.QtGui import QBrush
 from PyQt5.QtCore import Qt, QLine
 
@@ -35,25 +35,7 @@ class Stickman():
         self.head = Head(self)
         self.words = Words(self)
         self.spine = Spine(self)
-        self.joints = list()
-        
-        """ CREATING LEFT ARM """
-        left_arm_attachment = Joint(self, False, 0, Head.HEAD_RADIUS + Spine.NECK_LENGTH)        
-        left_elbow = left_arm_attachment.createNextJoint(True, Stickman.ARM_LENGTH, 55)        
-        left_hand = left_elbow.createNextJoint(True, Stickman.HAND_LENGTH, 135)
-        
-        self.joints.append(left_arm_attachment)
-        self.joints.append(left_elbow)
-        self.joints.append(left_hand)
-        
-        """ CREATING RIGHT ARM """
-        right_arm_attachment = Joint(self, False, 0, Head.HEAD_RADIUS + Spine.NECK_LENGTH)        
-        right_elbow = right_arm_attachment.createNextJoint(True, Stickman.ARM_LENGTH, -45)                
-        right_hand = right_elbow.createNextJoint(True, Stickman.HAND_LENGTH, -35)
-        
-        self.joints.append(right_arm_attachment)
-        self.joints.append(right_elbow)
-        self.joints.append(right_hand)
+        self.joints = list()       
         
         """ CREATING LEFT LEG """
         left_leg_attachment = Joint(self, False, 0, Head.HEAD_RADIUS + Spine.SPINE_LENGTH)        
@@ -77,6 +59,24 @@ class Stickman():
         self.joints.append(right_foot)
         self.joints.append(right_toe)
         
+        """ CREATING LEFT ARM """
+        left_arm_attachment = Joint(self, False, 0, Head.HEAD_RADIUS + Spine.NECK_LENGTH)        
+        left_elbow = left_arm_attachment.createNextJoint(True, Stickman.ARM_LENGTH, 55)        
+        left_hand = left_elbow.createNextJoint(True, Stickman.HAND_LENGTH, 135)
+        
+        self.joints.append(left_arm_attachment)
+        self.joints.append(left_elbow)
+        self.joints.append(left_hand)
+        
+        """ CREATING RIGHT ARM """
+        right_arm_attachment = Joint(self, False, 0, Head.HEAD_RADIUS + Spine.NECK_LENGTH)        
+        right_elbow = right_arm_attachment.createNextJoint(True, Stickman.ARM_LENGTH, -45)                
+        right_hand = right_elbow.createNextJoint(True, Stickman.HAND_LENGTH, -35)
+        
+        self.joints.append(right_arm_attachment)
+        self.joints.append(right_elbow)
+        self.joints.append(right_hand)
+        
     def setHappy(self):
         self.head.expression.setExpression(Expression.SMILE)
     def setSad(self):
@@ -94,15 +94,13 @@ class Stickman():
     def draw(self, painter):
         self.head.draw(painter)
         self.spine.draw(painter)
-        
-        #first draw black limbs so that they are hidden under white joints
+             
+        # draw joints themselves
+        # only the root nodes in the hierarchy need to be called. Thats why only draw all method is called
+        # Dependent nodes` paint method will be called revursively itself
         for joint in self.joints:
-            if joint.next != None:            
-                painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))        
-                painter.drawLine(QLine(self.x + joint.next.x, self.y + joint.next.y, self.x + joint.x, self.y + joint.y))
-        # next draw joints themselves, so that they are drawn over black limbs
-        for joint in self.joints:
-            joint.draw(painter)      
+            if joint.attachment == None:
+                joint.draw(painter)      
         
         self.words.draw(painter)
                 
@@ -300,8 +298,12 @@ class Joint():
         self.attachment = joint
         self.length = length
         self.angle = degree
-   
-    def draw(self, painter):        
+    
+    def draw(self, painter):   
+        #first draw the limb to hide it under the joint
+        if self.next != None:            
+            painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))        
+            painter.drawLine(QLine(self.body.x + self.next.x, self.body.y + self.next.y, self.body.x + self.x, self.body.y + self.y))     
         if self.isActive:
             center_x = self.body.x + self.x
             center_y = self.body.y + self.y
@@ -310,7 +312,9 @@ class Joint():
                                    Joint.JOINT_RADIUS*2, Joint.JOINT_RADIUS*2), 0, 16*360)
             painter.setBrush(QBrush(Qt.white, Qt.SolidPattern))  
             painter.drawEllipse(QRectF(center_x - Joint.JOINT_RADIUS, center_y - Joint.JOINT_RADIUS, 
-                                       Joint.JOINT_RADIUS*2, Joint.JOINT_RADIUS*2))            
+                                       Joint.JOINT_RADIUS*2, Joint.JOINT_RADIUS*2))   
+        if self.next != None:
+            self.next.draw(painter)
     
     """ Methods which move the joint when dragged. Rotation method moves all dependent joints recursively. """
     def moveTo(self, x, y): 
@@ -330,7 +334,7 @@ class Joint():
         
         if self.next != None:
             self.next.rotateBy(by_degree_rad)
-        
+                    
     """ called from the stickman limb class when click is detected """
     def mousePressed(self, event):
         if not event.isProcessed:
@@ -339,8 +343,6 @@ class Joint():
                 if distance <= Joint.JOINT_RADIUS:
                     getWorld().setActive(self.body.name)
                     self.dragged = True
-                    self.body.joints.remove(self)
-                    self.body.joints.append(self)
                     event.process()
         
     def mouseReleased(self, event):

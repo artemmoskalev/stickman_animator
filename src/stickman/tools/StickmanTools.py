@@ -4,7 +4,7 @@ Created on Apr 26, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize, QLineEdit, QRect
+from PyQt5.Qt import QPushButton, QFrame, QSize, QLineEdit, QRect
 from stickman.model.World import getWorld
 
 from stickman.UI.AssetManager import assets

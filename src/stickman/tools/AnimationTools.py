@@ -4,11 +4,13 @@ Created on Apr 25, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QIcon, QSize
+from PyQt5.Qt import QPushButton, QFrame, QSize
 
 from stickman.tools.Components import Clock, TimeInputLine
-
+from stickman.model.World import getWorld
 from stickman.UI.AssetManager import assets
+
+import copy
 
 """
     ---------------------------------------
@@ -97,7 +99,7 @@ class AnimationToolsPanel(QFrame):
         self.delete_button.hide()
         self.time_button.hide()
         self.copy_button.hide()  
-        self.time_input.label.setText(self.tools.framemenu.getActiveFrame().text().split(":")[0] + ":")
+        self.time_input.label.setText(self.tools.framemenu.getActiveFrame()[0].text().split(":")[0] + ":")
         self.time_input.show()
     
     
@@ -132,7 +134,7 @@ class AnimationPlayer(QFrame):
     PAUSED = 2 
     
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent)           
         self.initUI()  
     
     def initUI(self):
@@ -161,6 +163,7 @@ class AnimationPlayer(QFrame):
         
         self.clock = Clock(self)
         self.clock.move(60, 0)
+        self.clock.task = self.updateAnimation
         self.clock.hide()
         
         self.stop_button = QPushButton('', self)
@@ -171,12 +174,18 @@ class AnimationPlayer(QFrame):
         self.stop_button.setStyleSheet(button_stylesheet)
         self.stop_button.clicked.connect(self.onStop)
         self.stop_button.hide() 
-    
+        
+        self.old_frame = None
+        self.current_frame = None  
+        self.next_frame = None       
+        self.steps = 0
+        self.step_counter = 0
+                
     def onPlay(self):
         if not self.playing == AnimationPlayer.PLAYING: #starting
             self.play_button.setIcon(assets.pause) 
-            self.playing = AnimationPlayer.PLAYING
-            self.clock.startClock()
+            self.playing = AnimationPlayer.PLAYING                        
+            self.play()
         else:                                       #pausing
             self.play_button.setIcon(assets.play) 
             self.playing = AnimationPlayer.PAUSED 
@@ -192,10 +201,66 @@ class AnimationPlayer(QFrame):
             self.clock.reset()
             self.stop_button.hide()  
     
+    """ this method loads two frames between which it is required to interpolate """
+    def reloadFrames(self):
+        self.clock.stopClock()
+        
+        self.old_frame = self.next_frame        
+        self.current_frame = self.old_frame.copy()
+        getWorld().setWorldFrom(self.current_frame)
+        
+        self.next_frame = self.parent().tools.framemenu.getNextFrame(self.old_frame)
+        if self.next_frame != None:            
+            self.steps = (self.next_frame.time*1000)/25
+            self.step_counter = 0
+            self.clock.startClock()
+        else:
+            print("Animation Over!")
+            self.clock.stopClock()
+    
+    def updateAnimation(self):
+        if self.step_counter < self.steps:
+            self.step_counter = self.step_counter + 1
+            
+            step_ratio = self.step_counter/self.steps
+            
+            for stickman in self.old_frame.stickmen:                
+                new_stickman = self.next_frame.getStickman(stickman.name)
+                
+                if new_stickman != None:
+                    x_difference = new_stickman.x - stickman.x
+                    y_difference = new_stickman.y - stickman.y
+                    current_x = x_difference*step_ratio
+                    current_y = y_difference*step_ratio
+                    
+                    modified_stickman = self.current_frame.getStickman(stickman.name)
+                    modified_stickman.x = stickman.x + current_x
+                    modified_stickman.y = stickman.y + current_y
+                    
+                    i = 0
+                    while i < len(stickman.joints):
+                        old_joint = stickman.joints[i]
+                        new_joint = new_stickman.joints[i]                       
+                        
+                        if (old_joint.angle != None and new_joint.angle != None):
+                            degree_difference = new_joint.angle - old_joint.angle
+                            current_degree = degree_difference*step_ratio
+                            
+                            degree_by = old_joint.angle + current_degree - modified_stickman.joints[i].angle                        
+                            modified_stickman.joints[i].rotateBy(degree_by)
+                        i = i + 1                        
+                    
+        else:
+            self.reloadFrames()
+    
     def play(self):
-        pass            
+        self.next_frame = self.parent().tools.framemenu.getFirstFrame()
+        if self.next_frame != None:
+            self.reloadFrames()            
+        
     def stop(self):
-        pass
+        self.animation_timer.stop()
+        
     def pause(self):
         pass
     def playFrom(self, frame):
