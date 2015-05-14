@@ -90,7 +90,7 @@ class XML():
         return frames
     
     def decodeFrame(self, root):
-        frame = Frame(int(root.find("time").text))
+        frame = Frame(float(root.find("time").text))
         
         stickmen = list()
         for stickman_element in root.iter("stickman"):
@@ -101,8 +101,8 @@ class XML():
     
     def decodeStickman(self, root):
         name = root.find("name").text
-        x = int(root.find("x").text)
-        y = int(root.find("y").text)
+        x = float(root.find("x").text)
+        y = float(root.find("y").text)
         
         stickman = Stickman(name, x, y)
         
