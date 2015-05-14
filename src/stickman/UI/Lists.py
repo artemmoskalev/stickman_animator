@@ -237,6 +237,14 @@ class FrameList(QWidget):
                     self.start_index = self.start_index-1
         self.rearrangeButtons()
     
+    def removeAllFrames(self):
+        self.buttons.active = None
+        for button in self.buttons.keys().copy():
+            button.setParent(None)
+            del self.buttons[button]
+        self.start_index = 0
+        self.rearrangeButtons()
+    
     def copyFrame(self):
         if not self.buttons.active == None:            
             button = QPushButton("", self)
@@ -272,6 +280,9 @@ class FrameList(QWidget):
     def getNextFrame(self, frame):
         return self.buttons.nextValue(frame)
         
+    def getAllFrames(self):
+        return self.buttons.frames        
+    
     """ fixes button positions on the stickmen list after button addition or removal. 
         activates/deactivates buttons depending on which stickman is active.
         In case there are more than 10 buttons, shows scrolling buttons. Controls which buttons are hidden and which are shown. """            

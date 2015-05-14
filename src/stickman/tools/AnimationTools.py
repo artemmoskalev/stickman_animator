@@ -4,11 +4,12 @@ Created on Apr 25, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QSize, QRect
+from PyQt5.Qt import QPushButton, QFrame, QSize, QRect, QFileDialog
 
 from stickman.tools.Components import Clock, TimeInputLine
 from stickman.model.World import getWorld
 from stickman.UI.AssetManager import assets
+from stickman.tools.XMLAdapter import XML
 
 import math
 
@@ -48,12 +49,14 @@ class AnimationToolsPanel(QFrame):
         self.save_animation.resize(200, 45)
         self.save_animation.move(292, 2)        
         self.save_animation.setStyleSheet(button_stylesheet)
+        self.save_animation.clicked.connect(self.saveXML)
        
         self.load_animation = QPushButton('Load Animation', self)
         self.load_animation.resize(200, 45)
         self.load_animation.move(492, 2)        
         self.load_animation.setStyleSheet(button_stylesheet)
-          
+        self.load_animation.clicked.connect(self.fromXML)
+        
         self.player = AnimationPlayer(self)
         self.player.move(0, 2)
         self.player.show()
@@ -123,7 +126,24 @@ class AnimationToolsPanel(QFrame):
         if not active_frame == None:
             self.showInputTime()  
        
-
+    """ listeners for XML binding and parsing """
+    def saveXML(self):
+        if len(self.tools.framemenu.getAllFrames()) > 1:
+            result = QFileDialog.getSaveFileName(self, 'Choose the destination for the animation file!', '.', 'Animation File (*.armo)')
+            if result[0] != "":
+                XML().toXML(self.tools.framemenu.getAllFrames(), result[0])
+        
+    def fromXML(self):
+        file = QFileDialog.getOpenFileName(self, "Load Animation", ".", "Animation Files (*.armo)")
+        if file[0] != "":
+            frames = XML().fromXML(self.tools.framemenu.getAllFrames(), file[0])
+            
+            self.tools.framemenu.removeAllFrames()
+            for frame in frames:
+                self.tools.framemenu.addNewFrame(frame)
+            if len(frames) > 0:
+                getWorld().setWorldFrom(frames[0])
+        
 """
     -------------------------------
         CLASS WHICH PLAYS THE ANIMATION AND COMBINES FRAMES INTO ONE FILM
@@ -217,6 +237,8 @@ class AnimationPlayer(QFrame):
             self.next_frame = self.parent().tools.framemenu.getActiveFrame()[1]
         if self.next_frame != None:
             self.reloadFrames()
+        else:
+            self.onStop()
             
     """ this method loads two frames between which it is required to interpolate.
         It loads frames from the FrameList until there are no more pairs of frames """
@@ -237,7 +259,6 @@ class AnimationPlayer(QFrame):
     
     """ Methods used to perform the interpolation job as they are """
     def updateAnimation(self):
-        print(str(self.step_counter))
         if self.step_counter < self.steps:
             self.step_counter = self.step_counter + 1            
             step_ratio = self.step_counter/self.steps            
