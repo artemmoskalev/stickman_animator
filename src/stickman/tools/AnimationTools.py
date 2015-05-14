@@ -107,6 +107,19 @@ class AnimationToolsPanel(QFrame):
         self.time_input.label.setText(self.tools.framemenu.getActiveFrame()[0].text().split(":")[0] + ":")
         self.time_input.show()
     
+    def hideAll(self):
+        self.delete_button.hide()
+        self.time_button.hide()
+        self.copy_button.hide()
+        self.time_input.hide()
+        self.save_animation.hide()
+        self.load_animation.hide()
+        self.setFrameShape(QFrame.NoFrame)
+    def showAll(self):
+        self.showButtonBlock()
+        self.save_animation.show()
+        self.load_animation.show()
+        self.setFrameShape(QFrame.StyledPanel)
     
     """ time change listeners, which are called by the TimeInput component """
     def onCancelListener(self):
@@ -204,7 +217,8 @@ class AnimationPlayer(QFrame):
         self.step_counter = 0   #number of steps already taken for the interpolation
     
     """ called when the play button is pressed """      
-    def onPlay(self):
+    def onPlay(self):        
+        self.disable()
         self.clock.show()
         self.stop_button.show()
         if self.playing == AnimationPlayer.STOPPED: #starting
@@ -219,10 +233,11 @@ class AnimationPlayer(QFrame):
             self.play_button.setIcon(assets.play) 
             self.playing = AnimationPlayer.PAUSED 
             self.clock.stopClock()        
-    
+            
     """ called when the stop button is pressed or the animation is over """                          
     def onStop(self):
         if not self.playing == AnimationPlayer.STOPPED:
+            self.enable()
             self.play_button.setIcon(assets.play) 
             self.playing = AnimationPlayer.STOPPED              
             self.clock.stopClock()
@@ -230,6 +245,20 @@ class AnimationPlayer(QFrame):
             self.clock.hide()
             self.stop_button.hide()  
     
+    """ Methods which enable and disable screen controls while the animation plays """
+    def disable(self):
+        self.parent().parent().control_panel.setEnabled(False)
+        self.parent().parent().canvas.setEnabled(False)
+        self.parent().tools.framemenu.hide()
+        self.parent().hideAll()
+        
+    def enable(self):
+        self.parent().parent().control_panel.setEnabled(True)
+        self.parent().parent().canvas.setEnabled(True)
+        self.parent().tools.framemenu.show()
+        self.parent().showAll()
+    
+    """ Entry method for the animation """
     def play(self):
         if self.parent().tools.framemenu.getActiveFrame() == None:
             self.next_frame = self.parent().tools.framemenu.getFirstFrame()

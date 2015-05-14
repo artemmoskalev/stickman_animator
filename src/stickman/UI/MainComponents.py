@@ -16,7 +16,7 @@ from stickman.tools.AnimationTools import AnimationToolsPanel
 
 from stickman.UI.AssetManager import assets
 
-class MainWindow(QWidget):
+class MainWindow(QWidget):    
     
     def __init__(self):
         super().__init__()
@@ -66,7 +66,7 @@ class ControlPanel(QFrame):
         super().__init__(parent)
         self.tools = tools
         self.initUI()
-        
+
     def initUI(self):
         self.resize(454, 34)
         self.setFrameStyle(QFrame.StyledPanel)
@@ -136,7 +136,7 @@ class Canvas(QFrame):
         self.timer = QTimer(self)       
         self.timer.timeout.connect(self.update)
         self.timer.start(25)       
-                
+        
     def initUI(self):
         self.resize(World.WIDTH, World.HEIGHT)
         self.setFrameStyle(QFrame.StyledPanel)
@@ -171,9 +171,9 @@ class Canvas(QFrame):
 
 """
 class ToolSet():
-    
-    MENU_POSITION_X = 900
-    MENU_POSITION_Y = 120
+        
+    MENU_POSITION_X = 845
+    MENU_POSITION_Y = -610      
     
     def __init__(self, parent):
         self.world_tools = WorldToolsPanel(parent)
@@ -181,11 +181,8 @@ class ToolSet():
         self.animation_tools = AnimationToolsPanel(parent, self)
         self.hide()
         
-        self.stickmenu = StickmanList(parent)       
-        self.stickmenu.move(ToolSet.MENU_POSITION_X, ToolSet.MENU_POSITION_Y)
-        
-        self.framemenu = FrameList(parent)       
-        self.framemenu.move(ToolSet.MENU_POSITION_X, ToolSet.MENU_POSITION_Y)
+        self.stickmenu = StickmanList(parent)
+        self.framemenu = FrameList(parent)   
         self.framemenu.hide()
         
     """ methods for function panel buttons """   
@@ -193,7 +190,9 @@ class ToolSet():
         self.world_tools.move(x, y)
         self.stickman_tools.move(x, y)
         self.animation_tools.move(x, y)
-                
+        self.stickmenu.move(x + ToolSet.MENU_POSITION_X, y + ToolSet.MENU_POSITION_Y)
+        self.framemenu.move(x + ToolSet.MENU_POSITION_X, y + ToolSet.MENU_POSITION_Y)                    
+                                    
     def showWorldTools(self):
         self.hide()                
         self.world_tools.hideCreateDialog()
@@ -226,4 +225,5 @@ class ToolSet():
     def showFramemenu(self):
         self.stickmenu.hide()
         self.framemenu.show()      
+        
     
