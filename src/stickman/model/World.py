@@ -28,8 +28,10 @@ class Stickman():
         self.initBody()
         
     def moveTo(self, x, y):
-        self.x = x
-        self.y = y
+        if x > - Head.HEAD_RADIUS*3/4 and x < World.WIDTH + Head.HEAD_RADIUS*3/4:
+            self.x = x
+        if y > - Head.HEAD_RADIUS*3/4 and y < World.HEIGHT + Head.HEAD_RADIUS*3/4:
+            self.y = y
     
     def initBody(self):
         self.head = Head(self)

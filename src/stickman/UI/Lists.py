@@ -145,6 +145,16 @@ class StickmanList(QWidget):
     def onMousePressed(self):
         getWorld().setActive(self.sender().text())
     
+    """ these listeners are required to pass mouse events to the canvas in case there are any, making this list transparent as a result """
+    def mousePressEvent(self, event):
+        getWorld().mousePressed(event.x() + 845, event.y()+20)   
+        
+    def mouseReleaseEvent(self, event):
+        getWorld().mouseReleased(event.x() + 845, event.y()) 
+    
+    def mouseMoveEvent(self, event):
+        getWorld().mouseMoved(event.x() + 845, event.y()) 
+    
 """
     ---------------------------------------
 
@@ -339,4 +349,14 @@ class FrameList(QWidget):
             getWorld().setWorldFrom(open_frame)
             self.buttons.active = self.sender()        
         self.rearrangeButtons()
-                    
+    
+    """ these listeners are required to pass mouse events to the canvas in case there are any, making this list transparent as a result """
+    def mousePressEvent(self, event):
+        getWorld().mousePressed(event.x() + 845, event.y()+20)   
+        
+    def mouseReleaseEvent(self, event):
+        getWorld().mouseReleased(event.x() + 845, event.y()) 
+    
+    def mouseMoveEvent(self, event):
+        getWorld().mouseMoved(event.x() + 845, event.y())   
+            

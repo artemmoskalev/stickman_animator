@@ -4,7 +4,7 @@ Created on Apr 25, 2015
 @author: Artem
 '''
 
-from PyQt5.Qt import QPushButton, QFrame, QSize, QRect, QFileDialog
+from PyQt5.Qt import QPushButton, QFrame, QSize, QRect, QFileDialog, QMessageBox
 
 from stickman.tools.Components import Clock, TimeInputLine
 from stickman.model.World import getWorld
@@ -145,6 +145,8 @@ class AnimationToolsPanel(QFrame):
             result = QFileDialog.getSaveFileName(self, 'Choose the destination for the animation file!', '.', 'Animation File (*.armo)')
             if result[0] != "":
                 XML().toXML(self.tools.framemenu.getAllFrames(), result[0])
+        else:
+            QMessageBox.information(self, "Stickman Message", "You need at least 2 frames to save the animation!")
         
     def fromXML(self):
         file = QFileDialog.getOpenFileName(self, "Load Animation", ".", "Animation Files (*.armo)")
