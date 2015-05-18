@@ -79,7 +79,7 @@ class XML():
         
     
     """ methods for creating frames from XML """
-    def fromXML(self, xml, file):
+    def fromXML(self, file):
         tree = ET.parse(file)
         animation = tree.getroot()
         

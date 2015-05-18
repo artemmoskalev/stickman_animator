@@ -5,8 +5,9 @@ Created on Apr 12, 2015
 '''
 
 from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.Qt import QWidget, QPushButton, QFrame, QTimer
+from PyQt5.Qt import QWidget, QPushButton, QLabel, QFrame, QTimer
 from PyQt5.QtGui import QPainter
+from PyQt5.QtCore import Qt
 
 from stickman.model.World import getWorld, World
 from stickman.UI.Lists import StickmanList, FrameList
@@ -143,6 +144,22 @@ class Canvas(QFrame):
         self.setLineWidth(1)
         self.setStyleSheet("background-color:#FFFFFF;")     
     
+        label_stylesheet = """
+                                .QLabel {
+                                    font-weight: bold;
+                                    font-size: 21px;
+                                    color: red;
+                                    border: 1px solid red;
+                                }
+                            """
+    
+        self.message = QLabel("FRAME MODIFIED!", self)
+        self.message.setStyleSheet(label_stylesheet)
+        self.message.setAlignment(Qt.AlignCenter)
+        self.message.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
+        self.message.move(World.WIDTH-StickmanList.BUTTON_WIDTH-15, World.HEIGHT-StickmanList.BUTTON_HEIGHT*1.5)
+        self.message.hide()
+    
     """ Draw and listener methods which are dispatched to the World """
     def paintEvent(self, event):
         painter = QPainter()
@@ -151,6 +168,11 @@ class Canvas(QFrame):
         getWorld().draw(painter)            
         
         painter.end()      
+    
+    def showMessage(self):
+        self.message.show()
+    def hideMessage(self):
+        self.message.hide()
     
     def mousePressEvent(self, event):
         getWorld().mousePressed(event.x(), event.y())   

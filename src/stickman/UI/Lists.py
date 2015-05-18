@@ -21,12 +21,19 @@ from stickman.UI.AssetManager import assets
 """   
 class StickmanList(QWidget):
     
+    MARGIN_TOP = 20
+    
     BUTTON_WIDTH = 240
     BUTTON_HEIGHT = 40
+    BUTTON_GAP = 5
+    MAX_LENGTH = 10
+    
+    ICON_SIZE = 25
+    EVENT_SHIFT_X = 845
     
     def __init__(self, parent):
         super().__init__(parent)
-        self.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT*12 + 20)
+        self.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT*(StickmanList.MAX_LENGTH + 2) + StickmanList.MARGIN_TOP)
         self.initUI()        
                 
     def initUI(self):
@@ -66,18 +73,18 @@ class StickmanList(QWidget):
         
         self.scroll_up_button = QPushButton("", self)
         self.scroll_up_button.setIcon(assets.up)
-        self.scroll_up_button.setIconSize(QSize(50, 25))
+        self.scroll_up_button.setIconSize(QSize(StickmanList.ICON_SIZE*2, StickmanList.ICON_SIZE))
         self.scroll_up_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)        
-        self.scroll_up_button.move(0, StickmanList.BUTTON_HEIGHT*11 + 20)
+        self.scroll_up_button.move(0, StickmanList.BUTTON_HEIGHT*(StickmanList.MAX_LENGTH + 1) + StickmanList.MARGIN_TOP)
         self.scroll_up_button.setStyleSheet(scroll_button_style)
         self.scroll_up_button.clicked.connect(self.scrollListUp)
         self.scroll_up_button.hide()
             
         self.scroll_down_button = QPushButton("", self)
         self.scroll_down_button.setIcon(assets.down)
-        self.scroll_down_button.setIconSize(QSize(50, 25))
+        self.scroll_down_button.setIconSize(QSize(StickmanList.ICON_SIZE*2, StickmanList.ICON_SIZE))
         self.scroll_down_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)
-        self.scroll_down_button.move(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT*11 + 20)
+        self.scroll_down_button.move(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT*(StickmanList.MAX_LENGTH + 1) + StickmanList.MARGIN_TOP)
         self.scroll_down_button.setStyleSheet(scroll_button_style)
         self.scroll_down_button.clicked.connect(self.scrollListDown)
         self.scroll_down_button.hide()
@@ -92,18 +99,18 @@ class StickmanList(QWidget):
         for button in self.buttons:
             if i < self.start_index:
                 button.hide()
-            elif i > (self.start_index + 9):
+            elif i > (self.start_index + StickmanList.MAX_LENGTH - 1):
                 button.hide()
             else:
                 button.show()
-                button.move(0, (i-self.start_index)*45)
+                button.move(0, (i-self.start_index)*(StickmanList.BUTTON_HEIGHT + StickmanList.BUTTON_GAP))
                 if getWorld().isActive(button.text()):
                     button.setStyleSheet(self.button_style_active)
                 else:
                     button.setStyleSheet(self.button_style_passive)
             i = i+1 
             
-        if len(self.buttons) > 10:
+        if len(self.buttons) > StickmanList.MAX_LENGTH:
             self.scroll_up_button.show()
             self.scroll_down_button.show()
         else:
@@ -116,7 +123,7 @@ class StickmanList(QWidget):
             self.rearrangeButtons()
                        
     def scrollListDown(self):
-        if self.start_index < len(self.buttons)-10:
+        if self.start_index < len(self.buttons) - StickmanList.MAX_LENGTH:
             self.start_index = self.start_index + 1
             self.rearrangeButtons()
                 
@@ -147,13 +154,13 @@ class StickmanList(QWidget):
     
     """ these listeners are required to pass mouse events to the canvas in case there are any, making this list transparent as a result """
     def mousePressEvent(self, event):
-        getWorld().mousePressed(event.x() + 845, event.y()+20)   
+        getWorld().mousePressed(event.x() + StickmanList.EVENT_SHIFT_X, event.y() + StickmanList.MARGIN_TOP)   
         
     def mouseReleaseEvent(self, event):
-        getWorld().mouseReleased(event.x() + 845, event.y()) 
+        getWorld().mouseReleased(event.x() + StickmanList.EVENT_SHIFT_X, event.y() + StickmanList.MARGIN_TOP) 
     
     def mouseMoveEvent(self, event):
-        getWorld().mouseMoved(event.x() + 845, event.y()) 
+        getWorld().mouseMoved(event.x() + StickmanList.EVENT_SHIFT_X, event.y() + StickmanList.MARGIN_TOP) 
     
 """
     ---------------------------------------
@@ -168,9 +175,16 @@ class FrameList(QWidget):
     BUTTON_WIDTH = 240
     BUTTON_HEIGHT = 40
     
+    MARGIN_TOP = 20
+    BUTTON_GAP = 5
+    MAX_LENGTH = 10
+    
+    ICON_SIZE = 25
+    EVENT_SHIFT_X = 845
+    
     def __init__(self, parent):
         super().__init__(parent)
-        self.resize(FrameList.BUTTON_WIDTH, FrameList.BUTTON_HEIGHT*12 + 20)
+        self.resize(FrameList.BUTTON_WIDTH, FrameList.BUTTON_HEIGHT*(FrameList.MAX_LENGTH+2) + FrameList.MARGIN_TOP)
         self.initUI()
                 
     def initUI(self):
@@ -208,18 +222,18 @@ class FrameList(QWidget):
         
         self.scroll_up_button = QPushButton("", self)
         self.scroll_up_button.setIcon(assets.up)
-        self.scroll_up_button.setIconSize(QSize(50, 25))
-        self.scroll_up_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)        
-        self.scroll_up_button.move(0, StickmanList.BUTTON_HEIGHT*11 + 20)
+        self.scroll_up_button.setIconSize(QSize(FrameList.ICON_SIZE*2, FrameList.ICON_SIZE))
+        self.scroll_up_button.resize(FrameList.BUTTON_WIDTH/2, FrameList.BUTTON_HEIGHT)        
+        self.scroll_up_button.move(0, FrameList.BUTTON_HEIGHT*(FrameList.MAX_LENGTH+1) + FrameList.MARGIN_TOP)
         self.scroll_up_button.setStyleSheet(scroll_button_style)
         self.scroll_up_button.clicked.connect(self.scrollListUp)
         self.scroll_up_button.hide()
             
         self.scroll_down_button = QPushButton("", self)
         self.scroll_down_button.setIcon(assets.down)
-        self.scroll_down_button.setIconSize(QSize(50, 25))
-        self.scroll_down_button.resize(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT)
-        self.scroll_down_button.move(StickmanList.BUTTON_WIDTH/2, StickmanList.BUTTON_HEIGHT*11 + 20)
+        self.scroll_down_button.setIconSize(QSize(FrameList.ICON_SIZE*2, FrameList.ICON_SIZE))
+        self.scroll_down_button.resize(FrameList.BUTTON_WIDTH/2, FrameList.BUTTON_HEIGHT)
+        self.scroll_down_button.move(FrameList.BUTTON_WIDTH/2, FrameList.BUTTON_HEIGHT*(FrameList.MAX_LENGTH+1) + FrameList.MARGIN_TOP)
         self.scroll_down_button.setStyleSheet(scroll_button_style)
         self.scroll_down_button.clicked.connect(self.scrollListDown)
         self.scroll_down_button.hide()
@@ -229,12 +243,12 @@ class FrameList(QWidget):
     """ Methods for changing the frames on the FrameList """
     def addNewFrame(self, frame):
         button = QPushButton("", self)
-        button.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
+        button.resize(FrameList.BUTTON_WIDTH, FrameList.BUTTON_HEIGHT)
         button.clicked.connect(self.onMousePressed)
         button.show()
         self.buttons[button] = frame
-        if len(self.buttons) > 10:
-            self.start_index = len(self.buttons) - 10
+        if len(self.buttons) > FrameList.MAX_LENGTH:
+            self.start_index = len(self.buttons) - FrameList.MAX_LENGTH
         self.rearrangeButtons()
     
     def deleteFrame(self, caller):
@@ -245,6 +259,7 @@ class FrameList(QWidget):
                 del self.buttons[self.buttons.active]
                 if self.start_index > 0:
                     self.start_index = self.start_index-1
+                self.parent().canvas.hideMessage()
         self.rearrangeButtons()
     
     def removeAllFrames(self):
@@ -258,7 +273,7 @@ class FrameList(QWidget):
     def copyFrame(self):
         if not self.buttons.active == None:            
             button = QPushButton("", self)
-            button.resize(StickmanList.BUTTON_WIDTH, StickmanList.BUTTON_HEIGHT)
+            button.resize(FrameList.BUTTON_WIDTH, FrameList.BUTTON_HEIGHT)
             button.clicked.connect(self.onMousePressed)
             button.show()
             
@@ -266,7 +281,7 @@ class FrameList(QWidget):
             copy_frame = getWorld().getFrame()
             copy_frame.time = self.buttons[self.buttons.active].time
             self.buttons.insertAt(index+1, button, copy_frame)
-            if len(self.buttons) > 10:
+            if len(self.buttons) > FrameList.MAX_LENGTH:
                 self.start_index = self.start_index + 1
             self.rearrangeButtons()
     
@@ -306,18 +321,18 @@ class FrameList(QWidget):
                
             if i < self.start_index:
                 button.hide()
-            elif i > (self.start_index + 9):
+            elif i > (self.start_index + FrameList.MAX_LENGTH - 1):
                 button.hide()
             else:
                 button.show()
-                button.move(0, (i-self.start_index)*45)
+                button.move(0, (i-self.start_index)*(FrameList.BUTTON_HEIGHT + FrameList.BUTTON_GAP))
                 if button == self.buttons.active:
                     button.setStyleSheet(self.button_style_active)
                 else:
                     button.setStyleSheet(self.button_style_passive)
             i = i+1 
         #part which whows or hides up-down scroll buttons    
-        if len(self.buttons) > 10:
+        if len(self.buttons) > FrameList.MAX_LENGTH:
             self.scroll_up_button.show()
             self.scroll_down_button.show()
         else:
@@ -333,7 +348,7 @@ class FrameList(QWidget):
             self.rearrangeButtons()
                        
     def scrollListDown(self):
-        if self.start_index < len(self.buttons)-10:
+        if self.start_index < len(self.buttons)-FrameList.MAX_LENGTH:
             self.start_index = self.start_index + 1
             self.rearrangeButtons()
     
@@ -341,22 +356,24 @@ class FrameList(QWidget):
     def onMousePressed(self):
         #sets the world to a copy of the current contents, preserving frame from future changes
         if self.sender() == self.buttons.active:
-            self.buttons.active = None   
-            getWorld().copyWorld()     
+            self.buttons.active = None
+            getWorld().copyWorld()
+            self.parent().canvas.hideMessage()
         #sets the world to the current frame contents          
         else:
             open_frame = self.buttons[self.sender()]
             getWorld().setWorldFrom(open_frame)
-            self.buttons.active = self.sender()        
+            self.buttons.active = self.sender()  
+            self.parent().canvas.showMessage()       
         self.rearrangeButtons()
     
     """ these listeners are required to pass mouse events to the canvas in case there are any, making this list transparent as a result """
     def mousePressEvent(self, event):
-        getWorld().mousePressed(event.x() + 845, event.y()+20)   
+        getWorld().mousePressed(event.x() + FrameList.EVENT_SHIFT_X, event.y() + FrameList.MARGIN_TOP)   
         
     def mouseReleaseEvent(self, event):
-        getWorld().mouseReleased(event.x() + 845, event.y()) 
+        getWorld().mouseReleased(event.x() + FrameList.EVENT_SHIFT_X, event.y() + FrameList.MARGIN_TOP) 
     
     def mouseMoveEvent(self, event):
-        getWorld().mouseMoved(event.x() + 845, event.y())   
+        getWorld().mouseMoved(event.x() + FrameList.EVENT_SHIFT_X, event.y() + FrameList.MARGIN_TOP)   
             

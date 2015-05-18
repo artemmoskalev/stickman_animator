@@ -19,16 +19,31 @@ from stickman.UI.AssetManager import assets
 """ 
 class StickmanToolsPanel(QFrame):
     
+    WIDTH = 1100
+    HEIGHT = 45
+    
+    FRAME_SIZE_X = 180
+    FRAME_WIDTH = 1
+    FRAME_MARGIN = 2
+    
+    ICON_SIZE = 35
+    ICON_BUTTON_WIDTH = 60
+    INPUT_TEXT_WIDTH = 300
+    INPUT_START_X = 213
+    SAY_BLOCK_X = 520
+    PHOTO_BUTTON_WIDTH = 240
+    PHOTO_BUTTON_X = 858
+    
     def __init__(self, parent, tools):
         super().__init__(parent)
         self.tools = tools
         self.initUI()
         
     def initUI(self):
-        self.resize(1100, 49)
+        self.resize(StickmanToolsPanel.WIDTH, StickmanToolsPanel.HEIGHT + StickmanToolsPanel.FRAME_MARGIN*2)
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setFrameRect(QRect(0, 0, 184, 49))
-        self.setLineWidth(1)
+        self.setFrameRect(QRect(0, 0, StickmanToolsPanel.FRAME_SIZE_X + StickmanToolsPanel.FRAME_MARGIN*2, StickmanToolsPanel.HEIGHT + StickmanToolsPanel.FRAME_MARGIN*2))
+        self.setLineWidth(StickmanToolsPanel.FRAME_WIDTH)
         
         component_stylesheet = """
                                 .QPushButton {
@@ -47,65 +62,65 @@ class StickmanToolsPanel(QFrame):
                         
         self.smile_button = QPushButton('', self)
         self.smile_button.setIcon(assets.smile)
-        self.smile_button.setIconSize(QSize(35, 35))
-        self.smile_button.resize(60, 45)
-        self.smile_button.move(2, 2)        
+        self.smile_button.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.smile_button.resize(StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.smile_button.move(StickmanToolsPanel.FRAME_MARGIN, StickmanToolsPanel.FRAME_MARGIN)        
         self.smile_button.setStyleSheet(component_stylesheet)
         self.smile_button.clicked.connect(self.changeExpression)
         self.smile_button.show()        
 
         self.sad_button = QPushButton('', self)
         self.sad_button.setIcon(assets.sad)
-        self.sad_button.setIconSize(QSize(35, 35))
-        self.sad_button.resize(60, 45)
-        self.sad_button.move(62, 2)        
+        self.sad_button.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.sad_button.resize(StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.sad_button.move(StickmanToolsPanel.FRAME_MARGIN + StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.FRAME_MARGIN)        
         self.sad_button.setStyleSheet(component_stylesheet)
         self.sad_button.clicked.connect(self.changeExpression)
         self.sad_button.show() 
         
         self.confused_button = QPushButton('', self)
         self.confused_button.setIcon(assets.confused)
-        self.confused_button.setIconSize(QSize(35, 35))
-        self.confused_button.resize(60, 45)
-        self.confused_button.move(122, 2)        
+        self.confused_button.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.confused_button.resize(StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.confused_button.move(StickmanToolsPanel.FRAME_MARGIN + StickmanToolsPanel.ICON_BUTTON_WIDTH*2, StickmanToolsPanel.FRAME_MARGIN)        
         self.confused_button.setStyleSheet(component_stylesheet)
         self.confused_button.clicked.connect(self.changeExpression)
         self.confused_button.show() 
         
         self.say_text = QLineEdit(self)
         self.say_text.setStyleSheet(component_stylesheet)
-        self.say_text.resize(300, 45)
-        self.say_text.move(215, 2)
+        self.say_text.resize(StickmanToolsPanel.INPUT_TEXT_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.say_text.move(StickmanToolsPanel.FRAME_MARGIN + StickmanToolsPanel.INPUT_START_X, StickmanToolsPanel.FRAME_MARGIN)
         
         self.say_left = QPushButton('', self)
         self.say_left.setIcon(assets.say_left)
-        self.say_left.setIconSize(QSize(35, 35))
-        self.say_left.resize(60, 45)
-        self.say_left.move(520, 2)        
+        self.say_left.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.say_left.resize(StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.say_left.move(StickmanToolsPanel.SAY_BLOCK_X, StickmanToolsPanel.FRAME_MARGIN)        
         self.say_left.setStyleSheet(component_stylesheet)
         self.say_left.clicked.connect(self.sayLeft)
         
         self.say_right = QPushButton('', self)
         self.say_right.setIcon(assets.say_right)
-        self.say_right.setIconSize(QSize(35, 35))
-        self.say_right.resize(60, 45)
-        self.say_right.move(580, 2)   
+        self.say_right.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.say_right.resize(StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.say_right.move(StickmanToolsPanel.SAY_BLOCK_X + StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.FRAME_MARGIN)   
         self.say_right.setStyleSheet(component_stylesheet)
         self.say_right.clicked.connect(self.sayRight)
         
         self.say_exit = QPushButton('', self)
         self.say_exit.setIcon(assets.exit)
-        self.say_exit.setIconSize(QSize(35, 35))
-        self.say_exit.resize(60, 45)
-        self.say_exit.move(640, 2)   
+        self.say_exit.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.say_exit.resize(StickmanToolsPanel.ICON_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.say_exit.move(StickmanToolsPanel.SAY_BLOCK_X + StickmanToolsPanel.ICON_BUTTON_WIDTH*2, StickmanToolsPanel.FRAME_MARGIN)   
         self.say_exit.setStyleSheet(component_stylesheet)
         self.say_exit.clicked.connect(self.sayClear)
         
         self.photo = QPushButton('', self)
         self.photo.setIcon(assets.camera)
-        self.photo.setIconSize(QSize(35, 35))
-        self.photo.resize(240, 45)
-        self.photo.move(858, 2)
+        self.photo.setIconSize(QSize(StickmanToolsPanel.ICON_SIZE, StickmanToolsPanel.ICON_SIZE))
+        self.photo.resize(StickmanToolsPanel.PHOTO_BUTTON_WIDTH, StickmanToolsPanel.HEIGHT)
+        self.photo.move(StickmanToolsPanel.PHOTO_BUTTON_X, StickmanToolsPanel.FRAME_MARGIN)
         self.photo.setStyleSheet(component_stylesheet)
         self.photo.clicked.connect(self.makePhoto)
         

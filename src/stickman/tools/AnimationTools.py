@@ -23,15 +23,30 @@ import math
 """       
 class AnimationToolsPanel(QFrame):
     
+    WIDTH = 1100
+    HEIGHT = 45
+    
+    FRAME_WIDTH = 1
+    FRAME_MARGIN = 2
+    
+    ICON_SIZE = 35
+    ICON_BUTTON_WIDTH = 60
+    
+    IO_BUTTON_WIDTH = 200
+    IO_BLOCK_START_X = 292
+    
+    TIME_INPUT_X = 698
+    BUTTON_BLOCK_X = 918
+    
     def __init__(self, parent, tools):
         super().__init__(parent)
         self.tools = tools
         self.initUI()
         
     def initUI(self):
-        self.resize(1100, 49)
+        self.resize(AnimationToolsPanel.WIDTH, AnimationToolsPanel.HEIGHT + AnimationToolsPanel.FRAME_MARGIN*2)
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setLineWidth(1)
+        self.setLineWidth(AnimationToolsPanel.FRAME_WIDTH)
         self.setFrameRect(QRect(290, 0, 404, 49))
                
         button_stylesheet = """
@@ -46,50 +61,50 @@ class AnimationToolsPanel(QFrame):
                             """
                        
         self.save_animation = QPushButton('Save Animation', self)
-        self.save_animation.resize(200, 45)
-        self.save_animation.move(292, 2)        
+        self.save_animation.resize(AnimationToolsPanel.IO_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
+        self.save_animation.move(AnimationToolsPanel.IO_BLOCK_START_X, AnimationToolsPanel.FRAME_MARGIN)        
         self.save_animation.setStyleSheet(button_stylesheet)
         self.save_animation.clicked.connect(self.saveXML)
        
         self.load_animation = QPushButton('Load Animation', self)
-        self.load_animation.resize(200, 45)
-        self.load_animation.move(492, 2)        
+        self.load_animation.resize(AnimationToolsPanel.IO_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
+        self.load_animation.move(AnimationToolsPanel.IO_BLOCK_START_X + AnimationToolsPanel.IO_BUTTON_WIDTH, AnimationToolsPanel.FRAME_MARGIN)        
         self.load_animation.setStyleSheet(button_stylesheet)
         self.load_animation.clicked.connect(self.fromXML)
         
         self.player = AnimationPlayer(self)
-        self.player.move(0, 2)
+        self.player.move(0, AnimationToolsPanel.FRAME_MARGIN)
         self.player.show()
         
         self.time_input = TimeInputLine(self)
-        self.time_input.move(698, 1)
+        self.time_input.move(AnimationToolsPanel.TIME_INPUT_X, AnimationToolsPanel.FRAME_WIDTH)
         self.time_input.addAcceptListener(self.onAcceptListener)
         self.time_input.addCancelListener(self.onCancelListener)
         self.time_input.hide()       
         
         self.time_button = QPushButton('', self)
         self.time_button.setIcon(assets.time)
-        self.time_button.setIconSize(QSize(35, 35))
-        self.time_button.resize(60, 45)
-        self.time_button.move(918, 2)        
+        self.time_button.setIconSize(QSize(AnimationToolsPanel.ICON_SIZE, AnimationToolsPanel.ICON_SIZE))
+        self.time_button.resize(AnimationToolsPanel.ICON_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
+        self.time_button.move(AnimationToolsPanel.BUTTON_BLOCK_X, AnimationToolsPanel.FRAME_MARGIN)        
         self.time_button.setStyleSheet(button_stylesheet)
         self.time_button.clicked.connect(self.timeFrameListener)
         self.time_button.show()        
 
         self.copy_button = QPushButton('', self)
         self.copy_button.setIcon(assets.copy)
-        self.copy_button.setIconSize(QSize(35, 35))
-        self.copy_button.resize(60, 45)
-        self.copy_button.move(978, 2)        
+        self.copy_button.setIconSize(QSize(AnimationToolsPanel.ICON_SIZE, AnimationToolsPanel.ICON_SIZE))
+        self.copy_button.resize(AnimationToolsPanel.ICON_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
+        self.copy_button.move(AnimationToolsPanel.BUTTON_BLOCK_X + AnimationToolsPanel.ICON_BUTTON_WIDTH, AnimationToolsPanel.FRAME_MARGIN)        
         self.copy_button.setStyleSheet(button_stylesheet)
         self.copy_button.clicked.connect(self.copyFrameListener)
         self.copy_button.show() 
         
         self.delete_button = QPushButton('', self)
         self.delete_button.setIcon(assets.delete)
-        self.delete_button.setIconSize(QSize(35, 35))
-        self.delete_button.resize(60, 45)
-        self.delete_button.move(1038, 2)        
+        self.delete_button.setIconSize(QSize(AnimationToolsPanel.ICON_SIZE, AnimationToolsPanel.ICON_SIZE))
+        self.delete_button.resize(AnimationToolsPanel.ICON_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
+        self.delete_button.move(AnimationToolsPanel.BUTTON_BLOCK_X + AnimationToolsPanel.ICON_BUTTON_WIDTH*2, AnimationToolsPanel.FRAME_MARGIN)        
         self.delete_button.setStyleSheet(button_stylesheet)
         self.delete_button.clicked.connect(self.deleteListener)
         self.delete_button.show() 
@@ -151,13 +166,17 @@ class AnimationToolsPanel(QFrame):
     def fromXML(self):
         file = QFileDialog.getOpenFileName(self, "Load Animation", ".", "Animation Files (*.armo)")
         if file[0] != "":
-            frames = XML().fromXML(self.tools.framemenu.getAllFrames(), file[0])
+            try:
+                frames = XML().fromXML(file[0])
+                self.tools.framemenu.removeAllFrames()
+                for frame in frames:
+                    self.tools.framemenu.addNewFrame(frame)
+                if len(frames) > 0:
+                    getWorld().setWorldFrom(frames[0])
+            except:
+                QMessageBox.information(self, "Stickman Message", "The animation file is not valid!")
+                
             
-            self.tools.framemenu.removeAllFrames()
-            for frame in frames:
-                self.tools.framemenu.addNewFrame(frame)
-            if len(frames) > 0:
-                getWorld().setWorldFrom(frames[0])
         
 """
     -------------------------------
@@ -170,12 +189,14 @@ class AnimationPlayer(QFrame):
     PLAYING = 1
     PAUSED = 2 
     
+    WIDTH = 260
+    
     def __init__(self, parent):
         super().__init__(parent)           
         self.initUI()  
     
     def initUI(self):
-        self.resize(260, 45)
+        self.resize(AnimationPlayer.WIDTH, AnimationToolsPanel.HEIGHT)
         self.playing = AnimationPlayer.STOPPED
         
         button_stylesheet = """
@@ -191,23 +212,23 @@ class AnimationPlayer(QFrame):
         
         self.play_button = QPushButton('', self)
         self.play_button.setIcon(assets.play)
-        self.play_button.setIconSize(QSize(35, 35))
-        self.play_button.resize(60, 45)
+        self.play_button.setIconSize(QSize(AnimationToolsPanel.ICON_SIZE, AnimationToolsPanel.ICON_SIZE))
+        self.play_button.resize(AnimationToolsPanel.ICON_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
         self.play_button.move(0, 0)        
         self.play_button.setStyleSheet(button_stylesheet)
         self.play_button.clicked.connect(self.onPlay)
         self.play_button.show()        
         
         self.clock = Clock(self)
-        self.clock.move(60, 0)
+        self.clock.move(AnimationToolsPanel.ICON_BUTTON_WIDTH, 0)
         self.clock.task = self.updateAnimation
         self.clock.hide()
         
         self.stop_button = QPushButton('', self)
         self.stop_button.setIcon(assets.stop)
-        self.stop_button.setIconSize(QSize(35, 35))
-        self.stop_button.resize(60, 45)
-        self.stop_button.move(200, 0)        
+        self.stop_button.setIconSize(QSize(AnimationToolsPanel.ICON_SIZE, AnimationToolsPanel.ICON_SIZE))
+        self.stop_button.resize(AnimationToolsPanel.ICON_BUTTON_WIDTH, AnimationToolsPanel.HEIGHT)
+        self.stop_button.move(AnimationPlayer.WIDTH - AnimationToolsPanel.ICON_BUTTON_WIDTH, 0)        
         self.stop_button.setStyleSheet(button_stylesheet)
         self.stop_button.clicked.connect(self.onStop)
         self.stop_button.hide() 
@@ -282,7 +303,7 @@ class AnimationPlayer(QFrame):
         self.next_frame = self.parent().tools.framemenu.getNextFrame(self.old_frame)
         
         if self.next_frame != None:            
-            self.steps = (self.next_frame.time*1000)/25
+            self.steps = (self.next_frame.time*1000)/Clock.TIMER_STEP
             self.step_counter = 0
             self.clock.startClock()
         else:

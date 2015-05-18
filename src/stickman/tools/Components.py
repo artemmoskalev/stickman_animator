@@ -20,12 +20,22 @@ import copy
 """         
 class InputLine(QWidget):
     
+    HEIGHT = 30
+    LABEL_WIDTH = 170
+    INPUT_TEXT_WIDTH = 200
+    BUTTON_WIDTH = 100
+    BUTTON_BLOCK_X = 380
+    ELEMENT_GAP = 5
+    
+    ERROR_WIDTH = 250
+    ERROR_X = 595
+    
     def __init__(self, parent):
         super().__init__(parent)
         self.initUI()
         
     def initUI(self):
-        
+                
         component_stylesheet = """
                                 .QPushButton {
                                     font-weight: bold;
@@ -56,29 +66,29 @@ class InputLine(QWidget):
         self.label = QLabel("", self)
         self.label.setStyleSheet(component_stylesheet)
         self.label.setAlignment(Qt.AlignRight)
-        self.label.resize(170, 30)
+        self.label.resize(InputLine.LABEL_WIDTH, InputLine.HEIGHT)
         self.label.move(0, 0)        
         
         self.text = QLineEdit(self)
         self.text.setStyleSheet(component_stylesheet)
-        self.text.resize(200, 30)
-        self.text.move(175, 0)
+        self.text.resize(InputLine.INPUT_TEXT_WIDTH, InputLine.HEIGHT)
+        self.text.move(InputLine.LABEL_WIDTH + InputLine.ELEMENT_GAP, 0)
         
         self.ok = QPushButton("OK", self)
         self.ok.setStyleSheet(component_stylesheet)
-        self.ok.resize(100, 30)
-        self.ok.move(380, 0)
+        self.ok.resize(InputLine.BUTTON_WIDTH, InputLine.HEIGHT)
+        self.ok.move(InputLine.BUTTON_BLOCK_X, 0)
         
         self.cancel = QPushButton("Cancel", self)
         self.cancel.setStyleSheet(component_stylesheet)
-        self.cancel.resize(100, 30)
-        self.cancel.move(485, 0)
+        self.cancel.resize(InputLine.BUTTON_WIDTH, InputLine.HEIGHT)
+        self.cancel.move(InputLine.BUTTON_BLOCK_X + InputLine.BUTTON_WIDTH + InputLine.ELEMENT_GAP, 0)
     
         self.error = QLabel("", self)
         self.error.setObjectName("error")
         self.error.setStyleSheet(component_stylesheet)
-        self.error.resize(250, 30)
-        self.error.move(595, 0)
+        self.error.resize(InputLine.ERROR_WIDTH, InputLine.HEIGHT)
+        self.error.move(InputLine.ERROR_X, 0)
     
     """ listeners which control what happens on ok an cancel button presses """
     def addOkListener(self, onOkEvent):
@@ -188,14 +198,32 @@ class Frame():
 """
 class TimeInputLine(QFrame):
     
+    WIDTH = 396
+    HEIGHT = 43
+    
+    FRAME_WIDTH = 1
+    FRAME_MARGIN = 2
+    
+    ICON_SIZE = 35
+    ICON_BUTTON_WIDTH = 60    
+    
+    LABEL_SIZE_X = 174
+    INPUT_SIZE_X = 100
+    BUTTON_BLOCK_X = 278
+    
+    STEP = 0.5
+    MIN_VALUE = 0.1
+    MAX_VALUE = 10
+    DECIMAL_COUNT = 1
+    
     def __init__(self, parent):
         super().__init__(parent)
         self.initUI()       
     
     def initUI(self):
-        self.resize(400, 47)
+        self.resize(TimeInputLine.WIDTH + TimeInputLine.FRAME_MARGIN*2, TimeInputLine.HEIGHT + TimeInputLine.FRAME_MARGIN*2)
         self.setFrameStyle(QFrame.StyledPanel)
-        self.setLineWidth(1)
+        self.setLineWidth(TimeInputLine.FRAME_WIDTH)
         
         component_stylesheet = """
                                 .QPushButton {
@@ -217,35 +245,35 @@ class TimeInputLine(QFrame):
                             """
         
         self.label = QLabel("", self)
-        self.label.resize(174, 43)
-        self.label.move(2, 2)
+        self.label.resize(TimeInputLine.LABEL_SIZE_X, TimeInputLine.HEIGHT)
+        self.label.move(TimeInputLine.FRAME_MARGIN, TimeInputLine.FRAME_MARGIN)
         self.label.setStyleSheet(component_stylesheet)
         self.label.setAlignment(Qt.AlignCenter)
         self.label.show()       
         
         self.spinbox = QDoubleSpinBox(self)
-        self.spinbox.setRange(0.1, 10)
-        self.spinbox.setValue(0.5)
-        self.spinbox.setSingleStep(0.5)
-        self.spinbox.setDecimals(1)
-        self.spinbox.resize(100, 43)
-        self.spinbox.move(176, 2)
+        self.spinbox.setRange(TimeInputLine.MIN_VALUE, TimeInputLine.MAX_VALUE)
+        self.spinbox.setValue(TimeInputLine.STEP)
+        self.spinbox.setSingleStep(TimeInputLine.STEP)
+        self.spinbox.setDecimals(TimeInputLine.DECIMAL_COUNT)
+        self.spinbox.resize(TimeInputLine.INPUT_SIZE_X, TimeInputLine.HEIGHT)
+        self.spinbox.move(TimeInputLine.LABEL_SIZE_X + TimeInputLine.FRAME_MARGIN, TimeInputLine.FRAME_MARGIN)
         self.spinbox.setStyleSheet(component_stylesheet)
         self.spinbox.show()
         
         self.enter = QPushButton("", self)
         self.enter.setIcon(assets.enter)
-        self.enter.setIconSize(QSize(35, 35))
-        self.enter.resize(60, 43)
-        self.enter.move(278, 2)  
+        self.enter.setIconSize(QSize(TimeInputLine.ICON_SIZE, TimeInputLine.ICON_SIZE))
+        self.enter.resize(TimeInputLine.ICON_BUTTON_WIDTH, TimeInputLine.HEIGHT)
+        self.enter.move(TimeInputLine.BUTTON_BLOCK_X, TimeInputLine.FRAME_MARGIN)  
         self.enter.setStyleSheet(component_stylesheet)
         self.enter.show()
         
         self.cancel = QPushButton("", self)
         self.cancel.setIcon(assets.exit)
-        self.cancel.setIconSize(QSize(35, 35))
-        self.cancel.resize(60, 43)
-        self.cancel.move(338, 2)     
+        self.cancel.setIconSize(QSize(TimeInputLine.ICON_SIZE, TimeInputLine.ICON_SIZE))
+        self.cancel.resize(TimeInputLine.ICON_BUTTON_WIDTH, TimeInputLine.HEIGHT)
+        self.cancel.move(TimeInputLine.BUTTON_BLOCK_X + TimeInputLine.ICON_BUTTON_WIDTH, TimeInputLine.FRAME_MARGIN)     
         self.cancel.setStyleSheet(component_stylesheet) 
         self.cancel.show()
     
@@ -266,6 +294,11 @@ class TimeInputLine(QFrame):
 """       
 class Clock(QWidget):
     
+    WIDTH = 140
+    HEIGHT = 45
+    
+    TIMER_STEP = 25
+    
     def __init__(self, parent):
         super().__init__(parent)
         self.initUI()
@@ -283,7 +316,7 @@ class Clock(QWidget):
         self.accumulator = 0
         
         self.time = QLabel("0:00.0", self)
-        self.time.resize(140, 45)
+        self.time.resize(Clock.WIDTH, Clock.HEIGHT)
         self.time.setStyleSheet(clock_stylesheet)
         self.time.setAlignment(Qt.AlignHCenter)
         
@@ -292,7 +325,7 @@ class Clock(QWidget):
         self.timer.task = None
         
     def startClock(self):
-        self.timer.start(25)
+        self.timer.start(Clock.TIMER_STEP)
         
     def stopClock(self):
         self.timer.stop()
@@ -302,7 +335,7 @@ class Clock(QWidget):
         self.time.setText("0:00.0")
     
     def updateTime(self):
-        self.accumulator = self.accumulator + 0.25
+        self.accumulator = self.accumulator + Clock.TIMER_STEP/100
         self.time.setText(str(int(self.accumulator%6000/600)) +":"+str(int(self.accumulator%600/100))+str(int(self.accumulator%100/10))+"."+str(int(self.accumulator)%10))
         if self.task != None:
             self.task()

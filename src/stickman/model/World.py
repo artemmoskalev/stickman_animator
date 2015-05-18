@@ -20,6 +20,9 @@ class Stickman():
     HAND_LENGTH = 90
     LEG_LENGTH = 95
     TOE_LENGTH = 30
+    STICK_WIDTH = 5
+    
+    HEAD_CLICK_RATIO = 3/4
     
     def __init__(self, name, x, y):
         self.name = name        
@@ -28,9 +31,9 @@ class Stickman():
         self.initBody()
         
     def moveTo(self, x, y):
-        if x > - Head.HEAD_RADIUS*3/4 and x < World.WIDTH + Head.HEAD_RADIUS*3/4:
+        if x > - Head.HEAD_RADIUS*Stickman.HEAD_CLICK_RATIO and x < World.WIDTH + Head.HEAD_RADIUS*Stickman.HEAD_CLICK_RATIO:
             self.x = x
-        if y > - Head.HEAD_RADIUS*3/4 and y < World.HEIGHT + Head.HEAD_RADIUS*3/4:
+        if y > - Head.HEAD_RADIUS*Stickman.HEAD_CLICK_RATIO and y < World.HEIGHT + Head.HEAD_RADIUS*Stickman.HEAD_CLICK_RATIO:
             self.y = y
     
     def initBody(self):
@@ -129,6 +132,7 @@ class Stickman():
 class Head():
     
     HEAD_RADIUS = 50
+    HEAD_ARC = 16*360
     
     def __init__(self, body):
         self.body = body
@@ -136,10 +140,10 @@ class Head():
         self.dragged = False
     
     def draw(self, painter):
-        painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
+        painter.setPen(QPen(Qt.black, Stickman.STICK_WIDTH, Qt.SolidLine))
         painter.setBrush(QBrush(Qt.white, Qt.SolidPattern))
         
-        painter.drawArc(QRectF(self.body.x-Head.HEAD_RADIUS, self.body.y-Head.HEAD_RADIUS, Head.HEAD_RADIUS*2, Head.HEAD_RADIUS*2), 0, 16*360) 
+        painter.drawArc(QRectF(self.body.x-Head.HEAD_RADIUS, self.body.y-Head.HEAD_RADIUS, Head.HEAD_RADIUS*2, Head.HEAD_RADIUS*2), 0, Head.HEAD_ARC) 
         painter.drawEllipse(QRectF(self.body.x-Head.HEAD_RADIUS, self.body.y-Head.HEAD_RADIUS, Head.HEAD_RADIUS*2, Head.HEAD_RADIUS*2))        
         self.expression.draw(painter)
     
@@ -168,6 +172,18 @@ class Expression():
     SAD = 2
     CONFUSED = 3
     
+    """ these are relative to body coordinates """
+    LEFT_EYE_X = -30
+    RIGHT_EYE_X = 15
+    EYE_Y = -25
+    
+    """ define the arc lengths of circles which are drawn """
+    SMILE_ARC_START = 9*360 
+    SMILE_ARC = 6*360    
+    SAD_ARC_START = 1.5*360
+    SAD_ARC = 5*360
+    O_ARC = 16*360
+    
     def __init__(self, body):
         self.body = body
         self.expression = Expression.SMILE
@@ -175,8 +191,8 @@ class Expression():
     def draw(self, painter):        
         painter.setBrush(QBrush(Qt.SolidPattern))
         
-        painter.drawEllipse(QRectF(self.body.x-30, self.body.y-25, Expression.EYE_WIDTH, Expression.EYE_WIDTH))
-        painter.drawEllipse(QRectF(self.body.x+15, self.body.y-25, Expression.EYE_WIDTH, Expression.EYE_WIDTH))        
+        painter.drawEllipse(QRectF(self.body.x + Expression.LEFT_EYE_X, self.body.y + Expression.EYE_Y, Expression.EYE_WIDTH, Expression.EYE_WIDTH))
+        painter.drawEllipse(QRectF(self.body.x + Expression.RIGHT_EYE_X, self.body.y + Expression.EYE_Y, Expression.EYE_WIDTH, Expression.EYE_WIDTH))        
         
         if self.expression == Expression.SMILE:
             self.drawSmile(painter)
@@ -189,11 +205,13 @@ class Expression():
         self.expression = expression
     
     def drawSmile(self, painter):
-        painter.drawArc(QRectF(self.body.x-Expression.SMILE_WIDTH/2, self.body.y-Expression.SMILE_WIDTH/2, Expression.SMILE_WIDTH, Expression.SMILE_WIDTH), 9*360, 6*360)
+        painter.drawArc(QRectF(self.body.x-Expression.SMILE_WIDTH/2, self.body.y-Expression.SMILE_WIDTH/2, Expression.SMILE_WIDTH, Expression.SMILE_WIDTH), 
+                        Expression.SMILE_ARC_START, Expression.SMILE_ARC)
     def drawSad(self, painter):
-        painter.drawArc(QRectF(self.body.x-Expression.SMILE_WIDTH/2, self.body.y+Expression.SMILE_WIDTH/7, Expression.SMILE_WIDTH, Expression.SMILE_WIDTH), 1.5*360, 5*360)
+        painter.drawArc(QRectF(self.body.x-Expression.SMILE_WIDTH/2, self.body.y+Expression.SMILE_WIDTH/7, Expression.SMILE_WIDTH, Expression.SMILE_WIDTH), 
+                        Expression.SAD_ARC_START, Expression.SAD_ARC)
     def drawConfused(self, painter):
-        painter.drawArc(QRectF(self.body.x-Expression.SMILE_WIDTH/3.4, self.body.y, Expression.SMILE_WIDTH/1.7, Expression.SMILE_WIDTH/2), 0, 16*360)
+        painter.drawArc(QRectF(self.body.x-Expression.SMILE_WIDTH/3.4, self.body.y, Expression.SMILE_WIDTH/1.7, Expression.SMILE_WIDTH/2), 0, Expression.O_ARC)
 
 class Words():
         
@@ -205,34 +223,42 @@ class Words():
     LEFT = 1
     RIGHT = 2
     
+    FONT_SIZE = 16
+    PEN_SIZE = 2
+    
+    MAXIMUM_TEXT_WIDTH = 448
+    
     def __init__(self, body):
         self.body = body
-        self.text = ""
+        self.text = "..."
         self.side = Words.NONE
         
     def setText(self, text, side):
-        self.text = text
+        if len(text) != 0:
+            self.text = text
+        else:
+            self.text = "..."
         self.side = side
             
     def draw(self, painter):
-        font = QFont(QFont("Times", 12, QFont.Bold))    
+        font = QFont(QFont("Times", Words.FONT_SIZE, QFont.Bold))    
         self.formatText(font)
         
         if self.side == Words.RIGHT:
             painter.drawPixmap(self.body.x + Head.HEAD_RADIUS/2, self.body.y + Head.HEAD_RADIUS/4, 
                                 Words.WORDS_WIDTH, Words.WORDS_HEIGHT, assets.speak_right)
                 
-            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
-            painter.setFont(QFont("Times", 16, QFont.Bold))            
+            painter.setPen(QPen(Qt.black, Words.PEN_SIZE, Qt.SolidLine))
+            painter.setFont(font)            
             painter.drawText(QRectF(self.body.x + Head.HEAD_RADIUS/2 + Words.TEXT_PADDING*4, self.body.y + Words.TEXT_PADDING*1.7, 
                                     Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
-                             Qt.AlignCenter | Qt.TextWordWrap, self.text) 
+                             Qt.AlignCenter | Qt.TextWrapAnywhere, self.text) 
                 
         elif self.side == Words.LEFT:
             painter.drawPixmap(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH, self.body.y + Head.HEAD_RADIUS/4, 
                                 Words.WORDS_WIDTH, Words.WORDS_HEIGHT, assets.speak_left)                     
                             
-            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+            painter.setPen(QPen(Qt.black, Words.PEN_SIZE, Qt.SolidLine))
             painter.setFont(font)
             painter.drawText(QRectF(self.body.x - Head.HEAD_RADIUS/2 - Words.WORDS_WIDTH + Words.TEXT_PADDING, self.body.y + Words.TEXT_PADDING*1.7, 
                                     Words.WORDS_WIDTH - Words.TEXT_PADDING*5, Words.WORDS_HEIGHT - Words.TEXT_PADDING*2), 
@@ -244,7 +270,7 @@ class Words():
         
         need_to_modify = False
         
-        while(width > 448):
+        while(width > Words.MAXIMUM_TEXT_WIDTH):
             need_to_modify = True
             self.text = self.text[0:-1]
             width = metrics.width(self.text)
@@ -262,12 +288,15 @@ class Spine():
         self.body = body
     
     def draw(self, painter):
-        painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))        
+        painter.setPen(QPen(Qt.black, Stickman.STICK_WIDTH, Qt.SolidLine))        
         painter.drawLine(QLine(self.body.x, self.body.y+Head.HEAD_RADIUS, self.body.x, self.body.y+Head.HEAD_RADIUS+Spine.SPINE_LENGTH))
 
 class Joint():
     
     JOINT_RADIUS = 10
+    
+    PEN_WIDTH = 2
+    ARC_LENGTH = 16*360
     
     """ initialize the joint. The position of the joint is relative to the stickman`s head center """
     def __init__(self, body, isActive, relative_x, relative_y):        
@@ -304,14 +333,14 @@ class Joint():
     def draw(self, painter):   
         #first draw the limb to hide it under the joint
         if self.next != None:            
-            painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))        
+            painter.setPen(QPen(Qt.black, Stickman.STICK_WIDTH, Qt.SolidLine))        
             painter.drawLine(QLine(self.body.x + self.next.x, self.body.y + self.next.y, self.body.x + self.x, self.body.y + self.y))     
         if self.isActive:
             center_x = self.body.x + self.x
             center_y = self.body.y + self.y
-            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+            painter.setPen(QPen(Qt.black, Joint.PEN_WIDTH, Qt.SolidLine))
             painter.drawArc(QRectF(center_x - Joint.JOINT_RADIUS, center_y - Joint.JOINT_RADIUS, 
-                                   Joint.JOINT_RADIUS*2, Joint.JOINT_RADIUS*2), 0, 16*360)
+                                   Joint.JOINT_RADIUS*2, Joint.JOINT_RADIUS*2), 0, Joint.ARC_LENGTH)
             painter.setBrush(QBrush(Qt.white, Qt.SolidPattern))  
             painter.drawEllipse(QRectF(center_x - Joint.JOINT_RADIUS, center_y - Joint.JOINT_RADIUS, 
                                        Joint.JOINT_RADIUS*2, Joint.JOINT_RADIUS*2))   
@@ -381,7 +410,7 @@ class World():
         This technique is required to preserve layering of stickmen. """
     def draw(self, painter):
         if self.background != None:            
-            painter.drawImage(QRectF(0, 0, 1100, 600), self.background, QRectF(0, 0, self.background.width(), self.background.height()))
+            painter.drawImage(QRectF(0, 0, World.WIDTH, World.HEIGHT), self.background, QRectF(0, 0, self.background.width(), self.background.height()))
         for stickman in self.stickmen:
             stickman.draw(painter)
     
