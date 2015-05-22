@@ -19,13 +19,20 @@ from stickman.UI.AssetManager import assets
 
 class MainWindow(QWidget):    
     
+    EXTENSION = 60
+    LEFT_PADDING = 550
+    
+    CANVAS_RELATIVE_Y = -330
+    PANEL_RELATIVE_Y = -370
+    TOOLS_RELATIVE_Y = 280
+    
     def __init__(self):
         super().__init__()
         self.initGUI()
     
     def initGUI(self):
-        self.setMinimumSize(World.WIDTH + 100, World.HEIGHT + 200)
-        self.resize(World.WIDTH + 100, World.HEIGHT + 200)
+        self.setMinimumSize(World.WIDTH + MainWindow.EXTENSION, World.HEIGHT + MainWindow.EXTENSION*2)
+        self.resize(World.WIDTH + MainWindow.EXTENSION, World.HEIGHT + MainWindow.EXTENSION*2)
         self.centerScreen()
         self.setWindowTitle('Stickman Animator v1.0')
         
@@ -46,9 +53,9 @@ class MainWindow(QWidget):
         self.move(frame.topLeft())
         
     def centerContents(self):
-        self.canvas.move(self.frameSize().width()/2-550, self.frameSize().height()/2-330)                        
-        self.control_panel.move(self.frameSize().width()/2-550, self.frameSize().height()/2-390)
-        self.tools.move(self.frameSize().width()/2-550, self.frameSize().height()/2+300)
+        self.canvas.move(self.frameSize().width()/2 - MainWindow.LEFT_PADDING, self.frameSize().height()/2 + MainWindow.CANVAS_RELATIVE_Y)                        
+        self.control_panel.move(self.frameSize().width()/2 - MainWindow.LEFT_PADDING, self.frameSize().height()/2 + MainWindow.PANEL_RELATIVE_Y)
+        self.tools.move(self.frameSize().width()/2 - MainWindow.LEFT_PADDING, self.frameSize().height()/2 + MainWindow.TOOLS_RELATIVE_Y)
               
     def resizeEvent(self, event):
         self.centerContents()
@@ -195,7 +202,7 @@ class Canvas(QFrame):
 class ToolSet():
         
     MENU_POSITION_X = 845
-    MENU_POSITION_Y = -610      
+    MENU_POSITION_Y = -595      
     
     def __init__(self, parent):
         self.world_tools = WorldToolsPanel(parent)
