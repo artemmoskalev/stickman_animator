@@ -1,0 +1,1241 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Prologue by HTML5 UP</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.scrolly.min.js"></script>
+		<script src="js/jquery.scrollzer.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<!-- MY OWN STYLES -->
+		<style type="text/css">
+			.container h4 {
+				text-align: justify;
+			}
+			.container .small_heading {				
+				text-align: left;
+				font-weight: bold;
+				padding-bottom: 20px;
+				padding-top: 20px;
+			}
+			.container .small_paragraph {
+				padding-left: 40px;
+				text-align: justify;
+				margin-bottom: 40px;
+				margin-top:20px;
+			}
+			strong {
+				font-weight: bold;
+			}
+			.container .left_message {
+				text-align: left;
+				margin-top: 30px;
+				margin-bottom: 10px;
+				font-weight: bold;
+			}
+			.container h3.small_heading {
+				margin-top: 30px;
+				text-align: center;
+			}
+			.container a.external_link {
+				font-size: 30px;
+				display: block;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+			
+		</style>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<div id="header" class="skel-layers-fixed">
+
+				<div class="top">
+
+					<!-- Logo -->
+					<div id="logo">
+						<span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span>
+						<h1 id="title">Artem Moskalev</h1>
+						<p>Stickman Animator</p>
+					</div>
+
+					<!-- Navigation -->
+					<nav id="nav">
+					<!--							
+						Hash link (scrolls to a different section within the page)								
+						<li><a href="#foobar" id="foobar-link" class="icon fa-whatever-icon-you-want skel-layers-ignoreHref">
+							<span class="label">Foobar</span>
+							</a>
+						</li>
+					-->
+						<ul>
+							<li><a href="#about" id="about-link" class="skel-layers-ignoreHref"><span>About</span></a></li>
+							<li><a href="#description" id="description-link" class="skel-layers-ignoreHref"><span>Description</span></a></li>
+							<li><a href="#instructions" id="instructions-link" class="skel-layers-ignoreHref"><span>User Instructions</span></a></li>
+							<li><a href="#structure" id="structure-link" class="skel-layers-ignoreHref"><span>Structure</span></a></li>
+							<li><a href="#algo_data" id="algo_data-link" class="skel-layers-ignoreHref"><span>Algorithms and Data Structures</span></a></li>
+							<li><a href="#files" id="files-link" class="skel-layers-ignoreHref"><span>Files</span></a></li>
+							<li><a href="#testing" id="testing-link" class="skel-layers-ignoreHref"><span>Testing</span></a></li>
+							<li><a href="#schedule" id="schedule-link" class="skel-layers-ignoreHref"><span>Project Production and Schedule</span></a></li>
+							<li><a href="#references" id="references-link" class="skel-layers-ignoreHref"><span>References</span></a></li>
+						</ul>
+					</nav>						
+				</div>				
+			</div>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- About -->
+				<section id="about" class="one dark cover">
+					<div class="container">						
+						<header>							
+							<h2>Created by: <strong>Artem Moskalev</strong></h2>
+						  	<h2>Student Number: <strong>465904</strong></h2>
+						  	<h2>Study Program: <strong>Machine Learning and Data Mining</strong></h2>
+						  	<h2>Project Assistant: <strong>Miki Tolonen</strong></h2>	
+						  	<h2>Documentation Date: <strong>18 May, 2015</strong></h2>									
+						</header>
+						<img src="images/stickman.png" alt="" />
+					</div>
+				</section>
+					
+				<!-- Description -->
+				<section id="description" class="two">
+					<div class="container">					
+						<header>
+							<h2>Project Description</h2>
+						</header>							
+						<h4>The following project represents a Stickman Animator, which is a program that allows the user
+							to create figures made of lines and circles, and to move them around in the user space.
+							The program allows the user to create animations with stick figures, which in turn can be saved or loaded. 
+						</h4>	
+						<br />
+						<h4>
+							The Stickman Animator Project has been implemented on the highest level of difficulty. 
+							It has the following features implemented:
+						</h4>			
+						<br />		
+						<h4 class="small_heading">
+							Graphical User Interface: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							The graphical user interface (GUI) includes buttons and text fields, as well as modal dialogs to prompt
+							the user about important events or errors. It has 3 main tabs, which represent different sets of tools.
+							<br /><br />
+							<strong>World Tools:</strong>&nbsp; this set of tools allows the user to create stickmen, to delete stickmen, and also to set 
+							or erase the background of the animation.
+							<br /><br />
+							<strong>Stickman Tools:</strong>&nbsp; this set of tools allows the user to manipulate stick figures in 
+							different ways, such as changing their expressions or making them say something. Also allows the user to
+							create animation frames.
+							<br /><br />
+							<strong>Animation Tools:</strong>&nbsp; this set of tools allows the user to modify animation frames, to play or
+							pause the animation, or to save/load the animation.
+							<br /><br />
+							The user interface also has the list of current stickmen and the list of current frames. They are shown automatically 
+							depending on which part of the program the user works with. These lists are active components 
+							which can be modified during the program run. 
+							<br /><br />
+							The user interface has good error handling which allows to prevent the user from making mistakes during 
+							the program use. For example, if the user tries to load a broken file as an animation file, the program would complain,
+							notifying the user about his actions.
+						</h4>
+						<h4 class="small_heading">
+							Stickman Joint Movement: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							Each stickman has 8 control points which will be further called "joints" in this document.
+							All joints of a stick figure can be moved around without restraint. In case it were required, other types of stick figures
+							could be created in the program easily. But only stick figures are shown at the moment. 
+						</h4>
+						<h4 class="small_heading">
+							Stickman Speaking: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							This feature allows the user to make stick figures say something. The user may place the words either to the left
+							of the chosen stick figure or to the right of it. In case the text string is too long, it will be shortened, 
+							and three dots will be placed at the end of the string. All stickmen can say something at the same time, 
+							or only chosen ones can do it. Error checking is implemented and all empty strings are automatically shown
+							as three dots.						
+						</h4>
+						<h4 class="small_heading">
+							Stickman Face Expression: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							This feature allows the user to make stick figures smile, be sad or confused. 
+							These three expressions can be modified from the stickman tools tab. Initially each stickman smiles.
+						</h4>
+						<h4 class="small_heading">
+							Background Image: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							The white background of the scene can be changed for a brighter picture of .png or .jpg formats. It can be chosen using
+							the file dialog which automatically searches for compatible files.
+							In case the picture is chosen as a background, it would cover the whole space of the stickman scene.
+							If the user grows tired of the new background, he can clear it and set the usual white background back.							
+						</h4>
+						<h4 class="small_heading">
+							Any Number of Stick Figures: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							The program user can create as many stickmen as he wishes. They are all created in the same place. But the application
+							implements layering, so the user can drag stickmen from their initial place of creation. 
+							In case a particular stickman is needed	from the list, he can be made active and dragged. The list of stickmen can grow
+							infinitely.					
+						</h4>
+						<h4 class="small_heading">
+							Saving and Loading: &nbsp;&nbsp;&nbsp;&nbsp;Average Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							The program allows the user to save his animations into a separate file to use later. The saved animation
+							can then be loaded back into the program and further modified. This allows the user to work with multiple animations
+							at the same time, saving and loading them if necessary.				
+						</h4>
+						<h4 class="small_heading">
+							Constant Joint Length: &nbsp;&nbsp;&nbsp;&nbsp;High Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							In case the user moves joints around, the limbs formed by the joints never get longer than they have been. 
+							Each joint is connected to other joints, and in case one of the joints is moved,
+							all dependent joints also move, making full-hand and full-leg motions possible in the program. 				
+						</h4>
+						<h4 class="small_heading">
+							Constant Time and Interpolation: &nbsp;&nbsp;&nbsp;&nbsp;High Difficulty
+						</h4>
+						<h4 class="small_paragraph">
+							The program implements 25-millisecond intervals for redrawing the stick figure world which makes the 
+							time flow constant for the user (around 40 frames per second). The program utilizes 
+							interpolation to make movements between frames smooth. In order to do that, the user needs to create 
+							multiple frames and play the animation between them. The movements are smooth and without jittering.  				
+						</h4>
+						<h4 class="small_heading">
+							Stick Figure Relocation: &nbsp;&nbsp;&nbsp;&nbsp;Optional Feature
+						</h4>
+						<h4 class="small_paragraph">
+							The stickmen can be moved around using their heads. If the stickman is dragged around in the world, so 
+							are its attached body and joints. The stickman cannot be dragged outside of the world 
+							(some part of its head always stays in the scene).  				
+						</h4>
+						<h4 class="small_heading">
+							Animation Pausing and Splitting: &nbsp;&nbsp;&nbsp;&nbsp;Optional Feature
+						</h4>
+						<h4 class="small_paragraph">
+							When animation is played, it can be stopped and restarted, as the user wants to. The user can also 
+							play the animation he is creating from a particular frame instead of playing it from the start. It helps the user to make 
+							quality animations. 				
+						</h4>
+						<h4 class="small_heading">
+							Animation Frame Time and Copying: &nbsp;&nbsp;&nbsp;&nbsp;Optional Feature
+						</h4>
+						<h4 class="small_paragraph">
+							The animation frames can be modified after they have been shot. Each frame has a 1 second time period from the previously shot 
+							frame initially.
+							This can be changed, and the time can be from 0.1 seconds to 10 seconds. This allows the user
+							to modify animation speeds and times conviniently. Some of animation frames can also be copied, creating identical
+							 frames. This allows the user to further improve the experience of creating animations in the program. 				
+						</h4>
+					</div>
+				</section>
+
+				<!-- User Instructions -->
+				<section id="instructions" class="three">
+					<div class="container">
+						<header>
+							<h2>User Instructions</h2>
+						</header>
+						
+						<p>All user instructions can be representing with a Use Case Diagram. The following use case diagram contains 
+						all the actions which are possbile to perform using Stickman Animator:</p>
+						<img src="images/instructions/use_case.png" alt="" />
+						<p class="left_message"><strong>These are the instruction for using the program features which are required to fulfil 
+						the intents in the use case diagram:</strong></p>
+						
+						<h4 class="small_heading">
+							Create New Stickman:
+						</h4>
+						<h4 class="small_paragraph">
+							1) Open the World Tools tab (click the button on the Control Panel which consists of three buttons 
+							at the top of the screen). Click the button "Create Stickman" under the white field (canvas field) 
+							 on which stickmen are drawn.			
+						</h4>
+						<img src="images/instructions/world_tools_base.png" alt="" />
+						<h4 class="small_paragraph">
+							2) Type in the name of a new stickman. When you click "Ok", its name should appear on the right 
+							of the screen at the top of the list. The gray color shows that this new stickman has just become active. 
+							If the stickman with this name already exists, the error message will be shown next to the field, where
+							the name has been typed in.					
+						</h4>
+						<img src="images/instructions/stickman_created.png" alt="" />
+						
+								<h4 class="small_heading">
+									Delete Stickman:
+								</h4>
+								<h4 class="small_paragraph">
+									1) Open the World Tools tab (click the button on the Control Panel which consists of three buttons 
+									at the top of the screen). Click the button "Delete Stickman" under the canvas field.					
+								</h4>
+								<h4 class="small_paragraph">
+									2) Type in the name of the stickman you want to delete. 
+									If the stickman exists, it will be removed from the stickman list (list of stickmen on the right of the 
+									screen), or if it does not, the error message will appear.		
+								</h4>
+								<img src="images/instructions/stickman_deleted.png" alt="" />
+								
+						<h4 class="small_heading">
+							Set Background:
+						</h4>						
+						<h4 class="small_paragraph">
+							1) Open the World Tools tab (click the button on the Control Panel which consists of three buttons 
+							at the top of the screen). Click the button "Set Background" under the canvas field.					
+						</h4>	
+						<h4 class="small_paragraph">
+							2) Choose the background image you would like to install from the system. The image will be placed as a background
+							for the canvas field (or stickman world). 					
+						</h4>		
+						<img src="images/instructions/set_background.png" alt="" />	
+																								
+								<h4 class="small_heading">
+									Move Stickman:
+								</h4>
+								<h4 class="small_paragraph">
+									1) Click on the stickman`s head and drag it. The stickman will move along with the mouse. 
+									In the picture, the "Timo" stickman is clicked. He is drawn over "artemka".				
+								</h4>
+								<img src="images/instructions/drag_stickman1.png" alt="" />	
+								<h4 class="small_paragraph">
+									2) Notice that by clicking on stickman, it will become active. Activity means, that its name becomes 
+									highlighted	on the list of stickmen (list of names on the right of the screen) and that its layer becomes top
+									layer. Top layer means that this stickman is drawn on top of other stickmen and that if you click on it,
+									the stickmen under it do not recieve the click event.
+									In the picture, "artemka" stickman has become active, and now drawn over "Timo".
+								</h4>
+								<img src="images/instructions/drag_stickman2.png" alt="" />		
+																	
+						<h4 class="small_heading">
+							Reposition Joints:
+						</h4>
+						<h4 class="small_paragraph">
+							1) Click on stickman joints and drag them around. 
+							You will see that they move in the direction of the mouse pointer.
+							The joint cannot get longer than it was, and all the dependent joints will move with the given joint
+							(it means that if one moves the elbow, the hand moves too, like in the picture).							
+						</h4>
+						<img src="images/instructions/hand_move.png" alt="" />		
+												
+								<h4 class="small_heading">
+									Change Expression:
+								</h4>
+								<h4 class="small_paragraph">
+									1) Open the Stickman Tools tab (click the button on the Control Panel which consists of three buttons 
+									at the top of the screen). 					
+								</h4>	
+								<img src="images/instructions/stickman_tools.png" alt="" />
+								<h4 class="small_paragraph">
+									2) Click one of the buttons under the canvas field on the left of the screen. The smiles represent three
+									states in which a stickman can be: sad, smile and confused. Pay attention to the fact, 
+									that onlythe currently active stickman gets his expression changed. In order to choose another stickman,
+									click on it in the canvas, or click on its name on the stickman list of names.
+									The buttons are shown in the picture (from left to right - smile, sad, confused).
+								</h4>			
+								<img src="images/instructions/stickman_expression.png" alt="" />				
+						
+						<h4 class="small_heading">
+							Say Something:
+						</h4>
+						<h4 class="small_paragraph">
+							1) Open the Stickman Tools tab (click the button on the Control Panel which consists of three buttons 
+							at the top of the screen). 					
+						</h4>	
+						<h4 class="small_paragraph">
+							2) Type in the words that a stickman wants to say into the text field under the canvas field. 
+							Press one of two next buttons - the first one would draw the message box to the left of stickman,
+							the other one will draw the words to the right of the stickman. The cross button will remove the text box:
+							
+						</h4>			
+						<img src="images/instructions/say_buttons.png" alt="" />	
+						<h4 class="small_paragraph">
+							Stickman can say both to the right and to the left:				
+						</h4>	
+						<img src="images/instructions/say_left.png" alt="" />
+						<h4 class="small_paragraph">
+							If the text is too long, part of it will be replaced by three dots: 					
+						</h4>	
+						<img src="images/instructions/say_right.png" alt="" />
+												
+								<h4 class="small_heading">
+									Create a Frame:
+								</h4>
+								<h4 class="small_paragraph">
+									1) Open the Stickman Tools tab (click the button on the Control Panel which consists of three buttons 
+									at the top of the screen). 					
+								</h4>	
+								<h4 class="small_paragraph">
+									2) Click the button with the photocamera on it under the canvas field to the right of the screen. 
+									A new frame will be created. 
+								</h4>
+								<h4 class="small_paragraph">
+									3) Open the Animation Tools tab (click the button on the Control Panel which consists of three buttons 
+									at the top of the screen). 
+									Ensure that a new frame has appeared on the list of frames to the right of the screen.
+									This list appears on the screen instead of the stickman list whenever the Animation Tools tab is opened.
+								</h4>	
+								<img src="images/instructions/new_frame.png" alt="" />
+								<h4 class="small_paragraph">
+									4) Another way to create a new frame is to copy it. Select the frame on the list by clicking on it 
+									(you are still in Animation Tools).					
+								</h4>
+								<img src="images/instructions/frame_select.png" alt="" />
+								<h4 class="small_paragraph">
+									5) A red notice "FRAME MODIFIED" should appear at the bottom of the screen. If the button with an icon of
+									two sheets of paper is pressed now, a new frame appears, which is the copy of the activee frame.			
+								</h4>
+								<img src="images/instructions/copy_frame.png" alt="" />
+						
+						<h4 class="small_heading">
+							Play Animation:
+						</h4>
+						<h4 class="small_paragraph">
+							1) Open the Animation Tools tab (click the button on the Control Panel which consists of three buttons 
+							at the top of the screen). 					
+						</h4>	
+						<h4 class="small_paragraph">
+							2) Press the button with the play icon at the bottom of the screen. A red clock appears, which starts 
+							counting time from the beginning of the animation. The button can be clicked only in case there are at least
+							two frames. While the animation is played, all the buttons become inactive.
+							The animation can be paused or stopped with the buttons which appear after the play button is pressed.
+						</h4>
+						<img src="images/instructions/animating.png" alt="" />
+												
+								<h4 class="small_heading">
+									Modify Animation:
+								</h4>
+								<h4 class="small_paragraph">
+									1) Open the Animation Tools tab (click the button on the Control Panel which consists of three buttons 
+									at the top of the screen). 					
+								</h4>	
+								<h4 class="small_paragraph">
+									2) Choose one of the frames to modify (it can be either deleted, or its time can be changed) 					
+								</h4>
+								<h4 class="small_paragraph">
+									3) Choose an operation to perform with the following buttons at the bottom of the screen: 					
+								</h4>
+								<img src="images/instructions/modify_buttons.png" alt="" />
+								<h4 class="small_paragraph">
+									4) If the frame is to be deleted, a button with the trashbin icon is to be pressed. The 
+									following dialog will appear:					
+								</h4>
+								<img src="images/instructions/delete_frame.png" alt="" />
+								<h4 class="small_paragraph">
+									5) The frame time can be changed. Frame time is the period in seconds from the previous frame,
+									which the animation should interpolate between. When the time has been changed, the frame time changes on
+									the frame list. In order to do this, type in or scroll the time in the box, and then press enter.			
+								</h4>
+								<img src="images/instructions/time_frame.png" alt="" />
+						
+						<h4 class="small_heading">
+							Save/Load Animation:
+						</h4>
+						<h4 class="small_paragraph">
+							1) Open the Animation Tools tab (click the button on the Control Panel which consists of three buttons 
+							at the top of the screen). 					
+						</h4>	
+						<h4 class="small_paragraph">
+							2) In order to save the animation, there should be at least 2 frames on the list of frames.
+							The "Save" button is to be pressed. A save file dialog will appear, which allows you to save the animation 
+							in your preferred directory.			
+						</h4>
+						<img src="images/instructions/save_animation.png" alt="" />
+						<h4 class="small_paragraph">
+							3) In order to load the animation, a "Load" button is to be pressed. It proposes to look for the animation 
+							file of type ".armo" and when found and clicked ok, it will automatically load it to the list of frames on the right.	
+						</h4>	
+						<img src="images/instructions/load_animation.png" alt="" />
+																		
+					</div>
+				</section>
+			
+				<!-- Program Structure -->
+				<section id="structure" class="four">
+					<div class="container">
+						<header>
+							<h2>Program Structure</h2>
+						</header>
+
+						<h4 class="small_paragraph">The program consists of two main logical parts as long as the structure is concerned. 
+							These parts are user interface classes and Stickman world model classes.
+							The basic user interface components, and components which are utility classes 
+							for the user interface, are represented in the following diagram:
+						</h4>
+						<img src="images/structure/main_ui_classes.png" alt="" />
+						<h4 class="small_paragraph">
+							Class <strong>MainWindow</strong> is the first class which is initialized from the main method of the program. 
+							It has internal references to the <strong>Canvas</strong>, <strong>ToolSet</strong> and 
+							<strong>ControlPanel</strong> classes. It draws the main window of the program and sets its title and dimensions.
+							In fact, it is also the parent of all other components of the user interface, and often referenced from its children
+							to get references either to the <strong>Canvas</strong> or to the <strong>ToolSet</strong>.						
+						</h4>
+						<h4 class="small_heading">
+							ControlPanel
+						</h4>
+						<h4 class="small_paragraph">
+							This class holds the reference to the <strong>ToolSet</strong> class. Its main task is to represent the three
+							buttons which are used to alterate between different sets of tools of the main window. 
+							When a button is pressed it calls one of the methods of the <strong>ToolSet</strong>.
+						</h4>	
+						<h4 class="small_heading">
+							ToolSet
+						</h4>
+						<h4 class="small_paragraph">
+							This class is the central component of the user interface. It holds the referenfces to 3 sets of tools - namely
+							<strong>WorldToolsPanel</strong>, <strong>StickmanToolsPanel</strong> and 
+							<strong>AnimationToolsPanel</strong>. Each of these classes have a specific set of buttons and functions,
+							shown in the User Instructions section of this document. The <strong>ToolSet</strong> also
+							holds references to both on-screen lists - the list of stickman names(<strong>StickmanList</strong>) and 
+							frames list (<strong>FrameList</strong>).
+							The main purpose of this class is to serve as a dispatcher between classes as long as 
+							the components of the program, even though having separate functions, often need call each other. Instead of
+							saving direct references to all of other parts in each of the components, they are all stored in the 
+							<strong>ToolSet</strong>, and can be accessed from there when needed. The class also has some facade methods to 
+							hide or to show UI components.
+						</h4>
+						<h4 class="small_heading">
+							Canvas
+						</h4>
+						<h4 class="small_paragraph">
+							This class is the component on which the stickmen are drawn. It has an internal timer with the 
+							pace of 25ms per frame. Every 25 ms a repaint methods of the component is called. In turn, the 
+							<strong>Canvas</strong> dispatches the drawing operations to the <strong>World</strong> class, 
+							which draws itself. The task of the canvas is to call the redraw method at a regular interval 
+							and to dispatch the painting operation.	
+							<br />
+							<strong>Canvas</strong> also dispatches all mouse operations to the <strong>World</strong> class (in fact,
+							there are 3 operations - MousePressed, MouseReleased and MouseMoved, which are dispatched to the 
+							<strong>World</strong>, but the UML diagram is a simplification).
+						</h4>
+						<br />
+						<h4 class="small_paragraph">
+							The following important parts of UI are tools sets. There are three tool sets - 
+							<strong>WorldToolsPanel</strong>, <strong>StickmanToolsPanel</strong> and 
+							<strong>AnimationToolsPanel</strong>. 						
+						</h4>
+						<br />
+						<h4 class="small_heading">
+							WorldToolsPanel
+						</h4>
+						<h4 class="small_paragraph">
+							The <strong>WorldToolsPanel</strong> class set is the tools, which create/delete stickmen and 
+							control the background. It has a simple structure and can be shown using the following UML class diagram:	
+						</h4>
+						<img src="images/structure/world_tools_classes.png" alt="" />
+						<h4 class="small_paragraph">
+							<strong>WorldToolsPanel</strong> class has references to 4 buttons - "Create Stickman", "Delete Stickman",
+							"Set Background" and "Clear Background". Each of these buttons has attached listeners to them. 
+							The class also has a reference to the <strong>InputLine</strong> component class. This is a custom component,
+							which is an editable text line with two buttons - "OK" and "Cancel". <strong>InputLine</strong> can accept 
+							two listeners which are attached to its buttons. When the <strong>WorldToolsPanel</strong> create/delete
+							stickman methods are called, they show this component, and then detect with 
+							<strong>readCreateName()</strong> or <strong>readDeleteName()</strong> methods, what the user has typed in.
+							Then, the <strong>WorldToolsPanel</strong> called the <strong>World</strong> class Singleton through 
+							the <strong>getWorld()</strong> method and either adds or deletes a stick figure from the world.							
+						</h4>
+						<h4 class="small_heading">
+							StickmanToolsPanel
+						</h4>
+						<h4 class="small_paragraph">
+							The <strong>StickmanToolsPanel</strong> class set is the tools, which work with a particular stickman:
+							it can change their facial expressions or to make them say special things. The user can also make frames 
+							from these tools with a photocamera-button:							
+						</h4>
+						<img src="images/structure/stickman_tools_classes.png" alt="" />
+						<h4 class="small_paragraph">
+							The <strong>StickmanToolsPanel</strong> has a set of buttons to change the expression of stickmen.	
+							It also has the inputs necessary to input the text that stickmen say. 
+							When <strong>changeExpression()</strong> is called, it calles the  <strong>World</strong> 	
+							class method to get the active stickman instead. When the stickman instance is obtained, the active stickman 
+							is directly manipulated and its expression is changed. The "talking" functionality is implemented 
+							in the same way, only the method names differ.
+							<br />
+							<strong>StickmanToolsPanel</strong> has a button which can create new frames. When clicked, it finds a reference 
+							to the FrameList component and calls its <strong>addNewFrame()</strong> method. 
+							The new frame is in turn retrieved from the <strong>World</strong> class by using its 
+							<strong>getFrame()</strong> method.						
+						</h4>
+						<h4 class="small_heading">
+							AnimationToolsPanel
+						</h4>
+						<h4 class="small_paragraph">
+							The <strong>AnimationToolsPanel</strong> class set is the tools, which create, modify and run the animations.
+							The toolset can also load or save animations on request:
+						</h4>
+						<img src="images/structure/animation_tools_classes.png" alt="" />
+						<h4 class="small_paragraph">
+							The <strong>AnimationToolsPanel</strong> has a set of buttons to control animations. 
+							The save/load buttons are required to control animation saving and loading. When the button "SAVE" is pressed,
+							it calles the class method <strong>saveXML()</strong>, which in turn creates an instance of 
+							<strong>XML</strong> class. This class does all the job of converting frame information into
+							actual XML. <strong>loadXML()</strong> method is called when the "LOAD" button is pressed. It creates a 
+							file choice dialog using which the user can specify the path to the animation file. After loading, 
+							a set of frames is retrieved and placed instead of the current <strong>FrameList</strong>.
+							Error handling is also implemented. Broken files cannot be loaded and animations cannot be saved unless there 
+							are at least 2 frames.
+							<br /><br />	
+							When a frame list exists, it can be modified with "DELETE", "COPY" and "TIME" buttons. 
+							These buttons have listeners, which are internally connected to the <strong>FrameList</strong>.
+							The "COPY" button calls the <strong>copyFrame()</strong> method of <strong>FrameList</strong>.	
+							The "DELETE" buttons calls the <strong>deleteFrame()</strong> method of <strong>FrameList</strong>.
+							The <strong>AnimationToolsPanel</strong> has an internal reference to a <strong>TimeInputLine</strong>
+							class which is a customly implemented component. It draws an input line with the spinbox, limiting values, 
+							and "ENTER" and "CANCEL" buttons. These buttons can have listeners, which are installed from the 
+							<strong>AnimationToolsPanel</strong> class. These listeners call in turn the 
+							<strong>changeFrameTime(time: float)</strong> method of <strong>FrameList</strong> class.
+							It is important to note, that these methods do not need to pass the reference to the 
+							frame they are updating. In fact, the currently active frame is always stored in the <strong>FrameList</strong>
+							instance.
+							<br /><br />
+							Another important part of the <strong>AnimationToolsPanel</strong> class, is an 
+							<strong>AnimationPlayer</strong> class which is actually responsible for playing all animations
+							and interpolation techniques. Internally, it has references to a <strong>Clock</strong> class component and 
+							<strong>World</strong> class. The <strong>World</strong> class has a method called 
+							<strong>setWorldFrom(frame : Frame)</strong> which allows to set the stickman world 
+							(literally draw on the canvas) from the given frame. 
+							<br />
+							<strong>Clock</strong> class has an internal timer which is used for interpolation. It is also 
+							a custom UI component, which draws a running red clock, which counts the tenths of seconds from the
+							start of the animation. <strong>Clock</strong> also has a task variable which is a passed reference to
+							a method, which is called at a timer rate. In case of this applicaiton, every 25 ms to update the 
+							interpolation.
+							<br />
+							The most important methods of the <strong>AnimationToolsPanel</strong> class are 
+							<strong>reloadFrames()</strong>, <strong>updateAnimation()</strong> and <strong>interpolate()</strong>.
+							In fact <strong>interpolate()</strong> method is a generalization of multiple methods
+							which interpolate the movements of joints and body separately. 
+							<br />
+							The interpolation works in the following way - first, two frames are loaded. The time between these 
+							frames is calculated. Next, it is divided by the number of interpolation frames 
+							(found as time_between_frames/(TIMER_STEP=25ms)). This number shows how much time passes between imaginary frames 
+							during the interpolation procedure. 
+							Next, the distances between joint and stickman-body positions are calculated betwee two frames
+							(it finds the shift of each stickman body and each stickman joint). 
+							Then, intermediate interpolation frames start being created automatically by 
+							the <strong>updateAnimation()</strong> method. 
+							The joints and stickmen bodies move according to the distances calculated by the 
+							<strong>interpolate()</strong> method. Next, when the interpolation is over, the <strong>reloadFrames()</strong>
+							method loads the next frame, and calculates interpolation measurements once again until the end of the 
+							frame list is reached.							
+						</h4>
+						<h4 class="small_heading">
+							StickmanList and FrameList
+						</h4>
+						<h4 class="small_paragraph">
+							Two important user interface classes are <strong>StickmanList</strong> 
+							and <strong>FrameList</strong>. Both of these classes are UI components as they draw 
+							lists of clickable labels, as well as model components, storing the informtaion about the world state or
+							animation state (in case of <strong>FrameList</strong>). These components have many common features, 
+							and repeating parts, which is not good from DRY (Dont repeat yourself) point of view, 
+							but logically, it is justified, because each of these components has a separate list of uses. 
+							Some of the functionality could have probably been moved to common classes, 
+							but I chose to leave it as it is not to overcomplicate the class structure.							
+						</h4>
+						<img src="images/structure/list_classes.png" alt="" />
+						<h4 class="small_paragraph">
+							<strong>StickmanList</strong> has a list of button components, which represent the names
+							of stickmen which currently exist in the world (drawn on the screen). It has listener methods, which 
+							are registered within the <strong>World</strong> class. When a new stickman is either added, or deleted, 
+							from the <strong>WorldToolsPanel</strong> class for example, <strong>World</strong> class automatically calls 
+							the associated listeners of the <strong>StickmanList</strong> class, and the method 
+							<strong>rearrangeButtons()</strong> is internally called. It adjusts the position of buttons on the screen,
+							as well as chages button colors, in case one of the stickmen becomes active (actually, there is always 
+							at least 1 stickman active if their number > 0).
+							<br /><br />
+							<strong>FrameList</strong> has a slightly different functionality from <strong>StickmanList</strong> because
+							it stores animation frames. It interanlly uses a <strong>FrameMap</strong> class,
+							which is my own implementation of a mutable ordered map, which does not exist in Python standard library.
+							The <strong>FrameMap</strong> class can be used as a usual map, except for the fact, that it stores the keys in 
+							the order they have been added. 
+							<br />
+							The <strong>Frame</strong> class stores the references to stickmen (bound to
+							the current frame) and time after the previous frame. When a new frame is created, the deepcopy of stickman world
+							is made, so that frames are not dependent on the actions of the user, if he decides to change the position of
+							stickmen in the world or drag their joints. 
+							<strong>FrameList</strong> also has the <strong>rearrangeButtons()</strong> which is called whenever 
+							the list of frames changes.							
+ 						</h4>
+						<h4 class="small_heading">
+							Model classes:
+						</h4>
+						<h4 class="small_paragraph">
+							The <strong>Canvas</strong>	draws stickmen, which are stored in the <strong>World</strong>	
+							class instance. Each of stickmen is itself an instance of a class <strong>Stickman</strong>,
+							which has a large number of dependencies, presented in the following UML diagram:
+						</h4>
+						<img src="images/structure/model_classes.png" alt="" />
+						<h4 class="small_heading">
+							World
+						</h4>
+						<h4 class="small_paragraph">
+							This class is the entry point of the whole application to the model and information,
+							that is depicted on the canvas. When UI classes need to perform some operation on stickmen,
+							they call the <strong>World</strong> methods for that. The reference to the class itself is 
+							acquired through the global variable in the World python module. It is made in such a way 
+							to ensure, that there is only one instance of the <strong>World</strong> class at all times.
+							This approach resembles the Singleton design pattern, except for the fact, that there are no private 
+							constructors or real static members in default python, and due to this limitation of the platform,
+							this design pattern is impossible to implement.
+							<br />
+							The <strong>World</strong> class has references to all stickmen which currently should be drawn on the canvas.
+							The class also has a background image to draw, in case it has been set, and a list of listeners. 
+							The listeners are in the class to implement a siplified version of the Observer design pattern.
+							Some UI classes do not access the <strong>World</strong> class directly, but instead register their listeners
+							with the class, allowing the <strong>World</strong> instance to notify them, when a new stickman is added, 
+							removed, or made active.
+							<br />
+							<strong>World</strong> has a <strong>draw()</strong>, <strong>mousePressed()</strong>,
+							<strong>mouseReleased()</strong>, <strong>mouseMoved()</strong> methods (the latter 3 are called 
+							<strong>mouseEvent(x:int, y:int)</strong> in the UML diagram for space considerations). These
+							methods do not do anything directly, but they iterate through the list of stickmen,
+							and call their respective methods which are called the same. The <strong>World</strong> class
+							implements layering, when the active stickman is always drawn over other stickmen. 
+							This is achieved due to the fact, that in the stickman list, the active stickman is always at the end 
+							of the list, and its <strong>draw()</strong> method is called the latest, which allows it to be drawn over 
+							other stickmen. This approach is the same for mouse events, but the list is reversed in this case, 
+							and in case the event is
+							processed by the stickman at the top, it is not further passed to the following stickmen in the list.
+							The iteration procedure has its limitations. It would be possible to draw only the visible parts of stickmen,
+							but it is much harder to implement, and as long as the lists of stickmen are short, it is possible 
+							to redraw them many times.
+							<br />				
+							Other important methods of the <strong>World</strong> class are connected to the ability to
+							get a snapshot of the world at any given moment, and to set the contents of the world from 
+							some given frame. These operations are achieved by using <strong>getFrame()</strong> and 
+							<strong>setWorldFrom(frame: Frame)</strong> methods. The first one creates a copy of the stickmen objects,
+							and returns a new frame with these stickmen copies. The second method processes the given frame, and 
+							sets the frame stickmen to the world. These operations are performed using the python 
+							<strong>copy.deepcopy()</strong> method. In fact, it creates a deep copy of all objects passed to it. 
+							It can have some performance issues in case copied objects are large,
+							but in case of stickmen, which are small objects 
+							and dont have too many dependencies, this limitation is acceptable. Copied objects also have other references
+							than the original ones, so stickmen have to be compared by their name.					
+						</h4>
+						<h4 class="small_heading">
+							Stickman, Spine, Head, Expression, Words
+						</h4>
+						<h4 class="small_paragraph">
+							<strong>Stickman</strong> class has references to its bodyparts, which are 
+							<strong>Spine</strong>, <strong>Head</strong>, <strong>Expression</strong>, <strong>Words</strong>, 
+							and <strong>Joint</strong> class instances. 
+							The <strong>Stickman</strong> class delegates most of its methods to its subparts. The method 
+							<strong>draw()</strong> of the stickman calls first the <strong>draw()</strong> method
+							of the <strong>Head</strong> class, then the <strong>Spine</strong> class, 
+							and then draws each of the joints in turn. The <strong>Words</strong> class is drawn after joints,
+							so it is an overlay on the canvas, covering all other parts of stickmen, if there happen 
+							to be any. 
+							<br />
+							The <strong>setExpression()</strong> (there are 3 methods, which represent this one) method
+							is always dispatched directly to the <strong>Expression</strong> class. The <strong>Expression</strong> 
+							class draws a smile, a sad expression, or confusion on the face of a stickman itself. 
+							The <strong>saySomething()</strong> family of methods is dispatched automatically to the 
+							<strong>Words</strong> class methods for processing and drawing. The <strong>Words</strong> class has 
+							a <strong>formatText()</strong> method, which is always called upon setting new words
+							to a stickman. It compares the length of the string supplied, and, in case it is too long, it sets
+							its ending as three dots, shortening it. In case the text sent is empty, three dots are drawn instead.
+							<br />
+							The mouse events are detected in the <strong>Stickman</strong> class itself, where it checks if the mouse
+							event happens within the radius of its head (in order to move the stickman, it need to be dragged
+							by its head). If it does, the stickman is relocated using the <strong>moveTo(x:int, y:int)</strong> 
+							method of the <strong>Stickman</strong> class. In case the click is not detected,the event is further dispatched
+							to the joints, which are moved separately from the stickman body.							
+						</h4>
+						<h4 class="small_heading">
+							Joint
+						</h4>
+						<h4 class="small_paragraph">
+							<strong>Joint</strong> class draws the white circles of stickman hands and legs, which can be drawn around
+							changing the position and orientation of body parts. Joints class is initially created 
+							as a class, which has its x and y coordinates, as well as activity status. 
+							Joints, that are not active, are not drawn or dragged at all. They are just used as reference points.
+							For example, the shoulders of the stickmen are also joints, but they are not drawn as joints, and 
+							they cannot be dragged around. If the joint is created as active, it can be dragged around.
+							<br />
+							THe method <strong>createNextJoint()</strong> is the method which is called when the user wants 
+							to create another joint, which is linked to this one, and which is placed 
+							at a particular distance from this joint (length) and at a particular degree (degree). When a new joint
+							is created, it is stored as the "next" class member reference. At the same time, the method 
+							<strong>setAttachment()</strong> is called on the newly created joint, 
+							to set the current joint as its attachment. 
+							<br />
+							The point of this operation is to control the positioning of
+							the next joint. The atachments control the maximum distance, at which the joint can be from the attachment. 
+							When joints are moved around, each joint checks if it has an attachment (can be None), and then, it decides, if
+							it can move to the  requested point. If not, it can correct its position itself (generally by rotation).
+							When the joint is moved around, all its dependent joints (next field) are also moved with it. In this way
+							an infinitely long chain of joints can be  moved around.
+							<br />
+							The joint draws itself with the <strong>draw()</strong>	method. When the method is called on the joint, it checks
+							if it has any next-joints. If it does, it first draws itself, and then delegates drawing to the next joint in chain.
+							This is done in this way in order to make all joints of one limb on the same level, when they are moved,
+							because sometimes joints intersect on the canvas, and an elbow might be drawn over a hand of the other hand 
+							for example, but its own hand may be lower than the elbow of the other hand.
+							<br />			
+							The <strong>Joint</strong> is moved with the help of <strong>moveTo()</strong> and 
+							<strong>rotateBy()</strong> methods. When the <strong>moveTo()</strong> method is called,
+							it calculates the distance between where the joint is requested to move, and its allowed position, 
+							and find the amount by which the joint needs to turn (as long as the joints are connected to 
+							their attachments, the only movements they perform are rotations). Next, when the degree of rotation is 
+							defined, the <strong>rotateBy()</strong> method of the <strong>Joint</strong> is called. It calculates
+							all necessary measurements, such as new coordinates and lengths, and moves the joint there. Next, it calles
+							the <strong>rotateBy()</strong> method of all dependent joints, which are also rotated according to this given 
+							joint. In this way, the rotations of infinitely long limbs can be achieved.
+						</h4>
+						
+					</div>
+				</section>
+				
+				<!-- Algorithms and Data Structures -->
+				<section id="algo_data" class="two">
+					<div class="container">
+						<header>
+							<h2>Algorithms and Data Structures</h2>
+						</header>
+						<h4>Stickman Animator uses a variety of algorithms and data structures to achieve the functionality
+						depicted in the previous sections. They most important of them are described in more
+						detail in the following sections: </h4>
+						<h3 class="small_heading">
+							Algorithms
+						</h3>
+						<h4>
+							Specific algorithms are used in the following tasks: XML parsing and creation, 
+							joint movements and movement interpolation.							 
+						</h4>
+						<h4 class="small_heading">
+							XML Management						
+						</h4>
+						<h4 class="small_paragraph">
+							XML parsing	is an important part of the program as it allows to save the state of the stickman world
+							into a user friendly xml format. This later can be either saved or loaded from the file. 
+							The parsing is performed in the <strong>XML</strong> class <strong>toXML()</strong>	and 
+							<strong>fromXML()</strong> methods.	
+							<br />
+							When the <strong>toXML()</strong> method starts, it receives a list of frame to transfer to XML. 
+							Frames consist of stickmen, stickmen consist of heads, expressions, spines, joints, words and joints.
+							Some of these components do not need parsing such as the head and the spine. These components do not 
+							hold any particular state, and, thus, do not need processing. Other components have internal states and need to
+							be transferred to XML. First, the list of stickmen is received from the <strong>Frame</strong>.
+							These stickmen of type <strong>Stickman</strong> are traversed in a one-by-one manner. For each stickman, 
+							a function <strong>stickmanToXML()</strong> is called. It in turn accesses stickman`s instance variables,
+							and also traverses the list of all joints for this stickman, calling <strong>jointToXML()</strong> method.
+							<br />
+							Each XML-creating method is supplied with an XML-etree root node, to which it appends the created XML.
+							For example, a new root node is created when <strong>toXML()</strong> starts executing and encounters the 
+							"frame" XML node. When a 
+							<strong>stickmanToXML()</strong> method is called, a reference to the root node is passed into it, so that newly
+							created XML nodes a appended to this root node. In case it is a joint operation, it will be given a different
+							root node, which is lower in XML hierarchy.		
+							<br />
+							When the <strong>fromXML()</strong> method starts, it is given a path to the XML-file which 
+							stores the data about xml animation. If the file is loaded successfully, then its contents start being read 
+							node-by-node. In case a particular node like "frame" is met, a new, deeper-hierarchy method is called, which is 
+							given the contents of the encountered node. For example, <strong>decodeFrame()</strong> method is given 
+							the root node with the name "frame", which it parses. It parses the node children in order. Every time a deeper
+							element is encountered, a more specific method for parsing is called, 
+							for example <strong>decodeStickman()</strong>, when the node with the name "stickman" is met. At the end of the 
+							execution the method returns the list of <strong>Frame</strong>. The required objects are created and 
+							modified on the fly while the document is being parsed.							
+							<br />
+							This approach reminds of event-driven parsing, where particular event-triggers are called when necessary.
+							But it is built upon an etree in python, which makes it in fact simple DOM processing on a deeper level.
+							It would be easier to use event-based parsing instead of Document Object Model, but DOM is used in this 
+							application, because it is easier to detect structure errors in XML while parsing and notify the user
+							about the mistake without creating and dismissing a lot of objects, while parsing a broken XML file.
+							Moreover, most XML files are quite short in nature. If they were multiple Megabytes long, then 
+							another processing model would have to be accepted. Otherwise, DOM does the job well.
+						</h4>
+						<h4 class="small_heading">
+							Joint Movement						
+						</h4>
+						<h4 class="small_paragraph">
+							The class <strong>Joint</strong> has the functionality to move itself around while preserving its distance 
+							from its attachment node and controling its dependent nodes movement.
+							Each joint holds the state of its coordinate in relation to its attachment. This information is given in
+							the form of POLAR COORDINATES with distorted coordinate-axis where x-axis looks downwards, and y-axis 
+							looks to the left. It can be represented in the following picture:							
+						</h4>
+						<img src="images/algorithms/joint_angle.png" alt="" />
+						<h4 class="small_paragraph">
+							A-angle is measured in radians. It can be either negative or positive. In the picture, the node in the middle
+							of coordinate axis is the "attachment" joint. The coordinate of its dependent node (length and degree) are
+							calculated using the coordinate system presented in the image.
+							When the <strong>Joint</strong>`s <strong>moveTo()</strong>	method is called, this is illustrated 
+							by this image:												
+						</h4>
+						<img src="images/algorithms/joint_angle_click.png" alt="" />
+						<h4 class="small_paragraph">
+							B-angle is the angle of the mouse-cursor acording to the coordinate system of the attachment-joint. 
+							Mouse cursor is depicted as a red dot in the image. First, the mouse an imaginary line is drawn between
+							the mouse click and the attachment. Then the following actions are taken:
+							<br /><br />
+							<strong>1) Subtract attachment-joint x-coordinate from the mouse click x-coordinate</strong>
+							<br /><br />
+							<strong>2) Subtract attachment-joint y-coordinate from the mouse click y-coordinate</strong>
+							<br /><br />
+							<strong>3) Find the arctangent (using points 1 & 2) of the angle between the mouse-click and coordinate 
+							system</strong>
+							<br /><br />
+							<strong>4) Subtract the joint degree value from the angle found in point 3 (b-angle minus a-angle). 
+							This will be the degree by which the joint must be rotated.</strong>
+							<br /><br />
+							<strong>5) Call rotateBy() method of the joint. It will recalculate the position
+							of joint`s relative coordinates.</strong>
+							<br /><br />
+							<strong>6) The method rotateBy() calls itself on the dependent joints, if there are any. Each joint 
+							exists in the coordinate system of its attachment, so it adjusts its coordinate depending on its
+							parent joint.</strong>							
+							<br /><br />
+							The <strong>rotateBy()</strong> method internally finds the sine and cosine of the new angle, and then
+							multiplies these values by the length of the joint. It gives new relative coordinates of the joint 
+							in relation to its attachment. Next, these coordinates are added together, and saved as new joint`s 
+							coordinates.	
+							<br />
+							This solution seemed perfect for moving the joints, because they are always at some angle to their attachment,
+							and their distance is fixed. Nevertheless, another coordinate system could be chosen, as this one is a little
+							hard to comprehend from the start. But I chose this system because limbs of men (and stickmen) are usually
+							hanging down all the time, so it seemed relatively logical to me to start calculating limbs` angles
+							from their relaxed condition - along the body. 																			
+						</h4>						
+						<h4 class="small_heading">
+							Interpolation						
+						</h4>
+						<h4 class="small_paragraph">
+							Interpolation manifests itself when an animation is played. This is a process by which abrupt movements
+							of stickmen and joints at particular frames become smooth for the human eye and presented as in a movie instead
+							of being descreet.
+							<br />
+							This technique requires at least two frames, and the time interval, during which the interpolation 
+							will take place. If there are two frames, A and B, and the time of frame B is 1 second, it means that 
+							this time needs to be filled with smooth movements of stickman joints and body. 
+							The following general algorithm is implemented for the interpolation:
+							<br /><br />
+							<strong>1) Find time difference between frames </strong>
+							<br /><br />
+							<strong>2) Divide time gap by the number of screen frames that should be played 
+							in this time. The number of frames depends in the update rate of the timer, which 
+							redraws the stickman world. In this application it is 25ms, which amounts to
+							40 frames per second. </strong>
+							<br /><br />
+							<strong>3) Find the difference in measurements of stickman coordinates. 
+							For example, subtract the coordinate of each stickman in the first frame from 
+							the related coordinates of these stickmen in the second frame (in fact, body coordinates are 
+							subtracted, and also joint angles)</strong>
+							<br /><br />
+							<strong>4) Divide the coordinate differences of frames found in part 3 by the number 
+							of real frames (screen redrawals) found in part 2. </strong>
+							<br /><br />
+							<strong>5) Update each of the measurements of the first frame by the amount found in 
+							point 4 when the screen is redrawn every 25 ms until the state of the second frame is reached.</strong>
+							<br /><br />
+							If the following procedure is followed, all the movements become smooth. Nevertheless, the information
+							here is true only for LINEAR INTERPOLATION. It is perfectly fine for the body movement, but not suitable 
+							for joint movements, which are moving along the arcs of a circle. In this case, polar coordinates become
+							even more important, because when using them, the movement along the arc becomes also a linear operation, so 
+							the linear interpolation can be used.
+							<br /><br />
+							It is important to note that the interpolation also usees a clever mechanism to decide which path in the joint movement
+							is shorte. For example, the movement from one angle to another can be done in two ways - 
+							clockwise and counter-clockwise. The interpolation presented in this application can decide which arc-path is shorter, 
+							and interpolate accordingly. In this way, truly interesting animations can be created.
+						</h4>
+						<h4>
+							There are other algorithms implemented in the project, but as long as they do not have distinct features, they
+							relate more to the program structure rather than this section and their discussion here is superficial.
+						</h4>
+						<h3 class="small_heading">
+							Data Structures
+						</h3>
+						<h4>
+							The project uses a variety of data structures. Most of these are common python classes such as lists. But there was
+							at least one occasion when a custom data structure had to be implemented because the python standard library 
+							did not have a similar data structure that could fulfil the requirements. The following data structures have been
+							used in the project:
+						</h4>
+						<h4 class="small_heading">
+							Common Data Structures						
+						</h4>
+						<h4 class="small_paragraph">
+							The common data structures used in the project were lists. They were used almost everywhere in the program 
+							due to their broad spectrum of application. First of all, lists can be used for fast element access with O(1)
+							time, which is suitable for the parts of the program where access by index is applied. This is particularly 
+							common in frame interpolation, where joints (which are stored in the list), are matched with their 
+							counterparts in the next frame. The access is performed by index, while iterating the joints of the first 
+							frame.
+							<br />
+							Lists can be traversed with iteration which is a useful features. Iteration of lists is used very often in the program. 
+							At some places, maps could be used instead of lists, due to access by key (the methods of the 
+							<strong>World</strong> class, where stickmen are searched by their name). But I decided not to increase the number
+							of class members and not to create duplicate values for fast access as long as most of the operations 
+							applied to lists were iterations and access by index. 
+							<br />
+							Other example of a common data structure used was employed in XML processing. This is a Tree data structure. XML
+							is easier to store by default in the Tree-like structure due to its features: children, root-nodes, iterations combined
+							with searching for particular child-nodes.With ElementTree python data structure, 
+							the parsing of XML became simple and fast. There were other options when choosing tree implementations 
+							for XML processing. However, this one was chosen because it is a part of the standard python library and 
+							provides a broad range of features from DOM parsing which was used in the project to even-driven parsing.							
+						</h4>
+						<h4 class="small_heading">
+							FrameMap						
+						</h4>
+						<h4 class="small_paragraph">
+							When implementing the <strong>FrameList</strong> class, frames needed to be stored in 
+							some data structure. Each frame had an associated button which is drawn on the screen, and the frame itself stores
+							the frame state such as time and a list of stickmen. 
+							The first option that needed consideration was the usage of map-like structure. The problem with the default
+							python dictionary was that it does not store elements in a particular order for efficiency reasons.
+							Nevertheless, the program feature required that frames are always stored in a particular order. At this point an
+							<strong>OrderedMap</strong> from python standard library was considered. However, the frames needed to 
+							be copied. It meant that a new frame could be inserted in the middle of the map after the active frame.
+							The <strong>OrderedMap</strong> did not provide such functionality. As a result. a custom data structure 
+							was created. Its class diagram is shown below:
+						</h4>
+						<img src="images/algorithms/frame_map.png" alt="" />
+						<h4 class="small_paragraph">
+							This particular implementation uses lists internally as well as tracks the active item, which
+							is just a convinience. This data structure provides O(1) access time to any of its frames, as well
+							as allows the user to iterate it using keys. The insertion time is also O(1). It allows the user to insert
+							new items at a particular place and preserves item order. This data structure perfectly suits the requirements 
+							of the application.
+						</h4>						
+					</div>
+				</section>
+			
+				<!-- Files -->
+				<section id="files" class="three">
+					<div class="container">
+						<header>
+							<h2>Files and File Formats</h2>
+						</header>
+
+						<h4>Stickman Animator uses a few types of files in its operations. Of course, the most common
+							file types are the image files, because they are used as background images for UI components or
+							as a background for the stickman world. For UI components, <strong>.png</strong> image files are 
+							used because they allow transparency, even though sometimes they could be substituted with other
+							image types such as <strong>.jpg</strong> images. 
+						<br /><br />
+							When choosing the background image, only two types of files are offered - either png- or jpg files,
+							even though a wider variety of image types could be drawn as a pixel map. This is due to the fact, that these
+							two formats are fairly small in size and they provide quality good enough to use in the application. That is why 
+							other image formats such as .bmp were left out of consideration.						
+						</h4>
+						<br />
+						<h4>
+							Another important application of external files is XML saving and loading. Application saves the data in 
+							the XML form in order to access it later. XML itself is a text-based format, so are the files, formed by it.
+							In the application, a specific file type is used for saving animations - <strong>.armo</strong> files
+							(ARtem MOskalev). They essentially are simple xml files, that can be modified with a simple text editor. 
+							Nevertheless, giving the files a particular extension allows to filter these files out of other files 
+							with the same extension when loading. It is implemented in the loading functionality of Stickman Animator. 
+							When the file dialog appears, it specifically searches for <strong>.armo</strong> files. It helps the user 
+							not to browse a large list of possible .xml files.
+							<br />
+							The XML file format used by the application looks like the following:
+						</h4>
+						<br />
+						<img src="images/xml_example.png" alt="" />
+						<br />
+						<br />
+						<h4>
+							This file contains frame tags. These cannot be mixed because their order is important. Next,
+							each frame has a number of stickman-tags. These tags in turn have (x,y)-coordinate tags, 
+							as well as other basic tags. It is important to notice the presence of joint tags. 
+							Each joint tag has a number of children such as the coordinates. Nevetheless, it has such things as an 
+							attachment, or a next tag. These tags point to the object dependencies in the list of joints. When all joints 
+							are read from XML, the list of them is traversed again, and their references to siblings are restored 
+							using the information in these tags. Attachment, degree and length-tags are only present, 
+							when there is an attachment. Next-tags are present only when there exists a next joint.
+							<br /><br />
+							It is important to notice that the .armo file data is not pretty-printed, and it is presented as one large line 
+							of textual data. There was no reason to improve its appearance because <strong>.armo</strong> files 
+							are not supposed to be read by humans even though they are xml. This could be changed in order to have better
+							testing practices, but XML testing can also be done automatically, so it is not necessary. Debugging can 
+							also be done from the console, by redirecting the XML printing there. 
+						</h4>
+												
+					</div>
+				</section>
+				
+				<!-- Testing -->
+				<section id="testing" class="four">
+					<div class="container">
+						<header>
+							<h2>Project Testing</h2>
+						</header>
+						<h4>Testing is important to ensure that all parts of the project work sufficiently well. 
+							In the project, a variety of testing methods have been employed in order to ensure,
+							that the program works properly. A few parts of the program were tested using python Unit-test 
+							framework. These parts included: 						
+						</h4>
+						<h4 class="small_paragraph">
+							<br />
+							<strong>1) Testing World creation and removal procedures</strong>
+							<br /><br />
+							In the unit tests, a number of stickmen is created. They are given random names,
+							random space coordinates and placed in the World. The test also deletes them if necessary.
+							Next, it makes assertions about the number of stickmen which exist in the world. 
+							<br /><br />
+							<strong>2) Testing XML processing validity</strong>
+							<br /><br />
+							This test first creates new stickmen, and calls XML utility methods, such as stickmanToXML. 
+							Next, when stickman is converted to XML representation, the method checks if the XML is properly formatted 
+							and written. As the second test, the test methods create a test file and write XML data into it. This data is created from
+							Frame objects of the world. After that, the file is read and classes are restored back as they were. 
+							The restored objects are compared to their counterparts and the conclusion is reached if the test fails or not.
+							<br /><br />
+							<strong>3) Testing Stickman body and joints movement</strong>
+							<br /><br />
+							Test methods create a single stickman and start moving it randomly around the world. The movement events are not passed to
+							the stickman directly, but through the World class, thus, simulating mouse clicks and dragging movements. In case the stickman
+							coordinate is different from what is expected, the test fails. The joints are tested, if the clicks reach them from the World.
+							<br />
+						</h4>
+						<h4>Even though unit testing is not very comprehensive, the program itself is an application where GUI 
+							plays an important role. The program has been tested for many hours and all possible combinations of inputs
+							by its creator, through its user interface. This part of testing took much more time than unit testing, because
+							this is he only way to test graphical components of the application.					
+						</h4>
+					</div>
+				</section>
+							
+				<!-- Program Development Schedule and Adherence to the initial Plan -->
+				<section id="schedule" class="three">
+					<div class="container">
+						<header>
+							<h2>Project Production and Schedule</h2>
+						</header>
+						<h4>The following order of activities has been used in the project :</h4>
+						<h4 class="small_paragraph">
+							<strong>1) Implementation of the User Interace basic parts</strong>
+							<br /><br />
+							This part took around 15 hours because installation, reading about PyQt framework, and 
+							of course, starting to work with a new framework required some time (started on the 11th April, 2015)
+							<br /><br />
+							<strong>2) Implementation of Canvas Area</strong>
+							<br /><br />
+							This part took around 5 hours. It took some time to read about redrawing components and also 
+							to make a functional component with a timer to update all its details itself
+							<br /><br />
+							<strong>3) Implementation of create and delete stickmen functionality</strong>
+							<br /><br />							
+							<strong>4) Implementation of the stickman name list</strong>
+							<br /><br />
+							The parts 3 and 4 took around 20 hours together. 
+							The hardest part was to implement the necessary components such as TimeInput and StickmanList
+							and to place it properly on the screen. Software design took the most time - mostly trying to devise a feasible
+							class structure which resulted in the implementation of the Observer design pattern.
+							(15th April, 2015)
+							<br /><br />
+							<strong>5) Implementation of stickman body movement and layering</strong>
+							<br /><br />
+							This part took around 15 hours. The movement of stickmen was easy to implement, but layering issues were hard.
+							At first, I did not even know how my program should behave. This resulted in a large amount of time lost
+							trying to find the best strategy (20th April, 2015).
+							<br /><br />
+							<strong>6) Implementation of stickman joint movement (with constant length)</strong>
+							<br /><br />
+							This part took around 15 hours. The task was easier than I expected. In fact it came down to inventing the
+							polar coordinate system for the movement of joints. When it had been done, the process of implementing took
+							at most 2 hours (23th April, 2015).
+							<br /><br />
+							<strong>7) Implementation of stickman expressions and words</strong>
+							<br /><br />
+							This part took around 5 hours. The words parts was the hardest because of the feature of shortening long
+							phrases. It unexpectedly produced a lot of strange behaviour and it took around 4 hours our of 
+							5 to do the "stickman talking" part (25th April, 2015).
+							<br /><br />
+							<strong>8) Implementation of background functionality</strong>
+							<br /><br />
+							This part took around 2 hours. I just looked for common solutions on the internet and found out how 
+							to work with files in PyQt. Next, it took half an hour to implement (30th April, 2015).
+							<br /><br />
+							<strong>9) Implementation of the animation frame list</strong>
+							<br /><br />							
+							<strong>10) Implementation of frame making and loading</strong>
+							<br /><br />
+							The parts 9 and 10 took around 18 hours to complete. FrameList class has a lot of common functionality 
+							with Stickman List, but it has some special methods that need to call for deep copying and World methods. This 
+							was the main obstacle. Nevertheless, all problems were successfully solved (05th May, 2015).
+							<br /><br />
+							<strong>11) Implementation of frame interpolation</strong>
+							<br /><br />
+							This part took around 5 hours, much less than I expected when I just started writing the project plan.
+							As long as all the infrastructure for interpolation was ready, and all classes were 
+							thoroughly planned, it was really easy to implement (09th May, 2015).
+							<br /><br />
+							<strong>12) Implementation of animation saving and loading</strong>	
+							<br /><br />
+							This part took around 5 hours. I did the parsing and XML-processing myself, so I needed to traverse the trees and 
+							to create tags myself, so it took 5 tedious hours of work (10th May, 2015).
+							<br /><br />						
+						</h4>
+						<h4>The whole project took around 110 hours of work. If this documentation is also considered it would 
+						be 130 hours of work. It is in the range that I expected in the project initial plan. Nevertheless,
+						some components were wasier to implement than first thought and some issues that were not even planned, 
+						appeared to be major obstacles. The project moved really slowly at the beginning because of 
+						large amount of new information.</h4>
+						<br />
+						<h4>From my point of view, most of the initial project plan has been followed. Even the general idea behind 
+						the class structure remained the same. Mostly, model classes drew themselves, stored their state themselves, and 
+						a short-timegap timer updated the picture, creating a graphics loop. There were large changes in the user interface.
+						It was subject to reconsideration based on the consultation with the project assistant, Miki Tolonen. Initial
+						plan contained the command-line based GUI, but it was substituted with buttons and text fields
+						to make the program user-friendlier.
+						<br />
+						At the beginning, I also considered the use of PyGame graphics library for the UI but later decided to change it 
+						for PyQt because the latter had better reviews and support community. 
+						The version of PyQt used in the project is PyQt5.
+						</h4>
+					</div>
+				</section>
+				
+				<!-- References -->
+				<section id="references" class="four">
+					<div class="container">
+						<header>
+							<h2>References</h2>
+						</header>
+						<a href="https://github.com/artemmoskalev/stickman_animator" class="external_link">GitHub Project Code</a>
+						<a href="https://www.wikipedia.org/" class="external_link">Wikipedia</a>
+						<a href="http://stackoverflow.com/" class="external_link">Stackoverflow</a>
+						<a href="https://www.python.org/" class="external_link">Python Community</a>
+						<a href="http://pyqt.sourceforge.net/Docs/PyQt4/" class="external_link">PyQt Reference Guide</a>						
+					</div>
+				</section>
+							
+			</div>
+
+		<!-- Footer -->
+		<div id="footer">				
+			<!-- Copyright -->
+			<ul class="copyright">
+				<li>&copy; Artem Moskalev, 2015. All Stickmen Reserved.</li>
+			</ul>				
+		</div>
+		
+	</body>
+</html>
